@@ -17,8 +17,21 @@ namespace Planner.Api
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            try
+            {
+                var host = WebHost.CreateDefaultBuilder(args)
+                    .CaptureStartupErrors(false)
+                    .UseSetting("detailedErrors", "true")
+                    .UseStartup<Startup>();
+
+                return host;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }
