@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Planner.Api.Extensions;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Dto;
 using System;
@@ -29,14 +30,14 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                var tasks = await _scheduledTaskRepo.GetAll().ToListAsync();
+                var tasks = await _scheduledTaskRepo.GetScheduledTasksForUser(User.GetUserId());
                 var dtos = _mapper.Map<IEnumerable<ScheduledTaskDTO>>(tasks);
 
                 return Ok(dtos);
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
     }
