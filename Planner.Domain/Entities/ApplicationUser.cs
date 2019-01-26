@@ -5,6 +5,6 @@ namespace Planner.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public virtual ICollection<SheduledTask>SheduledTasks { get; set; }
+        public virtual ICollection<ScheduledTask>SheduledTasks { get; set; }
     }
 }

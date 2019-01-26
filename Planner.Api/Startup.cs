@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Planner.Domain;
 using Planner.Domain.Entities;
+using Planner.Domain.Repositories;
+using Planner.Domain.Repositories.Interfaces;
+using Planner.Domain.UnitOfWork;
 
 namespace Planner.Api
 {
@@ -26,6 +29,10 @@ namespace Planner.Api
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<PlannerDbContext>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(IRepository<>));
+            services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
