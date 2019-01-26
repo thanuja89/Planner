@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Planner.Api.Extensions;
 using Planner.Domain;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories;
@@ -30,7 +32,12 @@ namespace Planner.Api
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<PlannerDbContext>();
 
-            services.AddScoped(typeof(IRepository<>), typeof(IRepository<>));
+            services.AddAutoMapper(opt => 
+            {
+                opt.AddProfile(new MappingProfile());
+            });
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

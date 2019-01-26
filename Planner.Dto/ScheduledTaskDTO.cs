@@ -3,7 +3,7 @@ using System;
 
 namespace Planner.Dto
 {
-    public class SheduledTaskDTO
+    public class ScheduledTaskDTO
     {
         public long Id { get; set; }
         public string Title { get; set; }
