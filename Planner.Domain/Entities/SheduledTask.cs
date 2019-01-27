@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Planner.Domain.Entities
 {
-    public class ScheduledTask
+    public class ScheduledTask : BaseEntity
     {
-        public long Id { get; set; }
-
         [Column(TypeName = "VARCHAR(255)")]
         public string Title { get; set; }
 
