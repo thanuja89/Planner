@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Planner.Api.Models;
 using Planner.Domain.Entities;
@@ -20,47 +21,71 @@ namespace Planner.Api.Controllers
         private readonly IConfiguration _config;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<TokenController> _logger;
 
         public TokenController(IConfiguration config
             , SignInManager<ApplicationUser> signInManager
-            , UserManager<ApplicationUser> userManager)
+            , UserManager<ApplicationUser> userManager
+            , ILogger<TokenController> logger)
         {
             _config = config;
             _signInManager = signInManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("{action}")]
         public async Task<IActionResult> CreateToken([FromBody]LoginModel login)
         {
-            IActionResult response = Unauthorized();
-            var user = await AuthenticateAsync(login);
-
-            if (user != null)
+            try
             {
-                var tokenString = BuildToken(user);
-                response = Ok(new { token = tokenString });
+                if (ModelState.IsValid)
+                {
+                    var user = await AuthenticateAsync(login);
+
+                    if (user != null)
+                    {
+                        var tokenString = BuildToken(user);
+                        return Ok(new { token = tokenString });
+                    } 
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Threw exception while creating Token: { ex }");
+                throw;
             }
 
-            return response;
+            return BadRequest();
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPost("{action}")]
         public async Task<IActionResult> Register([FromBody]RegisterModel register)
         {
-            var appUser = new ApplicationUser()
+            try
             {
-                UserName = register.Username,
-                Email = register.Email              
-            };
+                if (ModelState.IsValid)
+                {
+                    var appUser = new ApplicationUser()
+                    {
+                        UserName = register.Username,
+                        Email = register.Email
+                    };
 
-            var result = await _userManager.CreateAsync(appUser, register.Password);
+                    var result = await _userManager.CreateAsync(appUser, register.Password);
 
-            if (result.Succeeded)
+                    if (result.Succeeded)
+                    {
+                        return Ok();
+                    } 
+                }
+            }
+            catch (Exception ex)
             {
-                return Ok();
+                _logger.LogError($"Threw exception while creating User: { ex }");
+                throw;
             }
 
             return BadRequest();
@@ -73,6 +98,7 @@ namespace Planner.Api.Controllers
 
             var claims = new[]
             {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email)
             };
