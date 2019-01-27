@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Planner.Api.Extensions;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Dto;
