@@ -135,6 +135,78 @@ namespace Planner.Api.Tests
         }
         #endregion
 
+        #region PUT Tests
+        [Fact]
+        public async void Put_ValidObject_CallsMapperAndRepoWithCorrectArgsAndReturnsOk()
+        {
+            // Arrange
+            SetUp();
+
+            int id = 1;
+
+            var taskDto = new PutScheduledTaskDTO()
+            {
+                Start = DateTime.UtcNow,
+                End = DateTime.UtcNow
+            };
+
+            var task = new ScheduledTask()
+            {
+                Id = 1,
+                Start = DateTime.UtcNow,
+                End = DateTime.UtcNow
+            };
+
+            _mockRepo.Setup(r => r.FindAsync(It.IsAny<int>())).ReturnsAsync(task);
+
+            // Act
+            var result = await _sut.Put(id, taskDto);
+
+            // Assert
+            _mockMapper.Verify(m => m.Map(taskDto, task));
+            _mockRepo.Verify(r => r.FindAsync(id));
+            _mockLUOW.Verify(u => u.CompleteAsync());
+
+            Assert.IsAssignableFrom<OkObjectResult>(result);
+        }
+        #endregion
+
+        #region PUT Tests
+        [Fact]
+        public async void Delete_ValidObject_CallsRepoWithCorrectArgsAndReturnsNoContent()
+        {
+            // Arrange
+            SetUp();
+
+            int id = 1;
+
+            var taskDto = new PutScheduledTaskDTO()
+            {
+                Start = DateTime.UtcNow,
+                End = DateTime.UtcNow
+            };
+
+            var task = new ScheduledTask()
+            {
+                Id = 1,
+                Start = DateTime.UtcNow,
+                End = DateTime.UtcNow
+            };
+
+            _mockRepo.Setup(r => r.FindAsync(It.IsAny<int>())).ReturnsAsync(task);
+
+            // Act
+            var result = await _sut.Delete(id);
+
+            // Assert
+            _mockRepo.Verify(r => r.FindAsync(id));
+            _mockRepo.Verify(r => r.Delete(task));
+            _mockLUOW.Verify(u => u.CompleteAsync());
+
+            Assert.IsAssignableFrom<NoContentResult>(result);
+        }
+        #endregion
+
         #region Private Methods
         private void SetUp()
         {
