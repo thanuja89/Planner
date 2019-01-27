@@ -38,9 +38,8 @@ namespace Planner.Api.Controllers
         public async Task<IActionResult> Get()
         {
             var tasks = await _scheduledTaskRepo.GetScheduledTasksForUser(User.GetUserId());
-            var dtos = _mapper.Map<IEnumerable<GetScheduledTaskDTO>>(tasks);
 
-            return Ok(dtos);
+            return Ok(_mapper.Map<IEnumerable<GetScheduledTaskDTO>>(tasks));
         }
 
         // GET: api/ScheduledTask/1
@@ -52,9 +51,7 @@ namespace Planner.Api.Controllers
             if (task == null)
                 return NotFound($"Sheduled Task {id} was not found");
 
-            var dto = _mapper.Map<GetScheduledTaskDTO>(task);
-
-            return Ok(dto);
+            return Ok(_mapper.Map<GetScheduledTaskDTO>(task));
         }
 
         [HttpPost]
@@ -64,16 +61,14 @@ namespace Planner.Api.Controllers
             {
                 try
                 {
-                    var entity = _mapper.Map<ScheduledTask>(task);                  
+                    var entity = _mapper.Map<ScheduledTask>(task);
 
                     await _scheduledTaskRepo.AddAsync(entity);
                     await _unitOfWork.CompleteAsync();
 
-                    var dto = _mapper.Map<GetScheduledTaskDTO>(entity);
-
                     var uri = Url.Link("TaskGet", new { entity.Id });
 
-                    return Created(uri, dto);
+                    return Created(uri, _mapper.Map<GetScheduledTaskDTO>(entity));
                 }
                 catch (System.Exception ex)
                 {
@@ -114,25 +109,22 @@ namespace Planner.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    var task = await _scheduledTaskRepo.FindAsync(id);
+                var task = await _scheduledTaskRepo.FindAsync(id);
 
-                    if (task == null)
-                        return NotFound($"Sheduled Task {id} was not found");
+                if (task == null)
+                    return NotFound($"Sheduled Task {id} was not found");
 
-                    _scheduledTaskRepo.Delete(task);
+                _scheduledTaskRepo.Delete(task);
 
-                    await _unitOfWork.CompleteAsync();
+                await _unitOfWork.CompleteAsync();
 
-                    return NoContent();
-                }
-                catch (System.Exception ex)
-                {
-                    _logger.LogError($"Threw exception while creating ScheduledTask: { ex }");
-                }
+                return NoContent();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogError($"Threw exception while creating ScheduledTask: { ex }");
             }
 
             return BadRequest();

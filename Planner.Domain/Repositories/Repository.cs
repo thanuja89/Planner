@@ -17,12 +17,12 @@ namespace Planner.Domain.Repositories
             _context = context;
         }
 
-        public Task<T> FindAsync(int id)
+        public Task<T> FindAsync(long id)
         {
             return Entities.FindAsync(id);
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public Task<T> GetByIdAsync(long id)
         {
             return Entities
                 .AsNoTracking()
@@ -49,7 +49,7 @@ namespace Planner.Domain.Repositories
             Entities.Remove(entity);
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(long id)
         {
             var entity = await Entities.FindAsync(id);
             Entities.Remove(entity);
