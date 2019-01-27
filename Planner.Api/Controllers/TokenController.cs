@@ -46,6 +46,26 @@ namespace Planner.Api.Controllers
             return response;
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Register([FromBody]RegisterModel register)
+        {
+            var appUser = new ApplicationUser()
+            {
+                UserName = register.Username,
+                Email = register.Email              
+            };
+
+            var result = await _userManager.CreateAsync(appUser, register.Password);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
         private string BuildToken(ApplicationUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -74,7 +94,7 @@ namespace Planner.Api.Controllers
             {
                 return await _userManager.FindByNameAsync(login.Username);
             }
-
+            
             return null;
         }
     }
