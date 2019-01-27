@@ -32,8 +32,25 @@ namespace Planner.Api
             services.AddDbContext<PlannerDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PlanningDb"), b => b.MigrationsAssembly("Planner.Api")));
 
-            services.AddDefaultIdentity<ApplicationUser>()
+            services.AddDefaultIdentity<ApplicationUser>(opt => 
+            {
+                opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 4; // For testing
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireUppercase = false;
+            })
                 .AddEntityFrameworkStores<PlannerDbContext>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials()
+                .Build());
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                  .AddJwtBearer(options =>
@@ -77,6 +94,7 @@ namespace Planner.Api
                 app.UseHsts();
             }
 
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
