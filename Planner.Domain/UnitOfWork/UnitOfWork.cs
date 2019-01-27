@@ -11,7 +11,7 @@ namespace Planner.Domain.UnitOfWork
             _context = context;
         }
 
-        public Task Complete()
+        public Task CompleteAsync()
         {
             return _context.SaveChangesAsync();
         }

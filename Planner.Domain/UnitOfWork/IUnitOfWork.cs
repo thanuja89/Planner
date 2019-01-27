@@ -4,6 +4,6 @@ namespace Planner.Domain.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        Task Complete();
+        Task CompleteAsync();
     }
 }

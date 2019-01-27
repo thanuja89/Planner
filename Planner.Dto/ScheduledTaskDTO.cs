@@ -5,7 +5,6 @@ namespace Planner.Dto
 {
     public class ScheduledTaskDTO
     {
-        public long Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Note { get; set; }
@@ -15,5 +14,20 @@ namespace Planner.Dto
         public DateTime End { get; set; }
         public bool IsNotify { get; set; }
         public bool IsAlarm { get; set; }
+    }
+
+    public class GetScheduledTaskDTO : ScheduledTaskDTO
+    {
+        public long Id { get; set; }
+    }
+
+    public class PostScheduledTaskDTO : ScheduledTaskDTO
+    {
+        
+    }
+
+    public class PutScheduledTaskDTO : ScheduledTaskDTO
+    {
+
     }
 }

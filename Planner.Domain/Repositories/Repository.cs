@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Planner.Domain.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         private readonly PlannerDbContext _context;
 
@@ -21,6 +22,13 @@ namespace Planner.Domain.Repositories
             return Entities.FindAsync(id);
         }
 
+        public Task<T> GetByIdAsync(int id)
+        {
+            return Entities
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
+
         public IQueryable<T> GetAll()
         {
             return Entities;
@@ -34,6 +42,17 @@ namespace Planner.Domain.Repositories
         public void Update(T entity)
         {
             Entities.Update(entity);
+        }
+
+        public void Delete(T entity)
+        {
+            Entities.Remove(entity);
+        }
+
+        public async Task Delete(int id)
+        {
+            var entity = await Entities.FindAsync(id);
+            Entities.Remove(entity);
         }
     }
 }

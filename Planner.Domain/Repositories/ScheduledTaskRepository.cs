@@ -16,6 +16,7 @@ namespace Planner.Domain.Repositories
         public async Task<IEnumerable<ScheduledTask>> GetScheduledTasksForUser(string userId)
         {
             return await Entities
+                .AsNoTracking()
                 .Where(t => t.ApplicationUserId == userId)
                 .ToListAsync();
         }
