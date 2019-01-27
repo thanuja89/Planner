@@ -67,6 +67,8 @@ namespace Planner.Api
                      };
                  });
 
+            services.AddHttpContextAccessor();
+
             services.AddAutoMapper(opt =>
             {
                 opt.AddProfile(new MappingProfile());

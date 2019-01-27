@@ -64,14 +64,14 @@ namespace Planner.Api.Controllers
             {
                 try
                 {
-                    var entity = _mapper.Map<ScheduledTask>(task);
-
-                    var uri = Url.Link("TaskGet", new { entity.Id });
+                    var entity = _mapper.Map<ScheduledTask>(task);                  
 
                     await _scheduledTaskRepo.AddAsync(entity);
                     await _unitOfWork.CompleteAsync();
 
                     var dto = _mapper.Map<GetScheduledTaskDTO>(entity);
+
+                    var uri = Url.Link("TaskGet", new { entity.Id });
 
                     return Created(uri, dto);
                 }
