@@ -1,5 +1,6 @@
 ﻿using Planner.Domain.Entities;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Planner.Dto
 {
@@ -10,8 +11,13 @@ namespace Planner.Dto
         public string Note { get; set; }
         public Importance Importance { get; set; }
         public Frequency Repeat { get; set; }
+
+        [Required]
         public DateTime Start { get; set; }
+
+        [Required]
         public DateTime End { get; set; }
+
         public bool IsNotify { get; set; }
         public bool IsAlarm { get; set; }
     }
