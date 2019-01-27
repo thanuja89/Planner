@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Planner.Api.Controllers;
 using Planner.Domain.Repositories.Interfaces;
+using Planner.Dto;
+using System.Collections.Generic;
 using System.Security.Claims;
 using Xunit;
 
@@ -17,7 +19,7 @@ namespace Planner.Api.Tests
         private ScheduledTaskController _sut;
 
         [Fact]
-        public async void Get_ValidPrinciple_CallsRepoWithCorrectArgsAndReturnsOk()
+        public async void Get_ValidPrinciple_CallsRepoWithCorrectArgs()
         {
             // Arrange
             SetUp();
@@ -27,7 +29,20 @@ namespace Planner.Api.Tests
 
             // Assert
             _mockRepo.Verify(m => m.GetScheduledTasksForUser(_userId));
-            Assert.IsType<OkObjectResult>(result);
+        }
+
+        [Fact]
+        public async void Get_ValidPrinciple_ReturnsOkWithTaskDTOs()
+        {
+            // Arrange
+            SetUp();
+
+            // Act
+            var result = await _sut.Get();
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.IsAssignableFrom<IEnumerable<ScheduledTaskDTO>>(okResult.Value);
         }
 
         private void SetUp()

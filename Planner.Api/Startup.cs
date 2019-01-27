@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Planner.Api.Extensions;
 using Planner.Domain;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
+using System.Text;
 
 namespace Planner.Api
 {
@@ -32,7 +35,22 @@ namespace Planner.Api
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<PlannerDbContext>();
 
-            services.AddAutoMapper(opt => 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                 .AddJwtBearer(options =>
+                 {
+                     options.TokenValidationParameters = new TokenValidationParameters
+                     {
+                         ValidateIssuer = true,
+                         ValidateAudience = true,
+                         ValidateLifetime = true,
+                         ValidateIssuerSigningKey = true,
+                         ValidIssuer = Configuration["Jwt:Issuer"],
+                         ValidAudience = Configuration["Jwt:Issuer"],
+                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                     };
+                 });
+
+            services.AddAutoMapper(opt =>
             {
                 opt.AddProfile(new MappingProfile());
             });
@@ -47,6 +65,8 @@ namespace Planner.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseGlobalExceptionHandler();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
