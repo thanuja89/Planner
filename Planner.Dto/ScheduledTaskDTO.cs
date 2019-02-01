@@ -1,5 +1,4 @@
-﻿using Planner.Domain.Entities;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Planner.Dto
