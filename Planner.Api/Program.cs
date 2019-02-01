@@ -13,19 +13,12 @@ namespace Planner.Api
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            try
-            {
-                var host = WebHost.CreateDefaultBuilder(args)
-                    .CaptureStartupErrors(false)
-                    .UseSetting("detailedErrors", "true")
-                    .UseStartup<Startup>();
+            var host = WebHost.CreateDefaultBuilder(args)
+                .CaptureStartupErrors(false)
+                .UseSetting("detailedErrors", "true")
+                .UseStartup<Startup>();
 
-                return host;
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            return host;
         }
     }
 }
