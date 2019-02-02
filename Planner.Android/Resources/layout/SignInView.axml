@@ -30,10 +30,26 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/signInButton" />
-	<CheckBox
-		android:text="Remember Me"
-		android:layout_width="match_parent"
+	<RelativeLayout
 		android:layout_height="wrap_content"
-		android:id="@+id/rememberMeCheckBox" />
+		android:layout_width="match_parent">
+		<CheckBox
+			android:text="Remember Me"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/rememberMeCheckBox"
+			android:layout_alignParentLeft="true" />
+		<TextView
+			android:text="Sign Up"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/textView1"
+			android:layout_gravity="right"
+			android:layout_alignParentRight="true"
+			android:layout_centerInParent="true"
+			android:layout_marginRight="5dp"
+			android:textColor="#ff2196f3" />
+	</RelativeLayout>
 
 </LinearLayout>
