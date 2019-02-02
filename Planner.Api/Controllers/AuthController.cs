@@ -16,17 +16,17 @@ namespace Planner.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TokenController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly IConfiguration _config;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<TokenController> _logger;
+        private readonly ILogger<AuthController> _logger;
 
-        public TokenController(IConfiguration config
+        public AuthController(IConfiguration config
             , SignInManager<ApplicationUser> signInManager
             , UserManager<ApplicationUser> userManager
-            , ILogger<TokenController> logger)
+            , ILogger<AuthController> logger)
         {
             _config = config;
             _signInManager = signInManager;
@@ -36,7 +36,7 @@ namespace Planner.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("{action}")]
-        public async Task<IActionResult> CreateToken([FromBody]LoginDto login)
+        public async Task<IActionResult> CreateToken([FromBody]TokenRequestDto login)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Planner.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("{action}")]
-        public async Task<IActionResult> Register([FromBody]RegisterDto register)
+        public async Task<IActionResult> CreateAccount([FromBody]CreateAccountDto register)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Planner.Api.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private async Task<ApplicationUser> AuthenticateAsync(LoginDto login)
+        private async Task<ApplicationUser> AuthenticateAsync(TokenRequestDto login)
         {
             var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, false, false);
 

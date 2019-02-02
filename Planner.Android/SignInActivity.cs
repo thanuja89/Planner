@@ -52,7 +52,7 @@ namespace Planner.Android
             if (!ValidateInputs())
                 return;
 
-            var dto = new LoginDto()
+            var dto = new TokenRequestDto()
             {
                 Username = usernameEditText.Text,
                 Password = passwordEditText.Text
