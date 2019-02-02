@@ -2585,14 +2585,14 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080061
 			public const int list_item = 2131230817;
 			
-			// aapt resource value: 0x7f0800ae
-			public const int masked = 2131230894;
+			// aapt resource value: 0x7f0800b1
+			public const int masked = 2131230897;
 			
 			// aapt resource value: 0x7f08009f
 			public const int media_actions = 2131230879;
 			
-			// aapt resource value: 0x7f0800ac
-			public const int message = 2131230892;
+			// aapt resource value: 0x7f0800af
+			public const int message = 2131230895;
 			
 			// aapt resource value: 0x7f080031
 			public const int middle = 2131230769;
@@ -2632,6 +2632,9 @@ namespace Planner.Android
 			
 			// aapt resource value: 0x7f08000b
 			public const int parent_matrix = 2131230731;
+			
+			// aapt resource value: 0x7f0800ad
+			public const int passwordEditText = 2131230893;
 			
 			// aapt resource value: 0x7f08004d
 			public const int pin = 2131230797;
@@ -2725,6 +2728,9 @@ namespace Planner.Android
 			
 			// aapt resource value: 0x7f080025
 			public const int showTitle = 2131230757;
+			
+			// aapt resource value: 0x7f0800ae
+			public const int signInButton = 2131230894;
 			
 			// aapt resource value: 0x7f08008b
 			public const int smallLabel = 2131230859;
@@ -2837,11 +2843,14 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080026
 			public const int useLogo = 2131230758;
 			
+			// aapt resource value: 0x7f0800ac
+			public const int usernameEditText = 2131230892;
+			
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800ad
-			public const int visible = 2131230893;
+			// aapt resource value: 0x7f0800b0
+			public const int visible = 2131230896;
 			
 			// aapt resource value: 0x7f08003c
 			public const int withText = 2131230780;
@@ -3083,10 +3092,13 @@ namespace Planner.Android
 			public const int select_dialog_singlechoice_material = 2130968634;
 			
 			// aapt resource value: 0x7f04003b
-			public const int support_simple_spinner_dropdown_item = 2130968635;
+			public const int SignInView = 2130968635;
 			
 			// aapt resource value: 0x7f04003c
-			public const int tooltip = 2130968636;
+			public const int support_simple_spinner_dropdown_item = 2130968636;
+			
+			// aapt resource value: 0x7f04003d
+			public const int tooltip = 2130968637;
 			
 			static Layout()
 			{
