@@ -47,7 +47,10 @@ namespace Planner.Api.Controllers
                     if (user != null)
                     {
                         var tokenString = BuildToken(user);
-                        return Ok(new { token = tokenString });
+                        return Ok(new TokenDto()
+                        {
+                            Token = tokenString
+                        });
                     } 
                 }
             }

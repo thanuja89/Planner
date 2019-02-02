@@ -1,38 +1,25 @@
-﻿using Newtonsoft.Json;
-using Planner.Dto;
-using System.Net.Http;
-using System.Text;
+﻿using Planner.Dto;
 using System.Threading.Tasks;
 
 namespace Planner.Mobile.Core.Services
 {
     public class AuthService
     {
-        private readonly HttpClient _httpClient;
+        private readonly HttpService _httpService;
 
         public AuthService()
         {
-            _httpClient = new HttpClient();
+            _httpService = new HttpService();
         }
 
-        public async Task<TokenDto> SignInAsync(TokenRequestDto loginDto)
+        public Task<TokenDto> SignInAsync(TokenRequestDto loginDto)
         {
-            var json = JsonConvert.SerializeObject(loginDto);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            return _httpService.PostForResultAsync<TokenDto>("Auth/CreateToken", loginDto);
+        }
 
-            string url = $"{ CommonUrls.BASE_URI }Auth/CreateToken";
-
-            var response = await _httpClient.PostAsync(url, content);
-
-            TokenDto result = null;
-
-            if (response.IsSuccessStatusCode)
-            {
-                var cont = await response.Content.ReadAsStringAsync();
-                result = JsonConvert.DeserializeObject<TokenDto>(cont);
-            }
-
-            return result;
-        } 
+        public Task SignUpAsync(CreateAccountDto accountDto)
+        {
+            return _httpService.PostAsync("Auth/CreateAccount", accountDto);
+        }
     }
 }
