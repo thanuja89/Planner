@@ -1,28 +1,26 @@
 ﻿using Newtonsoft.Json;
 using Planner.Dto;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Planner.Mobile.Core.Services
 {
-    public class AuthService : IAuthService
+    public class AuthService
     {
         private readonly HttpClient _httpClient;
 
         public AuthService()
         {
             _httpClient = new HttpClient();
-            //_httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<TokenDto> SignIn(LoginDto loginDto)
+        public async Task<TokenDto> SignInAsync(LoginDto loginDto)
         {
             var json = JsonConvert.SerializeObject(loginDto);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            string url = $"{ Common.BASE_URI }Token/CreateToken";
+            string url = $"{ CommonUrls.BASE_URI }Token/CreateToken";
 
             var response = await _httpClient.PostAsync(url, content);
 

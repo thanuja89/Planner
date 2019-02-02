@@ -1,11 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Planner.Mobile.Core
+﻿namespace Planner.Mobile.Core
 {
-    public class Common
+    public class CommonUrls
     {
         public const string BASE_URI = "http://10.0.2.2:58709/api/";
+    }
+
+    public class PreferenceKeys
+    {
+        public const string USER_INFO = "UserInfo";
+    }
+
+    public class PreferenceItemKeys
+    {
+        public const string TOKEN = "Token";
     }
 }

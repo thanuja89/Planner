@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
+using Planner.Android.Extensions;
 using Planner.Dto;
+using Planner.Mobile.Core;
 using Planner.Mobile.Core.Services;
+using System;
 
 namespace Planner.Android
 {
@@ -21,6 +17,7 @@ namespace Planner.Android
         private EditText usernameEditText;
         private EditText passwordEditText;
         private Button signInButton;
+        private CheckBox rememberMeCheckBox;
 
         public SignInActivity()
         {
@@ -42,6 +39,7 @@ namespace Planner.Android
             usernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
             signInButton = FindViewById<Button>(Resource.Id.signInButton);
+            rememberMeCheckBox = FindViewById<CheckBox>(Resource.Id.rememberMeCheckBox);
         }
 
         private void HandleEvents()
@@ -51,15 +49,47 @@ namespace Planner.Android
 
         private async void SignInButton_Click(object sender, EventArgs e)
         {
+            if (!ValidateInputs())
+                return;
+
             var dto = new LoginDto()
             {
                 Username = usernameEditText.Text,
                 Password = passwordEditText.Text
             };
 
-            var tokenDto = await authService.SignIn(dto);
+            var tokenDto = await authService.SignInAsync(dto);
 
-            Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+            if (tokenDto != null && tokenDto.Token != null)
+                SaveToken(tokenDto.Token);
+        }
+
+        private bool ValidateInputs()
+        {
+            if (usernameEditText.IsEmpty())
+            {
+                usernameEditText.Error = "Username can not be empty.";
+                return false;
+            }
+
+            if (passwordEditText.IsEmpty())
+            {
+                passwordEditText.Error = "Password can not be empty.";
+                return false;
+            }
+
+            return true;
+        }
+
+        private void SaveToken(string token)
+        {
+            var pref = Application.Context
+                .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
+
+            var editor = pref.Edit();
+
+            editor.PutString(PreferenceItemKeys.TOKEN, token);
+            editor.Apply();
         }
     }
 }
