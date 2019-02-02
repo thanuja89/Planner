@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Planner.Api.Models
+namespace Planner.Dto
 {
-    public class LoginModel
+    public class LoginDto
     {
         [Required]
         public string Username { get; set; }

@@ -103,6 +103,16 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Planner.Dto\Planner.Dto.csproj">
+      <Project>{93cd71ab-de58-4f28-9429-464b205549fd}</Project>
+      <Name>Planner.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Planner.Mobile.Core\Planner.Mobile.Core.csproj">
+      <Project>{B8936B39-FAC2-4F0C-95AF-15D01BFAA6F5}</Project>
+      <Name>Planner.Mobile.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.
