@@ -6,6 +6,6 @@ namespace Planner.Mobile.Core
 {
     public class Common
     {
-        public const string BASE_URI = "";
+        public const string BASE_URI = "http://10.0.2.2:58709/api/";
     }
 }
