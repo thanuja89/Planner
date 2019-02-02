@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Planner.Api.Models;
 using Planner.Domain.Entities;
+using Planner.Dto;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -36,7 +36,7 @@ namespace Planner.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("{action}")]
-        public async Task<IActionResult> CreateToken([FromBody]LoginModel login)
+        public async Task<IActionResult> CreateToken([FromBody]LoginDto login)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace Planner.Api.Controllers
 
         [AllowAnonymous]
         [HttpPost("{action}")]
-        public async Task<IActionResult> Register([FromBody]RegisterModel register)
+        public async Task<IActionResult> Register([FromBody]RegisterDto register)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Planner.Api.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private async Task<ApplicationUser> AuthenticateAsync(LoginModel login)
+        private async Task<ApplicationUser> AuthenticateAsync(LoginDto login)
         {
             var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, false, false);
 
