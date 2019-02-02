@@ -15,12 +15,12 @@ namespace Planner.Mobile.Core.Services
             _httpClient = new HttpClient();
         }
 
-        public async Task<TokenDto> SignInAsync(LoginDto loginDto)
+        public async Task<TokenDto> SignInAsync(TokenRequestDto loginDto)
         {
             var json = JsonConvert.SerializeObject(loginDto);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            string url = $"{ CommonUrls.BASE_URI }Token/CreateToken";
+            string url = $"{ CommonUrls.BASE_URI }Auth/CreateToken";
 
             var response = await _httpClient.PostAsync(url, content);
 

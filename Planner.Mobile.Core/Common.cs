@@ -7,11 +7,11 @@
 
     public class PreferenceKeys
     {
-        public const string USER_INFO = "UserInfo";
+        public const string USER_INFO = "userinfo";
     }
 
     public class PreferenceItemKeys
     {
-        public const string TOKEN = "Token";
+        public const string TOKEN = "token";
     }
 }
