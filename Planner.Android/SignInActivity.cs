@@ -1,12 +1,15 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Views;
 using Android.Widget;
 using Planner.Android.Extensions;
 using Planner.Dto;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Services;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Planner.Android
 {
@@ -18,6 +21,9 @@ namespace Planner.Android
         private EditText passwordEditText;
         private Button signInButton;
         private CheckBox rememberMeCheckBox;
+        private TextView signUpTextView;
+
+        private ProgressBar progressBar;
 
         public SignInActivity()
         {
@@ -36,15 +42,23 @@ namespace Planner.Android
 
         private void FindViews()
         {
-            usernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
-            passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
-            signInButton = FindViewById<Button>(Resource.Id.signInButton);
-            rememberMeCheckBox = FindViewById<CheckBox>(Resource.Id.rememberMeCheckBox);
+            usernameEditText = FindViewById<EditText>(Resource.Id.signIn_UsernameEditText);
+            passwordEditText = FindViewById<EditText>(Resource.Id.signIn_PasswordEditText);
+            signInButton = FindViewById<Button>(Resource.Id.signIn_SignInButton);
+            rememberMeCheckBox = FindViewById<CheckBox>(Resource.Id.signIn_RememberMeCheckBox);
+            signUpTextView = FindViewById<TextView>(Resource.Id.signIn_SignUpTextView);
+            progressBar = FindViewById<ProgressBar>(Resource.Id.signIn_circularProgressbar);
         }
 
         private void HandleEvents()
         {
             signInButton.Click += SignInButton_Click;
+            signUpTextView.Click += SignUpTextView_Click;
+        }
+
+        private void SignUpTextView_Click(object sender, EventArgs e)
+        {
+            StartActivity(typeof(SignUpActivity));
         }
 
         private async void SignInButton_Click(object sender, EventArgs e)
@@ -58,10 +72,14 @@ namespace Planner.Android
                 Password = passwordEditText.Text
             };
 
+            progressBar.Visibility = ViewStates.Visible;
+
             var tokenDto = await _authService.SignInAsync(dto);
 
             if (tokenDto != null && tokenDto.Token != null)
                 SaveToken(tokenDto.Token);
+
+            progressBar.Visibility = ViewStates.Invisible;
         }
 
         private bool ValidateInputs()
