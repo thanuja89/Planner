@@ -2459,9 +2459,6 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080039
 			public const int collapseActionView = 2131230777;
 			
-			// aapt resource value: 0x7f0800b2
-			public const int confirmPasswordEditText = 2131230898;
-			
 			// aapt resource value: 0x7f08008d
 			public const int container = 2131230861;
 			
@@ -2503,9 +2500,6 @@ namespace Planner.Android
 			
 			// aapt resource value: 0x7f08007e
 			public const int edit_query = 2131230846;
-			
-			// aapt resource value: 0x7f0800b1
-			public const int emailEditText = 2131230897;
 			
 			// aapt resource value: 0x7f080030
 			public const int end = 2131230768;
@@ -2591,14 +2585,14 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080061
 			public const int list_item = 2131230817;
 			
-			// aapt resource value: 0x7f0800b6
-			public const int masked = 2131230902;
+			// aapt resource value: 0x7f0800bb
+			public const int masked = 2131230907;
 			
 			// aapt resource value: 0x7f08009f
 			public const int media_actions = 2131230879;
 			
-			// aapt resource value: 0x7f0800b4
-			public const int message = 2131230900;
+			// aapt resource value: 0x7f0800b9
+			public const int message = 2131230905;
 			
 			// aapt resource value: 0x7f080031
 			public const int middle = 2131230769;
@@ -2639,9 +2633,6 @@ namespace Planner.Android
 			// aapt resource value: 0x7f08000b
 			public const int parent_matrix = 2131230731;
 			
-			// aapt resource value: 0x7f0800ad
-			public const int passwordEditText = 2131230893;
-			
 			// aapt resource value: 0x7f08004d
 			public const int pin = 2131230797;
 			
@@ -2653,9 +2644,6 @@ namespace Planner.Android
 			
 			// aapt resource value: 0x7f080075
 			public const int radio = 2131230837;
-			
-			// aapt resource value: 0x7f0800af
-			public const int rememberMeCheckBox = 2131230895;
 			
 			// aapt resource value: 0x7f08004a
 			public const int right = 2131230794;
@@ -2738,11 +2726,44 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080025
 			public const int showTitle = 2131230757;
 			
+			// aapt resource value: 0x7f0800ad
+			public const int signIn_PasswordEditText = 2131230893;
+			
+			// aapt resource value: 0x7f0800af
+			public const int signIn_RememberMeCheckBox = 2131230895;
+			
 			// aapt resource value: 0x7f0800ae
-			public const int signInButton = 2131230894;
+			public const int signIn_SignInButton = 2131230894;
+			
+			// aapt resource value: 0x7f0800b0
+			public const int signIn_SignUpTextView = 2131230896;
+			
+			// aapt resource value: 0x7f0800ac
+			public const int signIn_UsernameEditText = 2131230892;
+			
+			// aapt resource value: 0x7f0800b1
+			public const int signIn_circularProgressbar = 2131230897;
+			
+			// aapt resource value: 0x7f0800b5
+			public const int signUp_ConfirmPasswordEditText = 2131230901;
 			
 			// aapt resource value: 0x7f0800b3
-			public const int signUpButton = 2131230899;
+			public const int signUp_EmailEditText = 2131230899;
+			
+			// aapt resource value: 0x7f0800b8
+			public const int signUp_FacebookSignUpButton = 2131230904;
+			
+			// aapt resource value: 0x7f0800b7
+			public const int signUp_GoogleSignUpButton = 2131230903;
+			
+			// aapt resource value: 0x7f0800b4
+			public const int signUp_PasswordEditText = 2131230900;
+			
+			// aapt resource value: 0x7f0800b6
+			public const int signUp_SignUpButton = 2131230902;
+			
+			// aapt resource value: 0x7f0800b2
+			public const int signUp_UsernameEditText = 2131230898;
 			
 			// aapt resource value: 0x7f08008b
 			public const int smallLabel = 2131230859;
@@ -2801,9 +2822,6 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080069
 			public const int textSpacerNoTitle = 2131230825;
 			
-			// aapt resource value: 0x7f0800b0
-			public const int textView1 = 2131230896;
-			
 			// aapt resource value: 0x7f080098
 			public const int text_input_password_toggle = 2131230872;
 			
@@ -2858,14 +2876,11 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080026
 			public const int useLogo = 2131230758;
 			
-			// aapt resource value: 0x7f0800ac
-			public const int usernameEditText = 2131230892;
-			
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800b5
-			public const int visible = 2131230901;
+			// aapt resource value: 0x7f0800ba
+			public const int visible = 2131230906;
 			
 			// aapt resource value: 0x7f08003c
 			public const int withText = 2131230780;
