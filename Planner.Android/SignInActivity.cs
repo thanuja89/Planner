@@ -13,7 +13,7 @@ namespace Planner.Android
     [Activity(Label = "Sign In", MainLauncher = true)]
     public class SignInActivity : Activity
     {
-        private readonly AuthService authService;
+        private readonly AuthService _authService;
         private EditText usernameEditText;
         private EditText passwordEditText;
         private Button signInButton;
@@ -21,7 +21,7 @@ namespace Planner.Android
 
         public SignInActivity()
         {
-            authService = new AuthService();
+            _authService = new AuthService();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -58,7 +58,7 @@ namespace Planner.Android
                 Password = passwordEditText.Text
             };
 
-            var tokenDto = await authService.SignInAsync(dto);
+            var tokenDto = await _authService.SignInAsync(dto);
 
             if (tokenDto != null && tokenDto.Token != null)
                 SaveToken(tokenDto.Token);

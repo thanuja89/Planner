@@ -2459,6 +2459,9 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080039
 			public const int collapseActionView = 2131230777;
 			
+			// aapt resource value: 0x7f0800b2
+			public const int confirmPasswordEditText = 2131230898;
+			
 			// aapt resource value: 0x7f08008d
 			public const int container = 2131230861;
 			
@@ -2500,6 +2503,9 @@ namespace Planner.Android
 			
 			// aapt resource value: 0x7f08007e
 			public const int edit_query = 2131230846;
+			
+			// aapt resource value: 0x7f0800b1
+			public const int emailEditText = 2131230897;
 			
 			// aapt resource value: 0x7f080030
 			public const int end = 2131230768;
@@ -2585,14 +2591,14 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080061
 			public const int list_item = 2131230817;
 			
-			// aapt resource value: 0x7f0800b3
-			public const int masked = 2131230899;
+			// aapt resource value: 0x7f0800b6
+			public const int masked = 2131230902;
 			
 			// aapt resource value: 0x7f08009f
 			public const int media_actions = 2131230879;
 			
-			// aapt resource value: 0x7f0800b1
-			public const int message = 2131230897;
+			// aapt resource value: 0x7f0800b4
+			public const int message = 2131230900;
 			
 			// aapt resource value: 0x7f080031
 			public const int middle = 2131230769;
@@ -2735,6 +2741,9 @@ namespace Planner.Android
 			// aapt resource value: 0x7f0800ae
 			public const int signInButton = 2131230894;
 			
+			// aapt resource value: 0x7f0800b3
+			public const int signUpButton = 2131230899;
+			
 			// aapt resource value: 0x7f08008b
 			public const int smallLabel = 2131230859;
 			
@@ -2855,8 +2864,8 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800b2
-			public const int visible = 2131230898;
+			// aapt resource value: 0x7f0800b5
+			public const int visible = 2131230901;
 			
 			// aapt resource value: 0x7f08003c
 			public const int withText = 2131230780;
@@ -3101,10 +3110,13 @@ namespace Planner.Android
 			public const int SignInView = 2130968635;
 			
 			// aapt resource value: 0x7f04003c
-			public const int support_simple_spinner_dropdown_item = 2130968636;
+			public const int SignUpView = 2130968636;
 			
 			// aapt resource value: 0x7f04003d
-			public const int tooltip = 2130968637;
+			public const int support_simple_spinner_dropdown_item = 2130968637;
+			
+			// aapt resource value: 0x7f04003e
+			public const int tooltip = 2130968638;
 			
 			static Layout()
 			{
@@ -3828,6 +3840,9 @@ namespace Planner.Android
 			
 			// aapt resource value: 0x7f0a0022
 			public const int Platform_Widget_AppCompat_Spinner = 2131361826;
+			
+			// aapt resource value: 0x7f0a0181
+			public const int PrimaryLayoutStyle = 2131362177;
 			
 			// aapt resource value: 0x7f0a002b
 			public const int RtlOverlay_DialogWindowTitle_AppCompat = 2131361835;

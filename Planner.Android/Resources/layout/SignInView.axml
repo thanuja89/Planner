@@ -5,10 +5,7 @@
 	android:gravity="center"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:minWidth="25px"
-	android:minHeight="25px"
-	android:paddingLeft="20dp"
-	android:paddingRight="20dp">
+	style="@style/PrimaryLayoutStyle">
 	<EditText
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
