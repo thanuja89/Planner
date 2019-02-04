@@ -8,6 +8,8 @@ using Planner.Domain.Entities;
 using Planner.Dto;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,17 +83,43 @@ namespace Planner.Api.Controllers
 
                     if (result.Succeeded)
                     {
-                        return Ok();
-                    } 
+                        return Ok(new SignUpResultDTO()
+                        {
+                            Succeeded = true
+                        });
+                    }
+
+                    if ((await _userManager.FindByNameAsync(register.Username)) != null)
+                        return BadRequest(new SignUpResultDTO()
+                        {
+                            Succeeded = false,
+                            ErrorType = SignUpErrorType.UsernameExists
+                        });
+
+                    if ((await _userManager.FindByEmailAsync(register.Email)) != null)
+                        return BadRequest(new SignUpResultDTO()
+                        {
+                            Succeeded = false,
+                            ErrorType = SignUpErrorType.EmailExists
+                        });
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Threw exception while creating User: { ex }");
-                throw;
+
+                return StatusCode((int) HttpStatusCode.InternalServerError, new SignUpResultDTO()
+                {
+                    Succeeded = false,
+                    ErrorType = SignUpErrorType.ServerError
+                });
             }
 
-            return BadRequest();
+            return BadRequest(new SignUpResultDTO()
+            {
+                Succeeded = false,
+                ErrorType = SignUpErrorType.Other
+            });
         }
 
         private string BuildToken(ApplicationUser user)

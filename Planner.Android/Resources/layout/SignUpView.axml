@@ -53,4 +53,11 @@
 			android:id="@+id/signUp_FacebookSignUpButton"
 			android:layout_alignParentRight="true" />
 	</RelativeLayout>
+
+	<ProgressBar 
+		android:id="@+id/signUp_circularProgressbar" 
+		style="?android:attr/progressBarStyleSmall" 
+		android:layout_width="50dp" 
+		android:layout_height="50dp"
+		android:visibility="invisible" />
 </LinearLayout>

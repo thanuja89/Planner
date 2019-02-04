@@ -88,7 +88,7 @@ namespace Planner.Android
             catch (Exception ex)
             {
                 progressBar.Visibility = ViewStates.Invisible;
-                _dialogService.ShowError(this, "Something went wrong. Try again later.");
+                _dialogService.ShowError(this, ex);
             }
         }
 

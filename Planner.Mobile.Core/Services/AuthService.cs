@@ -17,9 +17,9 @@ namespace Planner.Mobile.Core.Services
             return _httpService.PostForResultAsync<TokenDto>("Auth/CreateToken", loginDto);
         }
 
-        public Task SignUpAsync(CreateAccountDto accountDto)
+        public Task<SignUpResultDTO> SignUpAsync(CreateAccountDto accountDto)
         {
-            return _httpService.PostAsync("Auth/CreateAccount", accountDto);
+            return _httpService.PostForResultAsync<SignUpResultDTO>("Auth/CreateAccount", accountDto, true);
         }
     }
 }
