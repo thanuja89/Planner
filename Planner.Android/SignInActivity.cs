@@ -4,12 +4,11 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Planner.Android.Extensions;
+using Planner.Android.Extensions.Services;
 using Planner.Dto;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Services;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Planner.Android
 {
@@ -17,6 +16,8 @@ namespace Planner.Android
     public class SignInActivity : Activity
     {
         private readonly AuthService _authService;
+        private readonly DialogService _dialogService;
+
         private EditText usernameEditText;
         private EditText passwordEditText;
         private Button signInButton;
@@ -28,6 +29,7 @@ namespace Planner.Android
         public SignInActivity()
         {
             _authService = new AuthService();
+            _dialogService = new DialogService();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -63,23 +65,42 @@ namespace Planner.Android
 
         private async void SignInButton_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs())
-                return;
-
-            var dto = new TokenRequestDto()
+            try
             {
-                Username = usernameEditText.Text,
-                Password = passwordEditText.Text
-            };
+                if (!ValidateInputs())
+                    return;
 
-            progressBar.Visibility = ViewStates.Visible;
+                var dto = new TokenRequestDto()
+                {
+                    Username = usernameEditText.Text,
+                    Password = passwordEditText.Text
+                };
 
-            var tokenDto = await _authService.SignInAsync(dto);
+                progressBar.Visibility = ViewStates.Visible;
 
-            if (tokenDto != null && tokenDto.Token != null)
-                SaveToken(tokenDto.Token);
+                var tokenDto = await _authService.SignInAsync(dto);
 
-            progressBar.Visibility = ViewStates.Invisible;
+                if (tokenDto != null && tokenDto.Token != null)
+                    SaveToken(tokenDto.Token);
+
+                progressBar.Visibility = ViewStates.Invisible;
+            }
+            catch (Exception ex)
+            {
+                progressBar.Visibility = ViewStates.Invisible;
+                _dialogService.ShowError(this, "Something went wrong. Try again later.");
+            }
+        }
+
+        private void SaveToken(string token)
+        {
+            var pref = Application.Context
+                .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
+
+            var editor = pref.Edit();
+
+            editor.PutString(PreferenceItemKeys.TOKEN, token);
+            editor.Apply();
         }
 
         private bool ValidateInputs()
@@ -97,17 +118,6 @@ namespace Planner.Android
             }
 
             return true;
-        }
-
-        private void SaveToken(string token)
-        {
-            var pref = Application.Context
-                .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
-
-            var editor = pref.Edit();
-
-            editor.PutString(PreferenceItemKeys.TOKEN, token);
-            editor.Apply();
         }
     }
 }
