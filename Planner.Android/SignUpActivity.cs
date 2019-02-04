@@ -63,6 +63,8 @@ namespace Planner.Android
             await _authService.SignUpAsync(dto);
         }
 
+        #region Validation
+
         private bool ValidateInputs()
         {
             if (usernameEditText.IsEmpty())
@@ -119,5 +121,7 @@ namespace Planner.Android
 
             return true;
         }
+
+        #endregion
     }
 }
