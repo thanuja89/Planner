@@ -39,6 +39,7 @@ namespace Planner.Api
                 opt.Password.RequireLowercase = false;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
+                opt.User.RequireUniqueEmail = true;
             })
                 .AddEntityFrameworkStores<PlannerDbContext>();
 

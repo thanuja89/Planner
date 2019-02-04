@@ -2585,14 +2585,14 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080061
 			public const int list_item = 2131230817;
 			
-			// aapt resource value: 0x7f0800bb
-			public const int masked = 2131230907;
+			// aapt resource value: 0x7f0800bc
+			public const int masked = 2131230908;
 			
 			// aapt resource value: 0x7f08009f
 			public const int media_actions = 2131230879;
 			
-			// aapt resource value: 0x7f0800b9
-			public const int message = 2131230905;
+			// aapt resource value: 0x7f0800ba
+			public const int message = 2131230906;
 			
 			// aapt resource value: 0x7f080031
 			public const int middle = 2131230769;
@@ -2765,6 +2765,9 @@ namespace Planner.Android
 			// aapt resource value: 0x7f0800b2
 			public const int signUp_UsernameEditText = 2131230898;
 			
+			// aapt resource value: 0x7f0800b9
+			public const int signUp_circularProgressbar = 2131230905;
+			
 			// aapt resource value: 0x7f08008b
 			public const int smallLabel = 2131230859;
 			
@@ -2879,8 +2882,8 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800ba
-			public const int visible = 2131230906;
+			// aapt resource value: 0x7f0800bb
+			public const int visible = 2131230907;
 			
 			// aapt resource value: 0x7f08003c
 			public const int withText = 2131230780;

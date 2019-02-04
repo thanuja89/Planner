@@ -17,4 +17,13 @@
         Monthly,
         Yearly
     }
+
+    public enum SignUpErrorType
+    {
+        None,
+        UsernameExists,
+        EmailExists,
+        ServerError,
+        Other
+    }
 }
