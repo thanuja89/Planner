@@ -28,14 +28,14 @@ namespace Planner.Mobile.Core.Services
             return _httpService.PostForResultAsync<GetScheduledTaskDTO>("ScheduledTask", taskDTO);
         }
 
-        public Task<GetScheduledTaskDTO> UpdateScheduledTaskAsync(ScheduledTaskDTO taskDTO)
+        public Task<GetScheduledTaskDTO> UpdateScheduledTaskAsync(int id, ScheduledTaskDTO taskDTO)
         {
-            return _httpService.PutForResultAsync<GetScheduledTaskDTO>("ScheduledTask", taskDTO);
+            return _httpService.PutForResultAsync<GetScheduledTaskDTO>($"ScheduledTask/{ id }", taskDTO);
         }
 
         public Task DeleteScheduledTaskAsync(int id)
         {
-            return _httpService.DeleteAsync("ScheduledTask");
+            return _httpService.DeleteAsync($"ScheduledTask/{ id }");
         }
     }
 }
