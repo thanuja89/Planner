@@ -36,12 +36,12 @@ namespace Planner.Android.Extensions.Services
             ShowDialog(context, "Success", message);
         }
 
-        public void ShowSuccessDialog(Context context, string message, Action action)
+        public void ShowSuccessDialog(Context context, string message, EventHandler<DialogClickEventArgs> positiveCallback)
         {
-            ShowDialog(context, "Success", message, action);
+            ShowDialog(context, "Success", message, positiveCallback);
         }
 
-        private void ShowDialog(Context context, string title, string message, Action action = null)
+        private void ShowDialog(Context context, string title, string message, EventHandler<DialogClickEventArgs> positiveCallback = null)
         {
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(context);
@@ -49,10 +49,7 @@ namespace Planner.Android.Extensions.Services
             builder.SetMessage(message);
             builder.SetCancelable(false);
 
-            builder.SetPositiveButton("OK", delegate
-            {
-                action?.Invoke();
-            });
+            builder.SetPositiveButton("OK", positiveCallback);
 
             Dialog dialog = builder.Create();
             dialog.Show();

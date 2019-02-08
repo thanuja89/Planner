@@ -75,7 +75,7 @@ namespace Planner.Android
                 if (result.Succeeded)
                 {
                     _dialogService.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
-                        , () => StartActivity(typeof(SignInActivity)));
+                        , (o, ea) => StartActivity(typeof(SignInActivity)));
 
                     return;
                 }
