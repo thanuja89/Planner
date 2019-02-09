@@ -1,4 +1,5 @@
 ﻿using Planner.Mobile.Core.Data;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,24 +7,46 @@ namespace Planner.Mobile.Core.Services
 {
     public class ScheduledTaskDataService
     {
-        public Task<List<ScheduledTask>> GetScheduledTasksAsync()
+        public Task<List<ScheduledTask>> GetAllAsync()
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
                 .ToListAsync();
         }
 
-        public Task<ScheduledTask> GetScheduledTaskAsync(int id)
+        public Task<List<ScheduledTask>> GetAllForRangeAsync(DateTime startDate, DateTime endDate)
+        {
+            return PlannerDatabase.Instance
+                .QueryAll<ScheduledTask>(@"
+SELECT * FROM ScheduledTask 
+WHERE (Start BETWEEN ?1 AND ?2) 
+    OR (End BETWEEN ?1 AND ?2) 
+    OR (Start < ?1 AND End > ?2)", startDate.Ticks, endDate.Ticks);
+        }
+
+        public Task<ScheduledTask> GetByIdAsync(int id)
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
-        public Task InsertScheduledTaskAsync(ScheduledTask task)
+        public Task InsertAsync(ScheduledTask task)
         {
             return PlannerDatabase.Instance
                 .InsertAsync(task);
+        }
+
+        public Task UpdateAsync(ScheduledTask task)
+        {
+            return PlannerDatabase.Instance
+                .UpdateAsync(task);
+        }
+
+        public Task DeleteAsync(ScheduledTask task)
+        {
+            return PlannerDatabase.Instance
+                .DeleteAsync(task);
         }
     }
 }

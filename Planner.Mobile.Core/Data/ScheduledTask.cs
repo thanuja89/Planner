@@ -3,6 +3,7 @@ using System;
 
 namespace Planner.Mobile.Core.Data
 {
+    [Table("ScheduledTask")]
     public class ScheduledTask
     {
         [PrimaryKey]
