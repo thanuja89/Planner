@@ -2585,14 +2585,14 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080061
 			public const int list_item = 2131230817;
 			
-			// aapt resource value: 0x7f0800bf
-			public const int masked = 2131230911;
+			// aapt resource value: 0x7f0800c1
+			public const int masked = 2131230913;
 			
 			// aapt resource value: 0x7f08009f
 			public const int media_actions = 2131230879;
 			
-			// aapt resource value: 0x7f0800bd
-			public const int message = 2131230909;
+			// aapt resource value: 0x7f0800bf
+			public const int message = 2131230911;
 			
 			// aapt resource value: 0x7f080031
 			public const int middle = 2131230769;
@@ -2816,11 +2816,17 @@ namespace Planner.Android
 			// aapt resource value: 0x7f0800bb
 			public const int taskRecyclerView_DescriptionTextView = 2131230907;
 			
+			// aapt resource value: 0x7f0800bd
+			public const int taskRecyclerView_RepeatTextView = 2131230909;
+			
+			// aapt resource value: 0x7f0800bc
+			public const int taskRecyclerView_StartTextView = 2131230908;
+			
 			// aapt resource value: 0x7f0800ba
 			public const int taskRecyclerView_TitleTextView = 2131230906;
 			
-			// aapt resource value: 0x7f0800bc
-			public const int tasksView_RecyclerView = 2131230908;
+			// aapt resource value: 0x7f0800be
+			public const int tasksView_RecyclerView = 2131230910;
 			
 			// aapt resource value: 0x7f08001a
 			public const int text = 2131230746;
@@ -2891,8 +2897,8 @@ namespace Planner.Android
 			// aapt resource value: 0x7f080016
 			public const int view_offset_helper = 2131230742;
 			
-			// aapt resource value: 0x7f0800be
-			public const int visible = 2131230910;
+			// aapt resource value: 0x7f0800c0
+			public const int visible = 2131230912;
 			
 			// aapt resource value: 0x7f08003c
 			public const int withText = 2131230780;

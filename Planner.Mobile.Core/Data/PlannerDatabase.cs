@@ -16,34 +16,6 @@ namespace Planner.Mobile.Core.Data
             _connection = new SQLiteAsyncConnection(path);
 
             InitDatabase();
-
-            if (_connection.Table<ScheduledTask>().CountAsync().Result > 0)
-            {
-
-            }
-
-            //InsertAllAsync(new ScheduledTask[]
-            //{
-            //    new ScheduledTask()
-            //    {
-            //        Description = "xxxxx",
-            //        Id = 2,
-            //        Note = "Note",
-            //        Title = "Title",
-            //        Start = DateTime.Now,
-            //        End = DateTime.Now.AddDays(1)
-            //    },
-            //    new ScheduledTask()
-            //    {
-            //        Description = "111xxxxx",
-            //        Id = 3,
-            //        Note = "1Note",
-            //        Title = "1Title",
-            //        Start = DateTime.Now,
-            //        End = DateTime.Now.AddDays(1)
-            //    }
-            //}).Wait();
-
         }
 
         public static PlannerDatabase Instance
@@ -92,6 +64,31 @@ namespace Planner.Mobile.Core.Data
         private void InitDatabase()
         {
             _connection.CreateTableAsync<ScheduledTask>().Wait();
+        }
+
+        private void Seed()
+        {
+            InsertAllAsync(new ScheduledTask[]
+            {
+                new ScheduledTask()
+                {
+                    Description = "xxxxx",
+                    Id = 2,
+                    Note = "Note",
+                    Title = "Title",
+                    Start = DateTime.Now,
+                    End = DateTime.Now.AddDays(1)
+                },
+                new ScheduledTask()
+                {
+                    Description = "111xxxxx",
+                    Id = 3,
+                    Note = "1Note",
+                    Title = "1Title",
+                    Start = DateTime.Now,
+                    End = DateTime.Now.AddDays(1)
+                }
+            }).Wait();
         }
     }
 }
