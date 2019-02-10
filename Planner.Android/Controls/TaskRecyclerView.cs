@@ -11,6 +11,8 @@ namespace Planner.Android.Controls
     {
         public TextView Title { get; private set; }
         public TextView Description { get; private set; }
+        public TextView Start { get; private set; }
+        public TextView Repeat { get; private set; }
 
         // Get references to the views defined in the CardView layout.
         public TaskViewHolder(View itemView, Action<int> listener)
@@ -19,6 +21,8 @@ namespace Planner.Android.Controls
             // Locate and cache view references:
             Title = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_TitleTextView);
             Description = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_DescriptionTextView);
+            Start = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_StartTextView);
+            Repeat = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_RepeatTextView);
 
             // Detect user clicks on the item view and report which item
             // was clicked (by layout position) to the listener:
@@ -32,12 +36,12 @@ namespace Planner.Android.Controls
         public event EventHandler<int> ItemClick;
 
         // Underlying data set (a photo album):
-        public List<ScheduledTask> tasks;
+        private List<ScheduledTask> _tasks;
 
         // Load the adapter with the data set (photo album) at construction time:
         public TaskViewAdapter(List<ScheduledTask> tasks)
         {
-            this.tasks = tasks;
+            _tasks = tasks;
         }
 
         // Create a new photo CardView (invoked by the layout manager): 
@@ -62,14 +66,16 @@ namespace Planner.Android.Controls
 
             // Set the ImageView and TextView in this ViewHolder's CardView 
             // from this position in the photo album: 
-            vh.Title.Text = tasks[position].Title;
-            vh.Description.Text = tasks[position].Description;
+            vh.Title.Text = _tasks[position].Title;
+            vh.Description.Text = _tasks[position].Description;
+            vh.Start.Text = _tasks[position].Start.ToLongDateString();
+            vh.Repeat.Text = _tasks[position].Repeat.ToString();
         }
 
         // Return the number of photos available in the photo album:
         public override int ItemCount
         {
-            get { return tasks.Count; }
+            get { return _tasks.Count; }
         }
 
         // Raise an event when the item-click takes place:
