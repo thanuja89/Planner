@@ -17,18 +17,33 @@ namespace Planner.Mobile.Core.Data
 
             InitDatabase();
 
-            if (_connection.Table<ScheduledTask>().CountAsync().Result <= 0)
-                InsertAllAsync(new ScheduledTask[] {
-                    new ScheduledTask()
-                    {
-                        Description = "xxxxx",
-                        Id = 1,
-                        Note = "Note",
-                        Title = "Title",
-                        Start = DateTime.Now,
-                        End = DateTime.Now.AddDays(1)
-                    }
-                });
+            if (_connection.Table<ScheduledTask>().CountAsync().Result > 0)
+            {
+
+            }
+
+            //InsertAllAsync(new ScheduledTask[]
+            //{
+            //    new ScheduledTask()
+            //    {
+            //        Description = "xxxxx",
+            //        Id = 2,
+            //        Note = "Note",
+            //        Title = "Title",
+            //        Start = DateTime.Now,
+            //        End = DateTime.Now.AddDays(1)
+            //    },
+            //    new ScheduledTask()
+            //    {
+            //        Description = "111xxxxx",
+            //        Id = 3,
+            //        Note = "1Note",
+            //        Title = "1Title",
+            //        Start = DateTime.Now,
+            //        End = DateTime.Now.AddDays(1)
+            //    }
+            //}).Wait();
+
         }
 
         public static PlannerDatabase Instance
