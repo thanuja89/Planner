@@ -16,6 +16,19 @@ namespace Planner.Mobile.Core.Data
             _connection = new SQLiteAsyncConnection(path);
 
             InitDatabase();
+
+            if (_connection.Table<ScheduledTask>().CountAsync().Result <= 0)
+                InsertAllAsync(new ScheduledTask[] {
+                    new ScheduledTask()
+                    {
+                        Description = "xxxxx",
+                        Id = 1,
+                        Note = "Note",
+                        Title = "Title",
+                        Start = DateTime.Now,
+                        End = DateTime.Now.AddDays(1)
+                    }
+                });
         }
 
         public static PlannerDatabase Instance
@@ -31,7 +44,7 @@ namespace Planner.Mobile.Core.Data
             }
         }
 
-        public AsyncTableQuery<T> GetAll<T>() where T : new ()
+        public AsyncTableQuery<T> GetAll<T>() where T : new()
         {
             return _connection.Table<T>();
         }
@@ -44,6 +57,11 @@ namespace Planner.Mobile.Core.Data
         public Task InsertAsync<T>(T item) where T : new()
         {
             return _connection.InsertAsync(item);
+        }
+
+        public Task InsertAllAsync<T>(IEnumerable<T> items) where T : new()
+        {
+            return _connection.InsertAllAsync(items);
         }
 
         public Task UpdateAsync<T>(T item) where T : new()

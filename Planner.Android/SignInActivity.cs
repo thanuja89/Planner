@@ -12,7 +12,7 @@ using System;
 
 namespace Planner.Android
 {
-    [Activity(Label = "Sign In", MainLauncher = true)]
+    //[Activity(Label = "Sign In", MainLauncher = true)]
     public class SignInActivity : Activity
     {
         private readonly AuthService _authService;

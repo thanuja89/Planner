@@ -14,6 +14,14 @@ namespace Planner.Mobile.Core.Services
                 .ToListAsync();
         }
 
+        public Task<List<ScheduledTask>> GetAsync(int take = 10)
+        {
+            return PlannerDatabase.Instance
+                .GetAll<ScheduledTask>()
+                .Take(take)
+                .ToListAsync();
+        }
+
         public Task<List<ScheduledTask>> GetAllForRangeAsync(DateTime startDate, DateTime endDate)
         {
             return PlannerDatabase.Instance
