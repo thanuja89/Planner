@@ -2,17 +2,20 @@
 <LinearLayout
 	  xmlns:android="http://schemas.android.com/apk/res/android"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:orientation="vertical"
       android:padding="8dp">
       <TextView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+		  android:text="Title"
           android:id="@+id/taskRecyclerView_TitleTextView" />
       <TextView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="Description"
+		  android:textAppearance="?android:attr/textAppearanceMedium"
+          android:textColor="#333333"
           android:id="@+id/taskRecyclerView_DescriptionTextView"
           android:layout_marginLeft="4dp" />
 </LinearLayout>
