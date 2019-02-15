@@ -37,6 +37,7 @@ namespace Planner.Android
             {
                 recyclerView = FindViewById<RecyclerView>(Resource.Id.tasksView_RecyclerView);
                 recyclerView.SetLayoutManager(_layoutManager);
+                recyclerView.HasFixedSize = true;
 
                 var tasks = await _taskDataService.GetAsync();
 

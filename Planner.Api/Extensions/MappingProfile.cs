@@ -8,14 +8,14 @@ namespace Planner.Api.Extensions
 {
     public class MappingProfile : Profile
     {
-        public MappingProfile()
+        public MappingProfile(IHttpContextAccessor accessor)
         {
             CreateMap<ScheduledTask, GetScheduledTaskDTO>();
             CreateMap<PostScheduledTaskDTO, ScheduledTask>()
                 .ForMember(t => t.CreatedOnUtc, opt => opt.MapFrom(t => DateTime.UtcNow))
-                .ForMember(t => t.ApplicationUserId, opt => opt.MapFrom<IdentityResolver>());
+                .ForMember(t => t.ApplicationUserId, opt => opt.MapFrom(new IdentityResolver(accessor)));
             CreateMap<PutScheduledTaskDTO, ScheduledTask>()
-                .ForMember(t => t.UpdatedOnUtc, opt => opt.MapFrom(t => DateTime.UtcNow));           
+                .ForMember(t => t.UpdatedOnUtc, opt => opt.MapFrom(t => DateTime.UtcNow));
         }
     }
 }
