@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -71,10 +72,7 @@ namespace Planner.Api
 
             services.AddHttpContextAccessor();
 
-            services.AddAutoMapper(opt =>
-            {
-                opt.AddProfile(new MappingProfile());
-            });
+            services.AddAutoMapperWithProfile();
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
@@ -84,7 +82,7 @@ namespace Planner.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHttpContextAccessor accessor)
         {
             app.UseGlobalExceptionHandler();
 
