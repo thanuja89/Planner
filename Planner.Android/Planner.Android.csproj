@@ -61,8 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\TaskRecyclerView.cs" />
+    <Compile Include="CreateTaskActivity.cs" />
     <Compile Include="Extensions\EditTextExtensions.cs" />
     <Compile Include="Extensions\Services\DialogService.cs" />
+    <Compile Include="Fragments\DatePickerFragment.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,6 +142,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\TasksView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\CreateTaskView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
