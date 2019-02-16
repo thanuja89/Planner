@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
@@ -9,13 +10,13 @@ using System;
 
 namespace Planner.Droid
 {
-    //[Activity(Label = "CreateTaskActivity", MainLauncher = true)]
-    public class CreateTaskActivity : Activity
+    [Activity(Label = "CreateTaskActivity", MainLauncher = true)]
+    public class CreateTaskActivity : AppCompatActivity
     {
         private EditText titleEditText;
         private EditText descriptionEditText;
-        private Spinner importanceSpinner;
-        private Spinner repeatSpinner;
+        //private Spinner importanceSpinner;
+        //private Spinner repeatSpinner;
         private Button addNoteButton;
         private Button saveButton;
         private Button startDateButton;
@@ -44,28 +45,28 @@ namespace Planner.Droid
 
         private void SetUpSpinners()
         {
-            var importanceItems = Enum
-                .GetNames(typeof(Mobile.Core.Data.Importance));
+            //var importanceItems = Enum
+            //    .GetNames(typeof(Mobile.Core.Data.Importance));
 
-            var repeatItems = Enum
-                .GetNames(typeof(Frequency));
+            //var repeatItems = Enum
+            //    .GetNames(typeof(Frequency));
 
-            var importanceAdapter = new ArrayAdapter<string>(this,
-                Android.Resource.Layout.SimpleSpinnerItem, importanceItems);
+            //var importanceAdapter = new ArrayAdapter<string>(this,
+            //    Android.Resource.Layout.SimpleSpinnerItem, importanceItems);
 
-            var repeatAdapter = new ArrayAdapter<string>(this,
-                Android.Resource.Layout.SimpleSpinnerItem, repeatItems);
+            //var repeatAdapter = new ArrayAdapter<string>(this,
+            //    Android.Resource.Layout.SimpleSpinnerItem, repeatItems);
 
-            importanceSpinner.Adapter = importanceAdapter;
-            repeatSpinner.Adapter = repeatAdapter;
+            //importanceSpinner.Adapter = importanceAdapter;
+            //repeatSpinner.Adapter = repeatAdapter;
         }
 
         public void FindViews()
         {
             titleEditText = FindViewById<EditText>(Resource.Id.createTask_TitleEditText);
             descriptionEditText = FindViewById<EditText>(Resource.Id.createTask_DescriptionEditText);
-            importanceSpinner = FindViewById<Spinner>(Resource.Id.createTask_ImportanceSpinner);
-            repeatSpinner = FindViewById<Spinner>(Resource.Id.createTask_RepeatSpinner);
+            //importanceSpinner = FindViewById<Spinner>(Resource.Id.createTask_ImportanceSpinner);
+            //repeatSpinner = FindViewById<Spinner>(Resource.Id.createTask_RepeatSpinner);
             addNoteButton = FindViewById<Button>(Resource.Id.createTask_AddNoteButton);
             saveButton = FindViewById<Button>(Resource.Id.createTask_SaveButton);
             startDateButton = FindViewById<Button>(Resource.Id.createTask_StartDateButton);
@@ -112,8 +113,8 @@ namespace Planner.Droid
                 Description = descriptionEditText.Text,
                 Start = DateTime.Parse(startDateText.Text),
                 End = DateTime.Parse(endDateText.Text),
-                Importance = (Mobile.Core.Data.Importance) importanceSpinner.SelectedItemPosition,
-                Repeat = (Frequency) repeatSpinner.SelectedItemPosition
+                //Importance = (Mobile.Core.Data.Importance) importanceSpinner.SelectedItemPosition,
+                //Repeat = (Frequency) repeatSpinner.SelectedItemPosition
             };
 
             await _taskDataService.InsertAsync(task);
