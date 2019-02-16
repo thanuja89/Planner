@@ -73,7 +73,7 @@ namespace Planner.Mobile.Core.Data
                 new ScheduledTask()
                 {
                     Description = "xxxxx",
-                    Id = 2,
+                    Id = Guid.NewGuid(),
                     Note = "Note",
                     Title = "Title",
                     Start = DateTime.Now,
@@ -82,7 +82,7 @@ namespace Planner.Mobile.Core.Data
                 new ScheduledTask()
                 {
                     Description = "111xxxxx",
-                    Id = 3,
+                    Id = Guid.NewGuid(),
                     Note = "1Note",
                     Title = "1Title",
                     Start = DateTime.Now,

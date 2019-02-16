@@ -15,8 +15,7 @@
 			android:minWidth="25px"
 			android:minHeight="25px"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/textInputLayout1" >
+			android:layout_height="wrap_content">
 				<EditText
 					android:hint="Title"
 					android:layout_width="match_parent"
@@ -29,8 +28,7 @@
 			android:minWidth="25px"
 			android:minHeight="25px"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/textInputLayout1" >
+			android:layout_height="wrap_content">
 				<EditText
 					android:hint="Description"
 					android:layout_width="match_parent"

@@ -32,7 +32,7 @@ WHERE (Start BETWEEN ?1 AND ?2)
     OR (Start < ?1 AND End > ?2)", startDate.Ticks, endDate.Ticks);
         }
 
-        public Task<ScheduledTask> GetByIdAsync(int id)
+        public Task<ScheduledTask> GetByIdAsync(Guid id)
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
