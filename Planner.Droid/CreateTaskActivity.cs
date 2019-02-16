@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace Planner.Droid
 {
-    [Activity(Label = "CreateTaskActivity")]
+    [Activity(Label = "CreateTaskActivity", MainLauncher = true)]
     public class CreateTaskActivity : Activity
     {
         private EditText _titleEditText;
@@ -36,12 +36,19 @@ namespace Planner.Droid
         private void SetUpSpinners()
         {
             var importanceItems = Enum
-                .GetNames(typeof(Importance));
+                .GetNames(typeof(Mobile.Core.Data.Importance));
 
-            var adapter = new ArrayAdapter<string>(this,
+            var repeatItems = Enum
+                .GetNames(typeof(Mobile.Core.Data.Frequency));
+
+            var importanceAdapter = new ArrayAdapter<string>(this,
                 Android.Resource.Layout.SimpleSpinnerItem, importanceItems);
 
-            _importanceSpinner.Adapter = adapter;
+            var repeatAdapter = new ArrayAdapter<string>(this,
+                Android.Resource.Layout.SimpleSpinnerItem, repeatItems);
+
+            _importanceSpinner.Adapter = importanceAdapter;
+            _repeatSpinner.Adapter = repeatAdapter;
         }
 
         public void FindViews()
