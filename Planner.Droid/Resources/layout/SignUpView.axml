@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	style="@style/PrimaryLayoutStyle">
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_centerInParent="true"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" >
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minWidth="25px"
+				android:minHeight="25px"
+				android:id="@+id/signUp_UsernameEditText"
+				android:hint="Username"/>
+			<EditText
+				android:inputType="textEmailAddress"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/signUp_EmailEditText"
+				android:hint="Email"/>
+			<EditText
+				android:inputType="textPassword"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/signUp_PasswordEditText"
+				android:hint="Password" />
+			<EditText
+				android:inputType="textPassword"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/signUp_ConfirmPasswordEditText"
+				android:hint="Confirm Password" />
+			<Button
+				android:text="Sign Up"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/signUp_SignUpButton" />
+			<RelativeLayout 
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+				<Button
+					android:text="Google"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/signUp_GoogleSignUpButton"
+					android:layout_alignParentRight="false"
+					android:layout_alignParentLeft="true" />
+				<Button
+					android:text="Facebook"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/signUp_FacebookSignUpButton"
+					android:layout_alignParentRight="true" />
+			</RelativeLayout>
+		</LinearLayout>
+	<ProgressBar 
+		android:id="@+id/signUp_circularProgressbar" 
+		style="?android:attr/progressBarStyleSmall" 
+		android:layout_alignParentBottom="true"
+		android:layout_centerInParent="true"
+		android:layout_marginBottom="15dp"
+		android:layout_width="50dp" 
+		android:layout_height="50dp"
+		android:visibility="invisible" />
+</RelativeLayout>
