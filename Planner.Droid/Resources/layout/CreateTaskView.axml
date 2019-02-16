@@ -12,23 +12,67 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content" >
 			<EditText
+				android:hint="Title"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:minWidth="25px"
 				android:minHeight="25px"
 				android:id="@+id/createTask_TitleEditText" />
 			<EditText
+				android:hint="Description"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/createTask_DescriptionEditText" />
-		<Spinner
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/createTask_ImportanceSpinner" />
+			<Spinner
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_ImportanceSpinner" />
 			<Spinner
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/createTask_RepeatSpinner" />
+			<RelativeLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent">
+					<Button
+						android:text="Start"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/createTask_StartDateButton"
+						android:layout_alignParentRight="false"
+						android:layout_alignParentLeft="true" />
+					<TextView
+				        android:id="@+id/createTask_StartDateText"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentLeft="false"
+						android:textAppearance="?android:attr/textAppearanceSmall"
+						android:text="Date"
+					    android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="5dp">
+					</TextView>
+			</RelativeLayout>
+			<RelativeLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent">
+					<Button
+						android:text="End"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/createTask_EndDateButton"
+						android:layout_alignParentRight="false"
+						android:layout_alignParentLeft="true" />
+					<TextView
+						android:id="@+id/createTask_EndDateText"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentLeft="false"
+						android:textAppearance="?android:attr/textAppearanceSmall"
+						android:text="Date"
+					    android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_marginRight="5dp">
+					</TextView>
+			</RelativeLayout>
 			<Button
 				android:text="Notes"
 				android:layout_width="wrap_content"
@@ -38,7 +82,7 @@
 				android:layout_alignParentLeft="true" />	
 
 			<Button
-				android:text="Button"
+				android:text="Save"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:id="@+id/createTask_SaveButton" />

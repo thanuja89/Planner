@@ -6,7 +6,7 @@ namespace Planner.Mobile.Core.Data
     [Table("ScheduledTask")]
     public class ScheduledTask
     {
-        [PrimaryKey]
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         public string Title { get; set; }
 

@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="Controls\TaskRecyclerView.cs" />
     <Compile Include="CreateTaskActivity.cs" />
-    <Compile Include="Extensions\EditTextExtensions.cs" />
+    <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\Services\DialogService.cs" />
     <Compile Include="Fragments\DatePickerFragment.cs" />
