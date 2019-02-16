@@ -109,6 +109,7 @@ namespace Planner.Droid
 
             var task = new ScheduledTask()
             {
+                Id = Guid.NewGuid(),
                 Title = titleEditText.Text,
                 Description = descriptionEditText.Text,
                 Start = DateTime.Parse(startDateText.Text),
