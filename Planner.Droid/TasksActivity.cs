@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Planner.Droid
 {
-    [Activity(Label = "TasksActivity", MainLauncher = true)]
+    //[Activity(Label = "TasksActivity", MainLauncher = true)]
     public class TasksActivity : Activity
     {
         private RecyclerView recyclerView;
