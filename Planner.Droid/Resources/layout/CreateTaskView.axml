@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	style="@style/PrimaryLayoutStyle">
+		<LinearLayout
+		android:orientation="vertical"
+		android:layout_centerInParent="true"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" >
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:minWidth="25px"
+				android:minHeight="25px"
+				android:id="@+id/createTask_TitleEditText" />
+			<EditText
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_DescriptionEditText" />
+			<Spinner
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_ImportanceSpinner" />
+			<Spinner
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_RepeatSpinner" />
+			<Button
+				android:text="Notes"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_AddNoteButton"
+				android:layout_alignParentRight="false"
+				android:layout_alignParentLeft="true" />	
+
+			<Button
+				android:text="Button"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_SaveButton" />
+		</LinearLayout>
+</RelativeLayout>

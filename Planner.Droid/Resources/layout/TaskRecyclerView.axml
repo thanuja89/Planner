@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:paddingHorizontal="25dp">
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Title"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:id="@+id/taskRecyclerView_TitleTextView" />
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Description"
+		android:textColor="#333333"
+		android:id="@+id/taskRecyclerView_DescriptionTextView"
+		android:layout_marginLeft="4dp" />
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="2018/01/01"
+		android:textColor="#333333"
+		android:id="@+id/taskRecyclerView_StartTextView"
+		android:layout_marginLeft="4dp" />
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Daily"
+		android:textColor="#333333"
+		android:id="@+id/taskRecyclerView_RepeatTextView"
+		android:layout_marginLeft="4dp" />
+</LinearLayout>
