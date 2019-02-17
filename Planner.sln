@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Planner.Dto", "Planner.Dto\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Planner.Api.Tests", "Planner.Api.Tests\Planner.Api.Tests.csproj", "{2ECECB3A-2DDA-45DE-AD62-5299E08CEB8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planner.Android", "Planner.Android\Planner.Android.csproj", "{8E81DB2E-3E48-45DD-8615-8FEB77084CB1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Planner.Mobile.Core", "Planner.Mobile.Core\Planner.Mobile.Core.csproj", "{B8936B39-FAC2-4F0C-95AF-15D01BFAA6F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Planner.Droid", "Planner.Droid\Planner.Droid.csproj", "{3C74DFB2-6832-4B2A-AD0F-324B6BAC120E}"
@@ -39,12 +37,6 @@ Global
 		{2ECECB3A-2DDA-45DE-AD62-5299E08CEB8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ECECB3A-2DDA-45DE-AD62-5299E08CEB8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ECECB3A-2DDA-45DE-AD62-5299E08CEB8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E81DB2E-3E48-45DD-8615-8FEB77084CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E81DB2E-3E48-45DD-8615-8FEB77084CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E81DB2E-3E48-45DD-8615-8FEB77084CB1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{8E81DB2E-3E48-45DD-8615-8FEB77084CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E81DB2E-3E48-45DD-8615-8FEB77084CB1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E81DB2E-3E48-45DD-8615-8FEB77084CB1}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{B8936B39-FAC2-4F0C-95AF-15D01BFAA6F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8936B39-FAC2-4F0C-95AF-15D01BFAA6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8936B39-FAC2-4F0C-95AF-15D01BFAA6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
