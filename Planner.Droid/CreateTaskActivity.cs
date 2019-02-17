@@ -15,14 +15,12 @@ namespace Planner.Droid
     {
         private EditText titleEditText;
         private EditText descriptionEditText;
-        //private Spinner importanceSpinner;
-        //private Spinner repeatSpinner;
-        private Button addNoteButton;
-        private Button saveButton;
-        private Button startDateButton;
-        private Button endDateButton;
+        private EditText noteEditText;
+        private TableRow startDateRow;
+        private TableRow endDateRow;
         private TextView startDateText;
         private TextView endDateText;
+        private Button saveButton;
         private readonly ScheduledTaskDataService _taskDataService;
 
         public CreateTaskActivity()
@@ -38,47 +36,25 @@ namespace Planner.Droid
 
             FindViews();
 
-            SetUpSpinners();
-
             HandleEvents();
-        }
-
-        private void SetUpSpinners()
-        {
-            //var importanceItems = Enum
-            //    .GetNames(typeof(Mobile.Core.Data.Importance));
-
-            //var repeatItems = Enum
-            //    .GetNames(typeof(Frequency));
-
-            //var importanceAdapter = new ArrayAdapter<string>(this,
-            //    Android.Resource.Layout.SimpleSpinnerItem, importanceItems);
-
-            //var repeatAdapter = new ArrayAdapter<string>(this,
-            //    Android.Resource.Layout.SimpleSpinnerItem, repeatItems);
-
-            //importanceSpinner.Adapter = importanceAdapter;
-            //repeatSpinner.Adapter = repeatAdapter;
         }
 
         public void FindViews()
         {
             titleEditText = FindViewById<EditText>(Resource.Id.createTask_TitleEditText);
             descriptionEditText = FindViewById<EditText>(Resource.Id.createTask_DescriptionEditText);
-            //importanceSpinner = FindViewById<Spinner>(Resource.Id.createTask_ImportanceSpinner);
-            //repeatSpinner = FindViewById<Spinner>(Resource.Id.createTask_RepeatSpinner);
-            addNoteButton = FindViewById<Button>(Resource.Id.createTask_AddNoteButton);
-            saveButton = FindViewById<Button>(Resource.Id.createTask_SaveButton);
-            startDateButton = FindViewById<Button>(Resource.Id.createTask_StartDateButton);
-            endDateButton = FindViewById<Button>(Resource.Id.createTask_EndDateButton);
+            noteEditText = FindViewById<EditText>(Resource.Id.createTask_NoteEditText);
+            startDateRow = FindViewById<TableRow>(Resource.Id.createTask_StartDateRow);
+            endDateRow = FindViewById<TableRow>(Resource.Id.createTask_EndDateRow);
             startDateText = FindViewById<TextView>(Resource.Id.createTask_StartDateText);
             endDateText = FindViewById<TextView>(Resource.Id.createTask_EndDateText);
+            saveButton = FindViewById<Button>(Resource.Id.createTask_SaveButton);
         }
 
         private void HandleEvents()
         {
-            startDateButton.Click += _startDateButton_Click;
-            endDateButton.Click += _endDateButton_Click;
+            startDateRow.Click += _startDateButton_Click;
+            endDateRow.Click += _endDateButton_Click;
             saveButton.Click += _saveButton_Click;
         }
 
@@ -114,8 +90,6 @@ namespace Planner.Droid
                 Description = descriptionEditText.Text,
                 Start = DateTime.Parse(startDateText.Text),
                 End = DateTime.Parse(endDateText.Text),
-                //Importance = (Mobile.Core.Data.Importance) importanceSpinner.SelectedItemPosition,
-                //Repeat = (Frequency) repeatSpinner.SelectedItemPosition
             };
 
             await _taskDataService.InsertAsync(task);
@@ -126,12 +100,6 @@ namespace Planner.Droid
             if (titleEditText.IsEmpty())
             {
                 titleEditText.Error = "Title can not be empty.";
-                return false;
-            }
-
-            if (descriptionEditText.IsEmpty())
-            {
-                descriptionEditText.Error = "Description can not be empty.";
                 return false;
             }
 

@@ -75,55 +75,60 @@
 					android:layout_height="wrap_content"
 					android:text="High" />
 			</RadioGroup>
-			<RelativeLayout
+
+			<TableLayout
 				android:layout_height="wrap_content"
-				android:layout_width="match_parent">
-				<Button
-					android:text="Start"
-					android:layout_width="wrap_content"
+				android:layout_width="match_parent"
+				android:stretchColumns="0">
+				<TableRow android:id="@+id/createTask_StartDateRow">
+					<TextView
+						android:text="Start"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:paddingVertical="5dp"
+						android:paddingHorizontal="15dp" />
+					<TextView
+						android:id="@+id/createTask_StartDateText"
+						android:textAppearance="?android:attr/textAppearanceSmall"
+						android:text="Date"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:gravity="right"
+						android:minWidth="120dp"
+						android:paddingVertical="5dp"
+						android:paddingRight="25dp" />
+				</TableRow>
+				<TableRow android:id="@+id/createTask_EndDateRow">
+					<TextView
+						android:text="End"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:paddingVertical="5dp"
+						android:paddingHorizontal="15dp" />
+					<TextView
+						android:id="@+id/createTask_EndDateText"
+						android:textAppearance="?android:attr/textAppearanceSmall"
+						android:text="Date"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:gravity="right"
+						android:minWidth="120dp"
+						android:paddingVertical="5dp"
+						android:paddingRight="25dp" />
+				</TableRow>
+			</TableLayout>
+
+			<android.support.design.widget.TextInputLayout
+				android:minWidth="25px"
+				android:minHeight="25px"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+				<EditText
+					android:text="Notes"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:id="@+id/createTask_StartDateButton"
-					android:layout_alignParentRight="false"
-					android:layout_alignParentLeft="true" />
-				<TextView
-					android:id="@+id/createTask_StartDateText"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentLeft="false"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="Date"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginRight="5dp">
-				</TextView>
-			</RelativeLayout>
-			<RelativeLayout
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent">
-				<Button
-					android:text="End"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:id="@+id/createTask_EndDateButton"
-					android:layout_alignParentRight="false"
-					android:layout_alignParentLeft="true" />
-				<TextView
-					android:id="@+id/createTask_EndDateText"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentLeft="false"
-					android:textAppearance="?android:attr/textAppearanceSmall"
-					android:text="Date"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_marginRight="5dp">
-				</TextView>
-			</RelativeLayout>
-			<Button
-				android:text="Notes"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/createTask_AddNoteButton"
-				android:layout_alignParentRight="false"
-				android:layout_alignParentLeft="true" />
+					android:id="@+id/createTask_NoteEditText" />
+			</android.support.design.widget.TextInputLayout>
 			<Button
 				android:text="Save"
 				android:layout_width="match_parent"
