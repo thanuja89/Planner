@@ -58,22 +58,32 @@
 			<RadioGroup
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal"
-				android:id="@+id/createTask_ImportanceRadioGroup">
+				android:orientation="vertical"
+				android:id="@+id/createTask_ImportanceRadioGroup"
+				android:paddingVertical="10dp">
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginBottom="5dp"
+					android:paddingLeft="5dp"
+					android:text="Importance" />
 				<RadioButton
 					android:id="@+id/createTask_ImportanceRadio_Low"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
 					android:text="Low" />
 				<RadioButton
 					android:id="@+id/createTask_ImportanceRadio_Medium"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
 					android:text="Medium" />
 				<RadioButton
 					android:id="@+id/createTask_ImportanceRadio_High"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
+					android:layout_marginLeft="15dp"
 					android:text="High" />
 			</RadioGroup>
 
@@ -118,6 +128,16 @@
 						android:paddingRight="25dp" />
 				</TableRow>
 			</TableLayout>
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+				<TextView
+					android:text="Repeat"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingVertical="5dp"
+					android:paddingHorizontal="15dp" />
+			</RelativeLayout>
 
 			<android.support.design.widget.TextInputLayout
 				android:minWidth="25px"
