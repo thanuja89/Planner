@@ -18,7 +18,7 @@
 				android:src="@drawable/baseline_add_alert_24"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:id="@+id/createTask_AlertButton" />
+				android:id="@+id/createTask_NotifyButton" />
 			<ImageButton
 				android:src="@drawable/baseline_add_alarm_24"
 				android:layout_width="wrap_content"
@@ -58,7 +58,8 @@
 			<RadioGroup
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:orientation="horizontal">
+				android:orientation="horizontal"
+				android:id="@+id/createTask_ImportanceRadioGroup">
 				<RadioButton
 					android:id="@+id/createTask_ImportanceRadio_Low"
 					android:layout_width="wrap_content"

@@ -11,10 +11,9 @@ namespace Planner.Mobile.Core.Data
         private static PlannerDatabase database;
         private readonly SQLiteAsyncConnection _connection;
 
-        public PlannerDatabase(string path)
+        private PlannerDatabase(string path)
         {
             _connection = new SQLiteAsyncConnection(path);
-
             InitDatabase();
         }
 
