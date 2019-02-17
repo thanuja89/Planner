@@ -1,21 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:orientation="vertical"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	style="@style/PrimaryLayoutStyle">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+	<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		style="@style/PrimaryLayoutStyle">
+		<LinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true">
+			<ImageButton
+				android:src="@drawable/baseline_add_alert_24"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_AlertButton" />
+			<ImageButton
+				android:src="@drawable/baseline_add_alarm_24"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_AlarmButton" />
+		</LinearLayout>
 		<LinearLayout
 			android:orientation="vertical"
 			android:layout_centerInParent="true"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content" >
-		<android.support.design.widget.TextInputLayout
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="wrap_content"
+			android:paddingTop="25dp">
+			<android.support.design.widget.TextInputLayout
+				android:minWidth="25px"
+				android:minHeight="25px"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
 				<EditText
 					android:hint="Title"
 					android:layout_width="match_parent"
@@ -23,94 +43,93 @@
 					android:minWidth="25px"
 					android:minHeight="25px"
 					android:id="@+id/createTask_TitleEditText" />
-		</android.support.design.widget.TextInputLayout>
-		<android.support.design.widget.TextInputLayout
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			</android.support.design.widget.TextInputLayout>
+			<android.support.design.widget.TextInputLayout
+				android:minWidth="25px"
+				android:minHeight="25px"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
 				<EditText
 					android:hint="Description"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:id="@+id/createTask_DescriptionEditText" />
-		</android.support.design.widget.TextInputLayout>
-		<RadioGroup
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:orientation="horizontal">
-			<RadioButton
-				android:id="@+id/createTask_ImportanceRadio_Low"
-				android:layout_width="wrap_content"
+			</android.support.design.widget.TextInputLayout>
+			<RadioGroup
+				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:text="Low" />
-			<RadioButton
-				android:id="@+id/createTask_ImportanceRadio_Medium"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Medium" />
-			<RadioButton
-				android:id="@+id/createTask_ImportanceRadio_High"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="High" />
-		</RadioGroup>
-				<RelativeLayout
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent">
-						<Button
-							android:text="Start"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:id="@+id/createTask_StartDateButton"
-							android:layout_alignParentRight="false"
-							android:layout_alignParentLeft="true" />
-						<TextView
-					        android:id="@+id/createTask_StartDateText"
-							android:layout_alignParentRight="true"
-							android:layout_alignParentLeft="false"
-							android:textAppearance="?android:attr/textAppearanceSmall"
-							android:text="Date"
-						    android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_marginRight="5dp">
-						</TextView>
-				</RelativeLayout>
-				<RelativeLayout
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent">
-						<Button
-							android:text="End"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:id="@+id/createTask_EndDateButton"
-							android:layout_alignParentRight="false"
-							android:layout_alignParentLeft="true" />
-						<TextView
-							android:id="@+id/createTask_EndDateText"
-							android:layout_alignParentRight="true"
-							android:layout_alignParentLeft="false"
-							android:textAppearance="?android:attr/textAppearanceSmall"
-							android:text="Date"
-						    android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_marginRight="5dp">
-						</TextView>
-				</RelativeLayout>
-				<Button
-					android:text="Notes"
+				android:orientation="horizontal">
+				<RadioButton
+					android:id="@+id/createTask_ImportanceRadio_Low"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:id="@+id/createTask_AddNoteButton"
-					android:layout_alignParentRight="false"
-					android:layout_alignParentLeft="true" />	
-
-				<Button
-					android:text="Save"
-					android:layout_width="match_parent"
+					android:text="Low" />
+				<RadioButton
+					android:id="@+id/createTask_ImportanceRadio_Medium"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:id="@+id/createTask_SaveButton" />
+					android:text="Medium" />
+				<RadioButton
+					android:id="@+id/createTask_ImportanceRadio_High"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="High" />
+			</RadioGroup>
+			<RelativeLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent">
+				<Button
+					android:text="Start"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/createTask_StartDateButton"
+					android:layout_alignParentRight="false"
+					android:layout_alignParentLeft="true" />
+				<TextView
+					android:id="@+id/createTask_StartDateText"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentLeft="false"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:text="Date"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="5dp">
+				</TextView>
+			</RelativeLayout>
+			<RelativeLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent">
+				<Button
+					android:text="End"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:id="@+id/createTask_EndDateButton"
+					android:layout_alignParentRight="false"
+					android:layout_alignParentLeft="true" />
+				<TextView
+					android:id="@+id/createTask_EndDateText"
+					android:layout_alignParentRight="true"
+					android:layout_alignParentLeft="false"
+					android:textAppearance="?android:attr/textAppearanceSmall"
+					android:text="Date"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginRight="5dp">
+				</TextView>
+			</RelativeLayout>
+			<Button
+				android:text="Notes"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_AddNoteButton"
+				android:layout_alignParentRight="false"
+				android:layout_alignParentLeft="true" />
+			<Button
+				android:text="Save"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/createTask_SaveButton" />
 		</LinearLayout>
-
 	
-</RelativeLayout>
+	</RelativeLayout>
+</ScrollView>
