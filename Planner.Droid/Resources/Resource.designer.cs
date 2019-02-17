@@ -2474,9 +2474,6 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f08009b
 			public const int coordinator = 2131230875;
 			
-			// aapt resource value: 0x7f080096
-			public const int createTask_AddNoteButton = 2131230870;
-			
 			// aapt resource value: 0x7f08008c
 			public const int createTask_AlarmButton = 2131230860;
 			
@@ -2487,7 +2484,7 @@ namespace Planner.Droid
 			public const int createTask_DescriptionEditText = 2131230862;
 			
 			// aapt resource value: 0x7f080094
-			public const int createTask_EndDateButton = 2131230868;
+			public const int createTask_EndDateRow = 2131230868;
 			
 			// aapt resource value: 0x7f080095
 			public const int createTask_EndDateText = 2131230869;
@@ -2501,11 +2498,14 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f080090
 			public const int createTask_ImportanceRadio_Medium = 2131230864;
 			
+			// aapt resource value: 0x7f080096
+			public const int createTask_NoteEditText = 2131230870;
+			
 			// aapt resource value: 0x7f080097
 			public const int createTask_SaveButton = 2131230871;
 			
 			// aapt resource value: 0x7f080092
-			public const int createTask_StartDateButton = 2131230866;
+			public const int createTask_StartDateRow = 2131230866;
 			
 			// aapt resource value: 0x7f080093
 			public const int createTask_StartDateText = 2131230867;
