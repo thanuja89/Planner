@@ -78,7 +78,8 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="15dp"
-					android:text="Medium" />
+					android:text="Medium"
+					android:checked="true"/>
 				<RadioButton
 					android:id="@+id/createTask_ImportanceRadio_High"
 					android:layout_width="wrap_content"
@@ -128,16 +129,25 @@
 						android:paddingRight="25dp" />
 				</TableRow>
 			</TableLayout>
-			<RelativeLayout
+			<LinearLayout
+				android:id="@+id/createTask_RepeatLayout"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content">
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
 				<TextView
 					android:text="Repeat"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:paddingVertical="5dp"
 					android:paddingHorizontal="15dp" />
-			</RelativeLayout>
+				<TextView
+					android:id="@+id/createTask_RepeatSelectedTextView"
+					android:text="Never"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingVertical="5dp"
+					android:paddingHorizontal="15dp" />
+			</LinearLayout>
 
 			<android.support.design.widget.TextInputLayout
 				android:minWidth="25px"
@@ -145,7 +155,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content">
 				<EditText
-					android:text="Notes"
+					android:hint="Notes"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:id="@+id/createTask_NoteEditText" />
