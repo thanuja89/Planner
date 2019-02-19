@@ -4,7 +4,9 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Planner.Droid.Controls;
+using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Planner.Droid
@@ -14,6 +16,7 @@ namespace Planner.Droid
     {
         private RecyclerView recyclerView;
         private readonly RecyclerView.LayoutManager _layoutManager;
+        private List<ScheduledTask> _tasks;
         private TaskViewAdapter _adapter;
         private FloatingActionButton createButton;
         private readonly ScheduledTaskDataService _taskDataService;
@@ -44,16 +47,22 @@ namespace Planner.Droid
                 recyclerView.SetLayoutManager(_layoutManager);
                 recyclerView.HasFixedSize = true;
 
-                var tasks = await _taskDataService.GetAsync();
+                _tasks = await _taskDataService.GetAsync();
 
-                _adapter = new TaskViewAdapter(tasks);
+                _adapter = new TaskViewAdapter(_tasks);
+                _adapter.ItemDeleteClick += Adapter_ItemDeleteClick;
+
                 recyclerView.SetAdapter(_adapter);
             }
             catch (System.Exception ex)
             {
-
                 throw ex;
             }
+        }
+
+        private async void Adapter_ItemDeleteClick(object sender, int e)
+        {
+            await _taskDataService.DeleteAsync(_tasks[e]);
         }
 
         private void FindViews()
