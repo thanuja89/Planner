@@ -15,7 +15,7 @@ namespace Planner.Droid.Controls
         public TextView Repeat { get; private set; }
 
         // Get references to the views defined in the CardView layout.
-        public TaskViewHolder(View itemView, Action<int> listener)
+        public TaskViewHolder(View itemView, Action<int> listener, Action<int> deleteListener)
             : base(itemView)
         {
             // Locate and cache view references:
@@ -23,6 +23,11 @@ namespace Planner.Droid.Controls
             Description = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_DescriptionTextView);
             Start = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_StartTextView);
             Repeat = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_RepeatTextView);
+
+            var deleteButton = itemView.FindViewById<ImageButton>(Resource.Id.taskRecyclerView_DeleteButton);
+
+            if (!deleteButton.HasOnClickListeners)
+                deleteButton.Click += (sender, e) => deleteListener(base.LayoutPosition);
 
             // Detect user clicks on the item view and report which item
             // was clicked (by layout position) to the listener:
@@ -34,6 +39,7 @@ namespace Planner.Droid.Controls
     {
         // Event handler for item clicks:
         public event EventHandler<int> ItemClick;
+        public event EventHandler<int> ItemDeleteClick;
 
         // Underlying data set (a photo album):
         private List<ScheduledTask> _tasks;
@@ -54,7 +60,7 @@ namespace Planner.Droid.Controls
 
             // Create a ViewHolder to find and hold these view references, and 
             // register OnClick with the view holder:
-            TaskViewHolder vh = new TaskViewHolder(itemView, OnClick);
+            TaskViewHolder vh = new TaskViewHolder(itemView, OnClick, OnDeleteClick);
             return vh;
         }
 
@@ -82,6 +88,14 @@ namespace Planner.Droid.Controls
         void OnClick(int position)
         {
             ItemClick?.Invoke(this, position);
+        }
+
+        void OnDeleteClick(int position)
+        {
+            ItemDeleteClick?.Invoke(this, position);
+
+            _tasks.Remove(_tasks[position]);
+            NotifyItemRemoved(position);
         }
     }
 }
