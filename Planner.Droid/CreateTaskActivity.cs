@@ -3,17 +3,14 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using Planner.Droid.Extensions;
-using Planner.Droid.Extensions.Models;
 using Planner.Droid.Fragments;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Planner.Droid
 {
-    [Activity(Label = "CreateTaskActivity", MainLauncher = true)]
+    //[Activity(Label = "CreateTaskActivity", MainLauncher = true)]
     public class CreateTaskActivity : AppCompatActivity
     {
         private EditText titleEditText;

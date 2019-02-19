@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Planner.Droid.Controls;
 using Planner.Mobile.Core.Services;
@@ -7,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Planner.Droid
 {
-    //[Activity(Label = "TasksActivity", MainLauncher = true)]
-    public class TasksActivity : Activity
+    [Activity(Label = "TasksActivity", MainLauncher = true)]
+    public class TasksActivity : AppCompatActivity
     {
         private RecyclerView recyclerView;
         private readonly RecyclerView.LayoutManager _layoutManager;
