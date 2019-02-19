@@ -3,10 +3,13 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using Planner.Droid.Extensions;
+using Planner.Droid.Extensions.Models;
 using Planner.Droid.Fragments;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Services;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Planner.Droid
 {
@@ -23,11 +26,17 @@ namespace Planner.Droid
         private ImageButton alarmButton;
         private ImageButton notifyButton;
         private RadioGroup importanceRadioGroup;
+        private LinearLayout repeatLayout;
+        private TextView repeatSelectedTextView;
         private Button saveButton;
 
         private bool _isAlarm;
         private bool _isNotify;
 
+        private readonly string[] _items;
+
+        private int _selectedRepeatIndex = 0;
+        private Android.Support.V7.App.AlertDialog _dialog;
         private readonly ScheduledTaskDataService _taskDataService;
 
 
@@ -56,6 +65,8 @@ namespace Planner.Droid
         public CreateTaskActivity()
         {
             _taskDataService = new ScheduledTaskDataService();
+
+            _items = Enum.GetNames(typeof(Frequency));
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -81,6 +92,8 @@ namespace Planner.Droid
             alarmButton = FindViewById<ImageButton>(Resource.Id.createTask_AlarmButton);
             notifyButton = FindViewById<ImageButton>(Resource.Id.createTask_NotifyButton);
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
+            repeatLayout = FindViewById<LinearLayout>(Resource.Id.createTask_RepeatLayout);
+            repeatSelectedTextView = FindViewById<TextView>(Resource.Id.createTask_RepeatSelectedTextView);
             saveButton = FindViewById<Button>(Resource.Id.createTask_SaveButton);
         }
 
@@ -90,7 +103,23 @@ namespace Planner.Droid
             endDateRow.Click += _endDateButton_Click;
             alarmButton.Click += AlarmButton_Click;
             notifyButton.Click += AlertButton_Click;
+            repeatLayout.Click += RepeatLayout_Click;
             saveButton.Click += _saveButton_Click;
+        }
+
+        private void RepeatLayout_Click(object sender, EventArgs e)
+        {
+            var builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+            builder.SetTitle("Choose a repeat interval");
+            builder.SetSingleChoiceItems(_items, _selectedRepeatIndex, (s, ev) =>
+            {
+                _selectedRepeatIndex = ev.Which;
+                repeatSelectedTextView.Text = _items[ev.Which];
+                _dialog.Dismiss();
+            });
+
+            _dialog = builder.Create();
+            _dialog.Show();
         }
 
         private void AlertButton_Click(object sender, EventArgs e)
@@ -138,7 +167,8 @@ namespace Planner.Droid
                 IsAlarm = _isAlarm,
                 IsNotify = _isNotify,
                 Importance = SelectedImportance,
-                Note = noteEditText.Text
+                Note = noteEditText.Text,
+                Repeat = (Frequency) _selectedRepeatIndex
             };
 
             await _taskDataService.InsertAsync(task);

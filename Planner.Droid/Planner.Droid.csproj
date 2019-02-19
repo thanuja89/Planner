@@ -60,6 +60,7 @@
     <Compile Include="CreateTaskActivity.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\Models\SelectItem.cs" />
     <Compile Include="Extensions\Services\DialogService.cs" />
     <Compile Include="Fragments\DatePickerFragment.cs" />
     <Compile Include="MainActivity.cs" />
@@ -156,7 +157,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Extensions\Models\" />
+    <Folder Include="Extensions\Adapters\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\baseline_add_alarm_24.xml" />
