@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Planner.Droid.Controls;
@@ -14,7 +15,7 @@ namespace Planner.Droid
         private RecyclerView recyclerView;
         private readonly RecyclerView.LayoutManager _layoutManager;
         private TaskViewAdapter _adapter;
-
+        private FloatingActionButton createButton;
         private readonly ScheduledTaskDataService _taskDataService;
 
         public TasksActivity()
@@ -28,6 +29,9 @@ namespace Planner.Droid
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.TasksView);
+
+            FindViews();
+            HandleEvents();
 
             await PrepareRecyclerViewAsync();
         }
@@ -50,6 +54,21 @@ namespace Planner.Droid
 
                 throw ex;
             }
+        }
+
+        private void FindViews()
+        {
+            createButton = FindViewById<FloatingActionButton>(Resource.Id.tasksView_CreateButton);
+        }
+
+        private void HandleEvents()
+        {
+            createButton.Click += CreateButton_Click;
+        }
+
+        private void CreateButton_Click(object sender, System.EventArgs e)
+        {
+            StartActivity(typeof(CreateTaskActivity));
         }
     }
 }

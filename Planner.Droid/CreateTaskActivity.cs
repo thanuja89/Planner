@@ -10,7 +10,7 @@ using System;
 
 namespace Planner.Droid
 {
-    //[Activity(Label = "CreateTaskActivity", MainLauncher = true)]
+    [Activity(Label = "CreateTaskActivity")]
     public class CreateTaskActivity : AppCompatActivity
     {
         private EditText titleEditText;
@@ -169,6 +169,8 @@ namespace Planner.Droid
             };
 
             await _taskDataService.InsertAsync(task);
+
+            StartActivity(typeof(TasksActivity));
         }
 
         private bool ValidateInputs()

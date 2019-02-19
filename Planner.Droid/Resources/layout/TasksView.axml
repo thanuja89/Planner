@@ -8,9 +8,20 @@
         android:scrollbars="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
-	<android.support.design.widget.FloatingActionButton 
+	<android.support.design.widget.FloatingActionButton
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/tasksView_CreateButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 	    android:layout_marginRight="15dp"
 		android:layout_marginBottom="15dp"
+		app:borderWidth="0dp"
+		app:elevation="6dp"
+		app:fabSize="mini" 
+		app:backgroundTint="@null"
+		app:pressedTranslationZ="0dp"
+		app:rippleColor="@null"
 		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"/>
+		android:layout_alignParentRight="true"
+		android:src="@drawable/baseline_add_circle_24"/>
 </RelativeLayout>
