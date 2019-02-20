@@ -122,7 +122,7 @@ namespace Planner.Droid
 
         private void EndDateRow_Click(object sender, EventArgs e)
         {
-            DateTimePickerFragment frag = new DateTimePickerFragment((o, date) =>
+            DateTimePickerFragment frag = DateTimePickerFragment.NewInstance((o, date) =>
             {
                 _endDate = date;
                 endDateTextView.Text = date.ToShortDateString();
@@ -134,7 +134,7 @@ namespace Planner.Droid
 
         private void StartDateRow_Click(object sender, EventArgs e)
         {
-            DateTimePickerFragment frag = new DateTimePickerFragment((o, date) => 
+            DateTimePickerFragment frag = DateTimePickerFragment.NewInstance((o, date) => 
             {
                 _startDate = date;
                 startDateTextView.Text = date.ToShortDateString();
