@@ -1,6 +1,5 @@
 ﻿using Android.App;
 using Android.OS;
-using Android.Util;
 using Android.Widget;
 using System;
 
@@ -8,7 +7,7 @@ namespace Planner.Droid.Fragments
 {
     public class DatePickerFragment : DialogFragment, DatePickerDialog.IOnDateSetListener
     {
-        public static readonly string TAG = "X:" + typeof(DatePickerFragment).Name.ToUpper();
+        public const string TAG = "X:DatePickerFragment";
 
         Action<DateTime> _dateSelectedHandler;
 
@@ -35,7 +34,6 @@ namespace Planner.Droid.Fragments
         public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
         {
             DateTime selectedDate = new DateTime(year, month + 1, dayOfMonth);
-            Log.Debug(Tag, selectedDate.ToLongDateString());
             _dateSelectedHandler?.Invoke(selectedDate);
         }
     }

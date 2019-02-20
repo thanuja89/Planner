@@ -5,6 +5,7 @@ using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Mobile.Core.Data;
+using Planner.Mobile.Core.Models;
 using Planner.Mobile.Core.Services;
 using System;
 
@@ -18,8 +19,10 @@ namespace Planner.Droid
         private EditText noteEditText;
         private TableRow startDateRow;
         private TableRow endDateRow;
-        private TextView startDateText;
-        private TextView endDateText;
+        private TextView startDateTextView;
+        private TextView endDateTextView;
+        private TextView startTimeTextView;
+        private TextView endTimeTextView;
         private ImageButton alarmButton;
         private ImageButton notifyButton;
         private RadioGroup importanceRadioGroup;
@@ -29,6 +32,8 @@ namespace Planner.Droid
 
         private bool _isAlarm;
         private bool _isNotify;
+        private DateTime _startDate;
+        private DateTime _endDate;
 
         private readonly string[] _items;
 
@@ -84,8 +89,10 @@ namespace Planner.Droid
             noteEditText = FindViewById<EditText>(Resource.Id.createTask_NoteEditText);
             startDateRow = FindViewById<TableRow>(Resource.Id.createTask_StartDateRow);
             endDateRow = FindViewById<TableRow>(Resource.Id.createTask_EndDateRow);
-            startDateText = FindViewById<TextView>(Resource.Id.createTask_StartDateText);
-            endDateText = FindViewById<TextView>(Resource.Id.createTask_EndDateText);
+            startDateTextView = FindViewById<TextView>(Resource.Id.createTask_StartDateTextView);
+            endDateTextView = FindViewById<TextView>(Resource.Id.createTask_EndDateTextView);
+            startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
+            endTimeTextView = FindViewById<TextView>(Resource.Id.createTask_EndTimeTextView);
             alarmButton = FindViewById<ImageButton>(Resource.Id.createTask_AlarmButton);
             notifyButton = FindViewById<ImageButton>(Resource.Id.createTask_NotifyButton);
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
@@ -96,12 +103,12 @@ namespace Planner.Droid
 
         private void HandleEvents()
         {
-            startDateRow.Click += _startDateButton_Click;
-            endDateRow.Click += _endDateButton_Click;
+            startDateRow.Click += StartDateRow_Click;
+            endDateRow.Click += EndDateRow_Click;
             alarmButton.Click += AlarmButton_Click;
             notifyButton.Click += AlertButton_Click;
             repeatLayout.Click += RepeatLayout_Click;
-            saveButton.Click += _saveButton_Click;
+            saveButton.Click += SaveButton_Click;
         }
 
         private void RepeatLayout_Click(object sender, EventArgs e)
@@ -129,27 +136,31 @@ namespace Planner.Droid
             _isAlarm = !_isAlarm;
         }
 
-        private void _endDateButton_Click(object sender, EventArgs e)
+        private void EndDateRow_Click(object sender, EventArgs e)
         {
-            DatePickerFragment frag = DatePickerFragment.NewInstance((time) =>
+            DateTimePickerFragment frag = new DateTimePickerFragment((o, date) =>
             {
-                endDateText.Text = time.ToLongDateString();
+                _endDate = date;
+                endDateTextView.Text = date.ToShortDateString();
+                endTimeTextView.Text = date.ToShortTimeString();
             });
 
-            frag.Show(FragmentManager, DatePickerFragment.TAG);
+            frag.Show(FragmentManager, DateTimePickerFragment.TAG);
         }
 
-        private void _startDateButton_Click(object sender, EventArgs e)
+        private void StartDateRow_Click(object sender, EventArgs e)
         {
-            DatePickerFragment frag = DatePickerFragment.NewInstance((time) =>
+            DateTimePickerFragment frag = new DateTimePickerFragment((o, date) => 
             {
-                startDateText.Text = time.ToLongDateString();
+                _startDate = date;
+                startDateTextView.Text = date.ToShortDateString();
+                startTimeTextView.Text = date.ToShortTimeString();
             });
 
-            frag.Show(FragmentManager, DatePickerFragment.TAG);
+            frag.Show(FragmentManager, DateTimePickerFragment.TAG);
         }
 
-        private async void _saveButton_Click(object sender, EventArgs e)
+        private async void SaveButton_Click(object sender, EventArgs e)
         {
             if (!ValidateInputs())
                 return;
@@ -159,8 +170,8 @@ namespace Planner.Droid
                 Id = Guid.NewGuid(),
                 Title = titleEditText.Text,
                 Description = descriptionEditText.Text,
-                Start = DateTime.Parse(startDateText.Text),
-                End = DateTime.Parse(endDateText.Text),
+                Start = _startDate,
+                End = _endDate,
                 IsAlarm = _isAlarm,
                 IsNotify = _isNotify,
                 Importance = SelectedImportance,
@@ -181,15 +192,15 @@ namespace Planner.Droid
                 return false;
             }
 
-            if (startDateText.IsEmpty())
+            if (startDateTextView.IsEmpty())
             {
-                startDateText.Error = "Start Date can not be empty.";
+                startDateTextView.Error = "Start Date can not be empty.";
                 return false;
             }
 
-            if (endDateText.IsEmpty())
+            if (endDateTextView.IsEmpty())
             {
-                endDateText.Error = "End Date can not be empty.";
+                endDateTextView.Error = "End Date can not be empty.";
                 return false;
             }
 
