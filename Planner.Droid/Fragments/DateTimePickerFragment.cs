@@ -25,17 +25,36 @@ namespace Planner.Droid.Fragments
         {
             var view = inflater.Inflate(Resource.Layout.DateTimePickerView, container);
 
+            FindViews(view);
+
+            SetDefaultValues();
+
+            HandleEvents();
+
+            return view;
+        }
+
+        private void SetDefaultValues()
+        {
+            var tommorow = DateTime.Now.AddDays(1);
+
+            datePicker.UpdateDate(tommorow.Year, tommorow.Month, tommorow.Day);
+        }
+
+        private void HandleEvents()
+        {
+            okButton.Click += OkButton_Click;
+            cancelButton.Click += CancelButton_Click;
+        }
+
+        private void FindViews(View view)
+        {
             datePicker = view.FindViewById<DatePicker>(Resource.Id.dateTimePickerView_DatePicker);
 
             timePicker = view.FindViewById<TimePicker>(Resource.Id.dateTimePickerView_TimePicker);
 
             cancelButton = view.FindViewById<Button>(Resource.Id.dateTimePickerView_CancelButton);
             okButton = view.FindViewById<Button>(Resource.Id.dateTimePickerView_OkButton);
-
-            okButton.Click += OkButton_Click;
-            cancelButton.Click += CancelButton_Click;
-
-            return view;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)

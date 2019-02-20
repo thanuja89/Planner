@@ -192,15 +192,15 @@ namespace Planner.Droid
                 return false;
             }
 
-            if (startDateTextView.IsEmpty())
+            if (_startDate == default)
             {
-                startDateTextView.Error = "Start Date can not be empty.";
+                startDateTextView.Error = "Please pick the Start Date";
                 return false;
             }
 
-            if (endDateTextView.IsEmpty())
+            if (_endDate == default)
             {
-                endDateTextView.Error = "End Date can not be empty.";
+                endDateTextView.Error = "Please pick the End Date";
                 return false;
             }
 
