@@ -10,15 +10,19 @@ namespace Planner.Droid.Fragments
     {
         public const string TAG = "X:DateTimePickerFragment";
 
-        private readonly EventHandler<DateTime> _okButtonHandler;
+        EventHandler<DateTime> _okButtonHandler;
         private DatePicker datePicker;
         private TimePicker timePicker;
         private Button cancelButton;
         private Button okButton;
 
-        public DateTimePickerFragment(EventHandler<DateTime> okButtonHandler)
+        public static DateTimePickerFragment NewInstance(EventHandler<DateTime> okButtonHandler)
         {
-            _okButtonHandler = okButtonHandler;
+            DateTimePickerFragment frag = new DateTimePickerFragment
+            {
+                _okButtonHandler = okButtonHandler
+            };
+            return frag;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -38,7 +42,7 @@ namespace Planner.Droid.Fragments
         {
             var tommorow = DateTime.Now.AddDays(1);
 
-            datePicker.UpdateDate(tommorow.Year, tommorow.Month, tommorow.Day);
+            datePicker.UpdateDate(tommorow.Year, tommorow.Month - 1, tommorow.Day);
         }
 
         private void HandleEvents()
@@ -66,7 +70,13 @@ namespace Planner.Droid.Fragments
         {
             if(_okButtonHandler != null)
             {
-                var date = new DateTime(datePicker.Year, datePicker.Month, datePicker.DayOfMonth, timePicker.Hour, timePicker.Minute, 0);
+                var date = new DateTime(datePicker.Year
+                    , datePicker.Month + 1
+                    , datePicker.DayOfMonth
+                    , timePicker.Hour
+                    , timePicker.Minute
+                    , 0);
+
                 _okButtonHandler(sender, date);
             }
 
