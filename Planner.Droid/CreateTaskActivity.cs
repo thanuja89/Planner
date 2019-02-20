@@ -23,24 +23,21 @@ namespace Planner.Droid
         private TextView endDateTextView;
         private TextView startTimeTextView;
         private TextView endTimeTextView;
-        private ImageButton alarmButton;
-        private ImageButton notifyButton;
+        private CheckBox alarmCheckBox;
+        private CheckBox notifyCheckBox;
         private RadioGroup importanceRadioGroup;
         private LinearLayout repeatLayout;
         private TextView repeatSelectedTextView;
         private Button saveButton;
+        private Android.Support.V7.App.AlertDialog _dialog;
 
-        private bool _isAlarm;
-        private bool _isNotify;
         private DateTime _startDate;
         private DateTime _endDate;
 
         private readonly string[] _items;
 
         private int _selectedRepeatIndex = 0;
-        private Android.Support.V7.App.AlertDialog _dialog;
         private readonly ScheduledTaskDataService _taskDataService;
-
 
         public Mobile.Core.Data.Importance SelectedImportance
         {
@@ -62,7 +59,6 @@ namespace Planner.Droid
                 }
             }
         }
-
 
         public CreateTaskActivity()
         {
@@ -93,8 +89,8 @@ namespace Planner.Droid
             endDateTextView = FindViewById<TextView>(Resource.Id.createTask_EndDateTextView);
             startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
             endTimeTextView = FindViewById<TextView>(Resource.Id.createTask_EndTimeTextView);
-            alarmButton = FindViewById<ImageButton>(Resource.Id.createTask_AlarmButton);
-            notifyButton = FindViewById<ImageButton>(Resource.Id.createTask_NotifyButton);
+            alarmCheckBox = FindViewById<CheckBox>(Resource.Id.createTask_AlarmCheckBox);
+            notifyCheckBox = FindViewById<CheckBox>(Resource.Id.createTask_AlertCheckBox);
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
             repeatLayout = FindViewById<LinearLayout>(Resource.Id.createTask_RepeatLayout);
             repeatSelectedTextView = FindViewById<TextView>(Resource.Id.createTask_RepeatSelectedTextView);
@@ -105,8 +101,6 @@ namespace Planner.Droid
         {
             startDateRow.Click += StartDateRow_Click;
             endDateRow.Click += EndDateRow_Click;
-            alarmButton.Click += AlarmButton_Click;
-            notifyButton.Click += AlertButton_Click;
             repeatLayout.Click += RepeatLayout_Click;
             saveButton.Click += SaveButton_Click;
         }
@@ -124,16 +118,6 @@ namespace Planner.Droid
 
             _dialog = builder.Create();
             _dialog.Show();
-        }
-
-        private void AlertButton_Click(object sender, EventArgs e)
-        {
-            _isNotify = !_isNotify;
-        }
-
-        private void AlarmButton_Click(object sender, EventArgs e)
-        {
-            _isAlarm = !_isAlarm;
         }
 
         private void EndDateRow_Click(object sender, EventArgs e)
@@ -172,8 +156,8 @@ namespace Planner.Droid
                 Description = descriptionEditText.Text,
                 Start = _startDate,
                 End = _endDate,
-                IsAlarm = _isAlarm,
-                IsNotify = _isNotify,
+                IsAlarm = alarmCheckBox.Checked,
+                IsNotify = notifyCheckBox.Checked,
                 Importance = SelectedImportance,
                 Note = noteEditText.Text,
                 Repeat = (Frequency) _selectedRepeatIndex
