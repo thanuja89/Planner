@@ -100,7 +100,7 @@
 						android:paddingVertical="5dp"
 						android:paddingHorizontal="15dp" />
 					<TextView
-						android:id="@+id/createTask_StartDateText"
+						android:id="@+id/createTask_StartDateTextView"
 						android:textAppearance="?android:attr/textAppearanceSmall"
 						android:text="Date"
 						android:layout_width="wrap_content"
@@ -109,6 +109,13 @@
 						android:minWidth="120dp"
 						android:paddingVertical="5dp"
 						android:paddingRight="25dp" />
+					<TextView
+						android:id="@+id/createTask_StartTimeTextView"
+						android:text="Time"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:paddingVertical="5dp"
+						android:paddingHorizontal="15dp" />
 				</TableRow>
 				<TableRow android:id="@+id/createTask_EndDateRow">
 					<TextView
@@ -118,7 +125,7 @@
 						android:paddingVertical="5dp"
 						android:paddingHorizontal="15dp" />
 					<TextView
-						android:id="@+id/createTask_EndDateText"
+						android:id="@+id/createTask_EndDateTextView"
 						android:textAppearance="?android:attr/textAppearanceSmall"
 						android:text="Date"
 						android:layout_width="wrap_content"
@@ -127,6 +134,13 @@
 						android:minWidth="120dp"
 						android:paddingVertical="5dp"
 						android:paddingRight="25dp" />
+					<TextView
+						android:id="@+id/createTask_EndTimeTextView"
+						android:text="Time"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:paddingVertical="5dp"
+						android:paddingHorizontal="15dp" />
 				</TableRow>
 			</TableLayout>
 			<LinearLayout
