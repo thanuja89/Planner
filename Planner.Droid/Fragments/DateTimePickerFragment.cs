@@ -10,7 +10,7 @@ namespace Planner.Droid.Fragments
     {
         public const string TAG = "X:DateTimePickerFragment";
 
-        EventHandler<DateTime> _okButtonHandler;
+        private EventHandler<DateTime> _okButtonHandler;
         private DatePicker datePicker;
         private TimePicker timePicker;
         private Button cancelButton;

@@ -1,9 +1,11 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
+using Planner.Droid.Receiver;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Models;
 using Planner.Mobile.Core.Services;
@@ -165,7 +167,27 @@ namespace Planner.Droid
 
             await _taskDataService.InsertAsync(task);
 
+            SetAlarm(task.Start, task.Title, task.Description);
+
             StartActivity(typeof(TasksActivity));
+        }
+
+        private void SetAlarm(DateTime time, string title, string message)
+        {
+            Java.Util.Calendar calendar = Java.Util.Calendar.Instance;
+            calendar.TimeInMillis = Java.Lang.JavaSystem.CurrentTimeMillis();
+
+            calendar.Set(time.Year, time.Month - 1, time.Day, time.Hour, time.Minute, 0);
+
+            var alarmIntent = new Intent(this, typeof(AlarmReceiver));
+            alarmIntent.PutExtra("title", title);
+            alarmIntent.PutExtra("message", message);
+
+            var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+            var alarmManager = (AlarmManager) GetSystemService(AlarmService);
+
+            alarmManager.Set(AlarmType.Rtc, calendar.TimeInMillis, pending);
         }
 
         private bool ValidateInputs()
