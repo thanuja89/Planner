@@ -10,21 +10,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		style="@style/PrimaryLayoutStyle">
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true">
-			<ImageButton
-				android:src="@drawable/baseline_add_alert_24"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/createTask_NotifyButton" />
-			<ImageButton
-				android:src="@drawable/baseline_add_alarm_24"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/createTask_AlarmButton" />
-		</LinearLayout>
+		
 		<LinearLayout
 			android:orientation="vertical"
 			android:layout_centerInParent="true"
@@ -97,8 +83,7 @@
 						android:text="Start"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:paddingVertical="5dp"
-						android:paddingHorizontal="15dp" />
+						android:paddingVertical="5dp" />
 					<TextView
 						android:id="@+id/createTask_StartDateTextView"
 						android:textAppearance="?android:attr/textAppearanceSmall"
@@ -123,8 +108,7 @@
 						android:text="End"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:paddingVertical="5dp"
-						android:paddingHorizontal="15dp" />
+						android:paddingVertical="5dp" />
 					<TextView
 						android:id="@+id/createTask_EndDateTextView"
 						android:textAppearance="?android:attr/textAppearanceSmall"
@@ -148,22 +132,43 @@
 				android:id="@+id/createTask_RepeatLayout"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:orientation="vertical">
+				android:layout_marginTop="5dp"
+				android:orientation="horizontal">
 				<TextView
 					android:text="Repeat"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
-					android:paddingVertical="5dp"
-					android:paddingHorizontal="15dp" />
+					android:paddingVertical="5dp" />
 				<TextView
 					android:id="@+id/createTask_RepeatSelectedTextView"
 					android:text="Never"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:paddingVertical="5dp"
-					android:paddingHorizontal="15dp" />
+					android:layout_marginLeft="50dp" />
 			</LinearLayout>
-
+			<TextView
+					android:text="Remind me?"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingVertical="10dp" />
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentRight="true"
+				android:paddingHorizontal="15dp">
+				<CheckBox
+					android:id="@+id/createTask_AlarmCheckBox"
+					android:text="Alarm"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+				<CheckBox
+					android:id="@+id/createTask_AlertCheckBox"
+					android:text="Notify"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>		
+			</LinearLayout>
+			
 			<android.support.design.widget.TextInputLayout
 				android:minWidth="25px"
 				android:minHeight="25px"

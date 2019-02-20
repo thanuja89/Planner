@@ -2561,59 +2561,59 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0800a4
 			public const int coordinator = 2131230884;
 			
-			// aapt resource value: 0x7f08008c
-			public const int createTask_AlarmButton = 2131230860;
+			// aapt resource value: 0x7f080099
+			public const int createTask_AlarmCheckBox = 2131230873;
 			
-			// aapt resource value: 0x7f08008e
-			public const int createTask_DescriptionEditText = 2131230862;
+			// aapt resource value: 0x7f08009a
+			public const int createTask_AlertCheckBox = 2131230874;
+			
+			// aapt resource value: 0x7f08008c
+			public const int createTask_DescriptionEditText = 2131230860;
+			
+			// aapt resource value: 0x7f080094
+			public const int createTask_EndDateRow = 2131230868;
+			
+			// aapt resource value: 0x7f080095
+			public const int createTask_EndDateTextView = 2131230869;
 			
 			// aapt resource value: 0x7f080096
-			public const int createTask_EndDateRow = 2131230870;
+			public const int createTask_EndTimeTextView = 2131230870;
 			
-			// aapt resource value: 0x7f080097
-			public const int createTask_EndDateTextView = 2131230871;
-			
-			// aapt resource value: 0x7f080098
-			public const int createTask_EndTimeTextView = 2131230872;
-			
-			// aapt resource value: 0x7f08008f
-			public const int createTask_ImportanceRadioGroup = 2131230863;
-			
-			// aapt resource value: 0x7f080092
-			public const int createTask_ImportanceRadio_High = 2131230866;
+			// aapt resource value: 0x7f08008d
+			public const int createTask_ImportanceRadioGroup = 2131230861;
 			
 			// aapt resource value: 0x7f080090
-			public const int createTask_ImportanceRadio_Low = 2131230864;
+			public const int createTask_ImportanceRadio_High = 2131230864;
 			
-			// aapt resource value: 0x7f080091
-			public const int createTask_ImportanceRadio_Medium = 2131230865;
+			// aapt resource value: 0x7f08008e
+			public const int createTask_ImportanceRadio_Low = 2131230862;
+			
+			// aapt resource value: 0x7f08008f
+			public const int createTask_ImportanceRadio_Medium = 2131230863;
 			
 			// aapt resource value: 0x7f08009b
 			public const int createTask_NoteEditText = 2131230875;
 			
-			// aapt resource value: 0x7f08008b
-			public const int createTask_NotifyButton = 2131230859;
+			// aapt resource value: 0x7f080097
+			public const int createTask_RepeatLayout = 2131230871;
 			
-			// aapt resource value: 0x7f080099
-			public const int createTask_RepeatLayout = 2131230873;
-			
-			// aapt resource value: 0x7f08009a
-			public const int createTask_RepeatSelectedTextView = 2131230874;
+			// aapt resource value: 0x7f080098
+			public const int createTask_RepeatSelectedTextView = 2131230872;
 			
 			// aapt resource value: 0x7f08009c
 			public const int createTask_SaveButton = 2131230876;
 			
+			// aapt resource value: 0x7f080091
+			public const int createTask_StartDateRow = 2131230865;
+			
+			// aapt resource value: 0x7f080092
+			public const int createTask_StartDateTextView = 2131230866;
+			
 			// aapt resource value: 0x7f080093
-			public const int createTask_StartDateRow = 2131230867;
+			public const int createTask_StartTimeTextView = 2131230867;
 			
-			// aapt resource value: 0x7f080094
-			public const int createTask_StartDateTextView = 2131230868;
-			
-			// aapt resource value: 0x7f080095
-			public const int createTask_StartTimeTextView = 2131230869;
-			
-			// aapt resource value: 0x7f08008d
-			public const int createTask_TitleEditText = 2131230861;
+			// aapt resource value: 0x7f08008b
+			public const int createTask_TitleEditText = 2131230859;
 			
 			// aapt resource value: 0x7f08006d
 			public const int custom = 2131230829;
