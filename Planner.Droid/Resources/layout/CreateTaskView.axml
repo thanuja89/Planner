@@ -102,7 +102,7 @@
 					<TextView
 						android:id="@+id/createTask_StartDateTextView"
 						android:textAppearance="?android:attr/textAppearanceSmall"
-						android:text="Date"
+						android:text="_"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:gravity="right"
@@ -111,9 +111,10 @@
 						android:paddingRight="25dp" />
 					<TextView
 						android:id="@+id/createTask_StartTimeTextView"
-						android:text="Time"
+						android:text="_"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
+						android:minWidth="120dp"
 						android:paddingVertical="5dp"
 						android:paddingHorizontal="15dp" />
 				</TableRow>
@@ -127,7 +128,7 @@
 					<TextView
 						android:id="@+id/createTask_EndDateTextView"
 						android:textAppearance="?android:attr/textAppearanceSmall"
-						android:text="Date"
+						android:text="_"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:gravity="right"
@@ -136,7 +137,7 @@
 						android:paddingRight="25dp" />
 					<TextView
 						android:id="@+id/createTask_EndTimeTextView"
-						android:text="Time"
+						android:text="_"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:paddingVertical="5dp"
