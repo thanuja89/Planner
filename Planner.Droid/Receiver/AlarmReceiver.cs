@@ -7,42 +7,58 @@ namespace Planner.Droid.Receiver
     [BroadcastReceiver]
     public class AlarmReceiver : BroadcastReceiver
     {
-        public const int NOTIFICATION_ID = 1000;        
-        public const string URGENT_CHANNEL = "URGENT";
-
         public override void OnReceive(Context context, Intent intent)
         {
-            string chanName = "Channel1";
-            var importance = NotificationImportance.High;
-            NotificationChannel chan = new NotificationChannel(URGENT_CHANNEL, chanName, importance);
-
-            chan.EnableVibration(true);
-            chan.LockscreenVisibility = NotificationVisibility.Public;
+            var channel = BuildChannel();
 
             var notificationManager = (NotificationManager)context.GetSystemService(Context.NotificationService);
-            notificationManager.CreateNotificationChannel(chan);
+            notificationManager.CreateNotificationChannel(channel);
 
-            var message = intent.GetStringExtra("message");
-            var title = intent.GetStringExtra("title");
+            var notification = BuildNotification(context, intent);
 
-            var resultIntent = new Intent(context, typeof(TasksActivity));
-            resultIntent.SetFlags(ActivityFlags.ClearTop);
+            notificationManager.Notify(Constants.NOTIFICATION_ID, notification);
+        }
 
-            var pending = PendingIntent.GetActivity(context, 0,
-                resultIntent,
-                PendingIntentFlags.CancelCurrent);
+        private NotificationChannel BuildChannel()
+        {
+            var channel = new NotificationChannel(Constants.CHANNEL_ID
+                , Constants.CHANNEL_NAME, NotificationImportance.High)
+            {
+                LockscreenVisibility = NotificationVisibility.Public,
+            };
 
-            var notification = new NotificationCompat.Builder(context, URGENT_CHANNEL)
-                .SetContentIntent(pending)
+            channel.EnableVibration(true);
+
+            return channel;
+        }
+
+        private Notification BuildNotification(Context context, Intent sourceIntent)
+        {
+            var message = sourceIntent.GetStringExtra(Constants.MESSAGE_PARAM_NAME);
+            var title = sourceIntent.GetStringExtra(Constants.TITLE_PARAM_NAME);
+
+            var intent = new Intent(context, typeof(TasksActivity));
+            intent.SetFlags(ActivityFlags.ClearTop);
+
+            var pendingIntent = PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.CancelCurrent);
+
+            return new NotificationCompat.Builder(context, Constants.CHANNEL_ID)
+                .SetContentIntent(pendingIntent)
                 .SetContentTitle(title)
                 .SetContentText(message)
                 .SetColor(Resource.Color.colorPrimary)
                 .SetSmallIcon(Resource.Drawable.notify_panel_notification_icon_bg)
                 .Build();
-
-
-            notificationManager.Notify(NOTIFICATION_ID, notification);
         }
+
+        public static class Constants
+        {
+            public const int NOTIFICATION_ID = 1000;
+            public const string CHANNEL_ID = "URGENT";
+            public const string CHANNEL_NAME = "URGENT";
+            public const string TITLE_PARAM_NAME = "URGENT";
+            public const string MESSAGE_PARAM_NAME = "MESSAGE";
+        } 
     }
 
 }

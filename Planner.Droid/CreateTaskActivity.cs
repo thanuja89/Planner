@@ -180,8 +180,8 @@ namespace Planner.Droid
             calendar.Set(time.Year, time.Month - 1, time.Day, time.Hour, time.Minute, 0);
 
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-            alarmIntent.PutExtra("title", title);
-            alarmIntent.PutExtra("message", message);
+            alarmIntent.PutExtra(AlarmReceiver.Constants.TITLE_PARAM_NAME, title);
+            alarmIntent.PutExtra(AlarmReceiver.Constants.MESSAGE_PARAM_NAME, message);
 
             var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
