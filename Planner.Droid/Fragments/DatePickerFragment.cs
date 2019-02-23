@@ -23,11 +23,13 @@ namespace Planner.Droid.Fragments
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
             DateTime currently = DateTime.Now;
-            DatePickerDialog dialog = new DatePickerDialog(Activity,
-                                                           this,
-                                                           currently.Year,
-                                                           currently.Month - 1,
-                                                           currently.Day);
+            DatePickerDialog dialog = 
+                new DatePickerDialog(Activity
+                , this
+                , currently.Year
+                , currently.Month - 1
+                , currently.Day);
+
             return dialog;
         }
 

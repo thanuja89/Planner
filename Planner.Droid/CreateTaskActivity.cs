@@ -7,7 +7,6 @@ using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Receiver;
 using Planner.Mobile.Core.Data;
-using Planner.Mobile.Core.Models;
 using Planner.Mobile.Core.Services;
 using System;
 
@@ -167,12 +166,15 @@ namespace Planner.Droid
 
             await _taskDataService.InsertAsync(task);
 
-            SetAlarm(task.Start, task.Title, task.Description);
+            if (task.IsNotify && task.Start > DateTime.Now)
+            {
+                SetAlarm(task.Start, task);
+            }
 
             StartActivity(typeof(TasksActivity));
         }
 
-        private void SetAlarm(DateTime time, string title, string message)
+        private void SetAlarm(DateTime time, ScheduledTask task)
         {
             Java.Util.Calendar calendar = Java.Util.Calendar.Instance;
             calendar.TimeInMillis = Java.Lang.JavaSystem.CurrentTimeMillis();
@@ -180,8 +182,8 @@ namespace Planner.Droid
             calendar.Set(time.Year, time.Month - 1, time.Day, time.Hour, time.Minute, 0);
 
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-            alarmIntent.PutExtra(AlarmReceiver.Constants.TITLE_PARAM_NAME, title);
-            alarmIntent.PutExtra(AlarmReceiver.Constants.MESSAGE_PARAM_NAME, message);
+            alarmIntent.PutExtra(AlarmReceiver.Constants.TITLE_PARAM_NAME, task.Title);
+            alarmIntent.PutExtra(AlarmReceiver.Constants.MESSAGE_PARAM_NAME, task.Description);
 
             var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
@@ -192,25 +194,18 @@ namespace Planner.Droid
 
         private bool ValidateInputs()
         {
-            if (titleEditText.IsEmpty())
+            if (!titleEditText.IsEmpty())
             {
-                titleEditText.Error = "Title can not be empty.";
-                return false;
+                return true;
             }
 
-            if (_startDate == default)
+            if (!descriptionEditText.IsEmpty())
             {
-                startDateTextView.Error = "Please pick the Start Date";
-                return false;
+                descriptionEditText.Error = "Description can not be empty.";
+                return true;
             }
 
-            if (_endDate == default)
-            {
-                endDateTextView.Error = "Please pick the End Date";
-                return false;
-            }
-
-            return true;
+            return false;
         }
     }
 }
