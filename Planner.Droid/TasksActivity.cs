@@ -4,7 +4,6 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Planner.Droid.Controls;
-using Planner.Droid.Extensions.Services;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Services;
 using System.Collections.Generic;
@@ -33,10 +32,6 @@ namespace Planner.Droid
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.TasksView);
-
-            var account = SyncHelper.GetAccount(this);
-
-            SyncHelper.SetSyncConfig(account);
 
             FindViews();
             HandleEvents();
