@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,12 +18,12 @@ namespace Planner.Domain.Repositories
             _context = context;
         }
 
-        public Task<T> FindAsync(long id)
+        public Task<T> FindAsync(Guid id)
         {
             return Entities.FindAsync(id);
         }
 
-        public Task<T> GetByIdAsync(long id)
+        public Task<T> GetByIdAsync(Guid id)
         {
             return Entities
                 .AsNoTracking()
@@ -49,7 +50,7 @@ namespace Planner.Domain.Repositories
             Entities.Remove(entity);
         }
 
-        public async Task Delete(long id)
+        public async Task Delete(Guid id)
         {
             var entity = await Entities.FindAsync(id);
             Entities.Remove(entity);

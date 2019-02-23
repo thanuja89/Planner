@@ -62,7 +62,7 @@ namespace Planner.Api
                      {
                          ValidateIssuer = true,
                          ValidateAudience = true,
-                         ValidateLifetime = true,
+                         ValidateLifetime = false,
                          ValidateIssuerSigningKey = true,
                          ValidIssuer = Configuration["Jwt:Issuer"],
                          ValidAudience = Configuration["Jwt:Issuer"],
