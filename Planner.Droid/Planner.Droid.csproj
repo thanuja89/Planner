@@ -59,9 +59,15 @@
   <ItemGroup>
     <Compile Include="Controls\TaskRecyclerView.cs" />
     <Compile Include="CreateTaskActivity.cs" />
+    <Compile Include="Extensions\AppConstants.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\Services\DialogService.cs" />
+    <Compile Include="Extensions\Services\GenericAccountService.cs" />
+    <Compile Include="Extensions\Services\StubContentProvider.cs" />
+    <Compile Include="Extensions\Services\SyncAdapter.cs" />
+    <Compile Include="Extensions\Services\SyncHelper.cs" />
+    <Compile Include="Extensions\Services\SyncService.cs" />
     <Compile Include="Fragments\DatePickerFragment.cs" />
     <Compile Include="Fragments\DateTimePickerFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
@@ -424,6 +430,12 @@
     <AndroidResource Include="Resources\layout\DateTimePickerView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\xml\sync_adapter.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\xml\authenticator.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

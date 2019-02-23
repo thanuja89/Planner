@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+              android:contentAuthority="Planner.Droid.Planner.Droid.datasync.provider"
+              android:accountType="Planner.Droid.Planner.Droid.datasync.account"
+              android:userVisible="false"
+              android:supportsUploading="false"
+              android:allowParallelSyncs="false"
+              android:isAlwaysSyncable="true"
+        />

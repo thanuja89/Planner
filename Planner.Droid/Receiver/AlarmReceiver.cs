@@ -54,10 +54,11 @@ namespace Planner.Droid.Receiver
         public static class Constants
         {
             public const int NOTIFICATION_ID = 1000;
-            public const string CHANNEL_ID = "URGENT";
-            public const string CHANNEL_NAME = "URGENT";
-            public const string TITLE_PARAM_NAME = "URGENT";
-            public const string MESSAGE_PARAM_NAME = "MESSAGE";
+            public const string CHANNEL_ID = "Urgent";
+            public const string CHANNEL_NAME = "Urgent";
+            public const string TITLE_PARAM_NAME = "Title";
+            public const string MESSAGE_PARAM_NAME = "Message";
+            public const string IS_ALARM_PARAM_NAME = "IsAlarm";
         } 
     }
 
