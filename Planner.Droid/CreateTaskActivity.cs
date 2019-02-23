@@ -154,11 +154,9 @@ namespace Planner.Droid
             {
                 Id = Guid.NewGuid(),
                 Title = titleEditText.Text,
-                Description = descriptionEditText.Text,
                 Start = _startDate,
                 End = _endDate,
                 IsAlarm = alarmCheckBox.Checked,
-                IsNotify = notifyCheckBox.Checked,
                 Importance = SelectedImportance,
                 Note = noteEditText.Text,
                 Repeat = (Frequency) _selectedRepeatIndex
@@ -166,7 +164,7 @@ namespace Planner.Droid
 
             await _taskDataService.InsertAsync(task);
 
-            if (task.IsNotify && task.Start > DateTime.Now)
+            if (task.Start > DateTime.Now)
             {
                 SetAlarm(task.Start, task);
             }
@@ -183,7 +181,7 @@ namespace Planner.Droid
 
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
             alarmIntent.PutExtra(AlarmReceiver.Constants.TITLE_PARAM_NAME, task.Title);
-            alarmIntent.PutExtra(AlarmReceiver.Constants.MESSAGE_PARAM_NAME, task.Description);
+            alarmIntent.PutExtra(AlarmReceiver.Constants.MESSAGE_PARAM_NAME, task.Note);
 
             var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 

@@ -7,6 +7,7 @@ using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
 using Planner.Dto;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -44,7 +45,7 @@ namespace Planner.Api.Controllers
 
         // GET: api/ScheduledTask/1
         [HttpGet("{id}", Name = "TaskGet")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(Guid id)
         {
             var task = await _scheduledTaskRepo.GetByIdAsync(id);
 
@@ -70,7 +71,7 @@ namespace Planner.Api.Controllers
 
                     return Created(uri, _mapper.Map<GetScheduledTaskDTO>(entity));
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogError($"Threw exception while creating ScheduledTask: { ex }");
                 }
@@ -80,7 +81,7 @@ namespace Planner.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]PutScheduledTaskDTO taskDto)
+        public async Task<IActionResult> Put(Guid id, [FromBody]PutScheduledTaskDTO taskDto)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +98,7 @@ namespace Planner.Api.Controllers
 
                     return Ok(_mapper.Map<GetScheduledTaskDTO>(task));
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogError($"Threw exception while creating ScheduledTask: { ex }");
                 }
@@ -107,7 +108,7 @@ namespace Planner.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
@@ -122,7 +123,7 @@ namespace Planner.Api.Controllers
 
                 return NoContent();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError($"Threw exception while creating ScheduledTask: { ex }");
             }
