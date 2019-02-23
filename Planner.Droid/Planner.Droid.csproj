@@ -63,11 +63,6 @@
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\Services\DialogService.cs" />
-    <Compile Include="Extensions\Services\GenericAccountService.cs" />
-    <Compile Include="Extensions\Services\StubContentProvider.cs" />
-    <Compile Include="Extensions\Services\SyncAdapter.cs" />
-    <Compile Include="Extensions\Services\SyncHelper.cs" />
-    <Compile Include="Extensions\Services\SyncService.cs" />
     <Compile Include="Fragments\DatePickerFragment.cs" />
     <Compile Include="Fragments\DateTimePickerFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
