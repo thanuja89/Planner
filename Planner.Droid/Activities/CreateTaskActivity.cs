@@ -5,7 +5,7 @@ using Android.Support.V7.App;
 using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
-using Planner.Droid.Receiver;
+using Planner.Droid.Receivers;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -72,7 +72,7 @@ namespace Planner.Droid.Activities
         {
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.CreateTaskView);
+            SetContentView(Resource.Layout.activity_create_task);
 
             FindViews();
 

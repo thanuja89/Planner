@@ -67,7 +67,7 @@
     <Compile Include="Fragments\DateTimePickerFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
     <Compile Include="Activities\MainActivity.cs" />
-    <Compile Include="Receiver\AlarmReceiver.cs" />
+    <Compile Include="Receivers\AlarmReceiver.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\SignInActivity.cs" />
@@ -126,31 +126,31 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\CreateTaskView.axml">
+    <AndroidResource Include="Resources\layout\activity_create_task.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SignInView.axml">
+    <AndroidResource Include="Resources\layout\activity_sign_in.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\SignUpView.axml">
+    <AndroidResource Include="Resources\layout\activity_sign_up.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\TaskRecyclerView.axml">
+    <AndroidResource Include="Resources\layout\item_task_recycler_view.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\TasksView.axml">
+    <AndroidResource Include="Resources\layout\activity_tasks.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -419,7 +419,7 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\baseline_delete_black_24.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\DateTimePickerView.axml">
+    <AndroidResource Include="Resources\layout\fragment_date_time_picker.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

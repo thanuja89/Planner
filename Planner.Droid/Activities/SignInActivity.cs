@@ -36,7 +36,7 @@ namespace Planner.Droid.Activities
         {
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.SignInView);
+            SetContentView(Resource.Layout.activity_sign_in);
 
             FindViews();
             HandleEvents();

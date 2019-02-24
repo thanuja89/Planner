@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Support.V4.App;
 using Planner.Droid.Activities;
 
-namespace Planner.Droid.Receiver
+namespace Planner.Droid.Receivers
 {
     [BroadcastReceiver]
     public class AlarmReceiver : BroadcastReceiver

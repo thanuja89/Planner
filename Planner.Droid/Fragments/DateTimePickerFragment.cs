@@ -27,7 +27,7 @@ namespace Planner.Droid.Fragments
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            var view = inflater.Inflate(Resource.Layout.DateTimePickerView, container);
+            var view = inflater.Inflate(Resource.Layout.fragment_date_time_picker, container);
 
             FindViews(view);
 
