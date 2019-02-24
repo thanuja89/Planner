@@ -1,6 +1,7 @@
 ﻿using Planner.Mobile.Core.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Planner.Mobile.Core.Helpers
@@ -22,14 +23,37 @@ namespace Planner.Mobile.Core.Helpers
                 .ToListAsync();
         }
 
+        public Task<List<ScheduledTask>> GetSortedListAsync(Expression<Func<ScheduledTask, object>> orderBy, int take = 10)
+        {
+            return PlannerDatabase.Instance
+                .GetAll<ScheduledTask>()
+                .OrderBy(orderBy)
+                .Take(take)
+                .ToListAsync();
+        }
+
+        public Task<List<ScheduledTask>> SearchAsync(string keyword, int take = 10)
+        {
+            return PlannerDatabase.Instance
+                .QueryAll<ScheduledTask>(@"
+                    SELECT * FROM ScheduledTask 
+                    WHERE Title LIKE ?1
+                        OR Note LIKE ?1
+                    ORDER BY Start
+                    LIMIT ?2"
+                    , $"%{ keyword }%"
+                    , take);
+        }
+
         public Task<List<ScheduledTask>> GetAllForRangeAsync(DateTime startDate, DateTime endDate)
         {
             return PlannerDatabase.Instance
                 .QueryAll<ScheduledTask>(@"
-SELECT * FROM ScheduledTask 
-WHERE (Start BETWEEN ?1 AND ?2) 
-    OR (End BETWEEN ?1 AND ?2) 
-    OR (Start < ?1 AND End > ?2)", startDate.Ticks, endDate.Ticks);
+                    SELECT * FROM ScheduledTask 
+                    WHERE (Start BETWEEN ?1 AND ?2) 
+                        OR (End BETWEEN ?1 AND ?2) 
+                        OR (Start < ?1 AND End > ?2)"
+                    , startDate.Ticks, endDate.Ticks);
         }
 
         public Task<ScheduledTask> GetByIdAsync(Guid id)
