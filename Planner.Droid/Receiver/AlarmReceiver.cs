@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Support.V4.App;
+using Planner.Droid.Activities;
 
 namespace Planner.Droid.Receiver
 {

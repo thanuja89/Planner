@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Planner.Mobile.Core.Services
+namespace Planner.Mobile.Core.Helpers
 {
-    public class ScheduledTaskDataService
+    public class ScheduledTaskDataHelper
     {
         public Task<List<ScheduledTask>> GetAllAsync()
         {

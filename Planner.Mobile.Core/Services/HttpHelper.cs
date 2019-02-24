@@ -4,13 +4,13 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Planner.Mobile.Core.Services
+namespace Planner.Mobile.Core.Helpers
 {
-    public class HttpService
+    public class HttpHelper
     {
         private readonly HttpClient _httpClient;
 
-        public HttpService()
+        public HttpHelper()
         {
             _httpClient = new HttpClient();
         }

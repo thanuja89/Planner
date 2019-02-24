@@ -1,15 +1,15 @@
 ﻿using Planner.Dto;
 using System.Threading.Tasks;
 
-namespace Planner.Mobile.Core.Services
+namespace Planner.Mobile.Core.Helpers
 {
-    public class AuthService
+    public class AuthHelper
     {
-        private readonly HttpService _httpService;
+        private readonly HttpHelper _httpService;
 
-        public AuthService()
+        public AuthHelper()
         {
-            _httpService = new HttpService();
+            _httpService = new HttpHelper();
         }
 
         public Task<TokenDto> SignInAsync(TokenRequestDto loginDto)
