@@ -56,7 +56,7 @@ namespace Planner.Droid.Controls
         {
             // Inflate the CardView for the photo:
             View itemView = LayoutInflater.From(parent.Context).
-                        Inflate(Resource.Layout.TaskRecyclerView, parent, false);
+                        Inflate(Resource.Layout.item_task_recycler_view, parent, false);
 
             // Create a ViewHolder to find and hold these view references, and 
             // register OnClick with the view holder:

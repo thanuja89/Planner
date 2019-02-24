@@ -31,7 +31,7 @@ namespace Planner.Droid.Activities
         {
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.TasksView);
+            SetContentView(Resource.Layout.activity_tasks);
 
             FindViews();
             HandleEvents();
