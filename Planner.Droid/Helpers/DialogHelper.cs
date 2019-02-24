@@ -3,9 +3,9 @@ using Android.App;
 using Android.Content;
 using System;
 
-namespace Planner.Droid.Extensions.Services
+namespace Planner.Droid.Helpers
 {
-    public class DialogService
+    public class DialogHelper
     {
         public void ShowError(Context context, string message)
         {

@@ -7,10 +7,10 @@ using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Receiver;
 using Planner.Mobile.Core.Data;
-using Planner.Mobile.Core.Services;
+using Planner.Mobile.Core.Helpers;
 using System;
 
-namespace Planner.Droid
+namespace Planner.Droid.Activities
 {
     [Activity(Label = "CreateTaskActivity")]
     public class CreateTaskActivity : AppCompatActivity
@@ -38,7 +38,7 @@ namespace Planner.Droid
         private readonly string[] _items;
 
         private int _selectedRepeatIndex = 0;
-        private readonly ScheduledTaskDataService _taskDataService;
+        private readonly ScheduledTaskDataHelper _taskDataHelper;
 
         public Mobile.Core.Data.Importance SelectedImportance
         {
@@ -63,7 +63,7 @@ namespace Planner.Droid
 
         public CreateTaskActivity()
         {
-            _taskDataService = new ScheduledTaskDataService();
+            _taskDataHelper = new ScheduledTaskDataHelper();
 
             _items = Enum.GetNames(typeof(Frequency));
         }
@@ -162,7 +162,7 @@ namespace Planner.Droid
                 Repeat = (Frequency) _selectedRepeatIndex
             };
 
-            await _taskDataService.InsertAsync(task);
+            await _taskDataHelper.InsertAsync(task);
 
             if (task.Start > DateTime.Now)
             {

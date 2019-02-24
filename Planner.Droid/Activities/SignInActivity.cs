@@ -4,19 +4,19 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Planner.Droid.Extensions;
-using Planner.Droid.Extensions.Services;
+using Planner.Droid.Helpers;
 using Planner.Dto;
 using Planner.Mobile.Core;
-using Planner.Mobile.Core.Services;
+using Planner.Mobile.Core.Helpers;
 using System;
 
-namespace Planner.Droid
+namespace Planner.Droid.Activities
 {
     //[Activity(Label = "Sign In", MainLauncher = true)]
     public class SignInActivity : Activity
     {
-        private readonly AuthService _authService;
-        private readonly DialogService _dialogService;
+        private readonly AuthHelper _authHelper;
+        private readonly DialogHelper _dialogHelper;
 
         private EditText usernameEditText;
         private EditText passwordEditText;
@@ -28,8 +28,8 @@ namespace Planner.Droid
 
         public SignInActivity()
         {
-            _authService = new AuthService();
-            _dialogService = new DialogService();
+            _authHelper = new AuthHelper();
+            _dialogHelper = new DialogHelper();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -78,7 +78,7 @@ namespace Planner.Droid
 
                 progressBar.Visibility = ViewStates.Visible;
 
-                var tokenDto = await _authService.SignInAsync(dto);
+                var tokenDto = await _authHelper.SignInAsync(dto);
 
                 if (tokenDto != null && tokenDto.Token != null)
                     SaveToken(tokenDto.Token);
@@ -88,7 +88,7 @@ namespace Planner.Droid
             catch (Exception ex)
             {
                 progressBar.Visibility = ViewStates.Invisible;
-                _dialogService.ShowError(this, ex);
+                _dialogHelper.ShowError(this, ex);
             }
         }
 

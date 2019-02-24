@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Planner.Mobile.Core.Services
+namespace Planner.Mobile.Core.Helpers
 {
-    public class ScheduledTaskService
+    public class ScheduledTaskWebHelper
     {
-        private readonly HttpService _httpService;
+        private readonly HttpHelper _httpService;
 
-        public ScheduledTaskService()
+        public ScheduledTaskWebHelper()
         {
-            _httpService = new HttpService();
+            _httpService = new HttpHelper();
         }
 
         public Task<IEnumerable<GetScheduledTaskDTO>> GetScheduledTasksAsync()

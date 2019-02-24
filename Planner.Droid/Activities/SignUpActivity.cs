@@ -3,19 +3,19 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Planner.Droid.Extensions;
-using Planner.Droid.Extensions.Services;
+using Planner.Droid.Helpers;
 using Planner.Dto;
 using Planner.Mobile.Core;
-using Planner.Mobile.Core.Services;
+using Planner.Mobile.Core.Helpers;
 using System;
 
-namespace Planner.Droid
+namespace Planner.Droid.Activities
 {
     [Activity(Label = "SignUpActivity")]
     public class SignUpActivity : Activity
     {
-        private readonly AuthService _authService;
-        private readonly DialogService _dialogService;
+        private readonly AuthHelper _authHelper;
+        private readonly DialogHelper _dialogHelper;
         private EditText usernameEditText;
         private EditText emailEditText;
         private EditText passwordEditText;
@@ -25,8 +25,8 @@ namespace Planner.Droid
 
         public SignUpActivity()
         {
-            _authService = new AuthService();
-            _dialogService = new DialogService();
+            _authHelper = new AuthHelper();
+            _dialogHelper = new DialogHelper();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -70,11 +70,11 @@ namespace Planner.Droid
 
                 progressBar.Visibility = ViewStates.Visible;
 
-                var result = await _authService.SignUpAsync(dto);
+                var result = await _authHelper.SignUpAsync(dto);
 
                 if (result.Succeeded)
                 {
-                    _dialogService.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
+                    _dialogHelper.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
                         , (o, ea) => StartActivity(typeof(SignInActivity)));
 
                     return;
@@ -85,7 +85,7 @@ namespace Planner.Droid
             catch (Exception ex)
             {
                 progressBar.Visibility = ViewStates.Invisible;
-                _dialogService.ShowError(this, ex);
+                _dialogHelper.ShowError(this, ex);
             }
             finally
             {
@@ -169,7 +169,7 @@ namespace Planner.Droid
                     break;
 
                 case SignUpErrorType.ServerError:
-                    _dialogService.ShowError(this);
+                    _dialogHelper.ShowError(this);
                     break;
 
                 case SignUpErrorType.Other:

@@ -5,11 +5,11 @@ using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Planner.Droid.Controls;
 using Planner.Mobile.Core.Data;
-using Planner.Mobile.Core.Services;
+using Planner.Mobile.Core.Helpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Planner.Droid
+namespace Planner.Droid.Activities
 {
     [Activity(Label = "TasksActivity", MainLauncher = true)]
     public class TasksActivity : AppCompatActivity
@@ -19,11 +19,11 @@ namespace Planner.Droid
         private List<ScheduledTask> _tasks;
         private TaskViewAdapter _adapter;
         private FloatingActionButton createButton;
-        private readonly ScheduledTaskDataService _taskDataService;
+        private readonly ScheduledTaskDataHelper _taskDataHelper;
 
         public TasksActivity()
         {
-            _taskDataService = new ScheduledTaskDataService();
+            _taskDataHelper = new ScheduledTaskDataHelper();
             _layoutManager = new LinearLayoutManager(this);
         }
 
@@ -47,7 +47,7 @@ namespace Planner.Droid
                 recyclerView.SetLayoutManager(_layoutManager);
                 recyclerView.HasFixedSize = true;
 
-                _tasks = await _taskDataService.GetAsync();
+                _tasks = await _taskDataHelper.GetAsync();
 
                 _adapter = new TaskViewAdapter(_tasks);
                 _adapter.ItemDeleteClick += Adapter_ItemDeleteClick;
@@ -62,7 +62,7 @@ namespace Planner.Droid
 
         private async void Adapter_ItemDeleteClick(object sender, int e)
         {
-            await _taskDataService.DeleteAsync(_tasks[e]);
+            await _taskDataHelper.DeleteAsync(_tasks[e]);
         }
 
         private void FindViews()
