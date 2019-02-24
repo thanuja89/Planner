@@ -13,6 +13,7 @@ namespace Planner.Api.Extensions
             CreateMap<ScheduledTask, GetScheduledTaskDTO>();
             CreateMap<PostScheduledTaskDTO, ScheduledTask>()
                 .ForMember(t => t.CreatedOnUtc, opt => opt.MapFrom(t => DateTime.UtcNow))
+                .ForMember(t => t.UpdatedOnUtc, opt => opt.MapFrom(t => DateTime.UtcNow))
                 .ForMember(t => t.ApplicationUserId, opt => opt.MapFrom(new IdentityResolver(accessor)));
             CreateMap<PutScheduledTaskDTO, ScheduledTask>()
                 .ForMember(t => t.UpdatedOnUtc, opt => opt.MapFrom(t => DateTime.UtcNow));

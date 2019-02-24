@@ -2,6 +2,7 @@
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -40,10 +41,15 @@ namespace Planner.Domain.Repositories
             return Entities.AddAsync(entity);
         }
 
-        public void Update(T entity)
+        public Task AddRangeAsync(IEnumerable<T> entities)
         {
-            Entities.Update(entity);
+            return Entities.AddRangeAsync(entities);
         }
+
+        //public void Update(T entity)
+        //{
+        //    Entities.Update(entity);
+        //}
 
         public void Delete(T entity)
         {
