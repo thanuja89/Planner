@@ -1,5 +1,6 @@
 ﻿using Planner.Domain.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +12,8 @@ namespace Planner.Domain.Repositories.Interfaces
         Task<T> FindAsync(Guid id);
         Task<T> GetByIdAsync(Guid id);
         Task AddAsync(T entity);
-        void Update(T entity);
+        Task AddRangeAsync(IEnumerable<T> entities);
+        //void Update(T entity);
         void Delete(T entity);
         Task Delete(Guid id);
     }

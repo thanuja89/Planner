@@ -77,6 +77,7 @@ namespace Planner.Api
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddSingleton<SyncronizationService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
