@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Planner.Api.Extensions;
+using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
 using Planner.Dto;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Planner.Api.Controllers
@@ -47,7 +47,7 @@ namespace Planner.Api.Controllers
                 if (lk == null)
                     return Conflict();
 
-                var newTasks = await _syncService.GetNewScheduledTasksAsync(User.GetUserId(), lastSyncedOn);
+                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync(User.GetUserId(), lastSyncedOn);
 
                 return Ok(_mapper.Map<IEnumerable<GetScheduledTaskDTO>>(newTasks));
             }
@@ -58,32 +58,25 @@ namespace Planner.Api.Controllers
             }
         }
 
-        //[HttpPut]
-        //public async Task<IActionResult> Put(IEnumerable<PutSyncScheduledTaskDTO> tasks)
-        //{
-        //    try
-        //    {
-        //        if (tasks == null)
-        //            return BadRequest();
+        [HttpPut]
+        public async Task<IActionResult> Put(IEnumerable<PutScheduledTaskDTO> taskDtos)
+        {
+            try
+            {
+                if (taskDtos == null)
+                    return BadRequest();
 
-        //        var newTasks = new List<PutSyncScheduledTaskDTO>();
-        //        var oldTasks = new List<PutSyncScheduledTaskDTO>();
+                var tasks = _mapper.Map<IEnumerable<ScheduledTask>>(taskDtos);
 
-        //        foreach (var task in tasks)
-        //        {
-        //            if (task.IsNew)
-        //                newTasks.Add(task);
-        //            else
-        //                oldTasks.Add(task);
-        //        }
+                await _scheduledTaskRepo.AddNewScheduledTasksAsync(tasks, User.GetUserId());
 
-
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Threw exception while creating new ScheduledTasks: { ex }");
+                throw;
+            }
+        }
     }
 }

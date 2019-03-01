@@ -4,8 +4,6 @@ using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,14 +26,6 @@ namespace Planner.Api.Extensions
             _scheduledTaskRepo = scheduledTaskRepo;
             _unitOfWork = unitOfWork;
             _logger = logger;
-        }
-
-        public async Task<IEnumerable<ScheduledTask>> GetNewScheduledTasksAsync(string userId, DateTime lastSyncedOn)
-        {
-            return await _scheduledTaskRepo.GetAll()
-                .Where(t => t.ApplicationUserId == userId 
-                    && t.UpdatedOnUtc > lastSyncedOn)
-                .ToListAsync();
         }
 
         public async Task<SyncronizationLock> TakeLockAsync(string userId)
