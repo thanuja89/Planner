@@ -33,9 +33,4 @@ namespace Planner.Dto
     {
 
     }
-
-    public class PutSyncScheduledTaskDTO : ScheduledTaskDTO
-    {
-        public bool IsNew { get; set; }
-    }
 }

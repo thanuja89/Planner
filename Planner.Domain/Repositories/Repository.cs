@@ -10,13 +10,13 @@ namespace Planner.Domain.Repositories
 {
     public class Repository<T> : IRepository<T> where T : BaseEntity
     {
-        private readonly PlannerDbContext _context;
+        protected readonly PlannerDbContext Context;
 
-        protected DbSet<T> Entities => _context.Set<T>();
+        protected DbSet<T> Entities => Context.Set<T>();
 
         public Repository(PlannerDbContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         public Task<T> FindAsync(Guid id)
@@ -45,11 +45,6 @@ namespace Planner.Domain.Repositories
         {
             return Entities.AddRangeAsync(entities);
         }
-
-        //public void Update(T entity)
-        //{
-        //    Entities.Update(entity);
-        //}
 
         public void Delete(T entity)
         {
