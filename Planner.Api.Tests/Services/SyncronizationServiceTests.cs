@@ -4,6 +4,7 @@ using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
+using System;
 using Xunit;
 
 namespace Planner.Api.Tests.Services
@@ -17,6 +18,7 @@ namespace Planner.Api.Tests.Services
         private SyncronizationService _sut;
 
         private readonly string _userId = "USER1";
+        private Guid _lockId = Guid.NewGuid();
 
         private void SetUp()
         {
@@ -71,6 +73,19 @@ namespace Planner.Api.Tests.Services
             // Assert
             Assert.False(lk.IsSucceeded);
             Assert.Null(lk.Lock);
+        }
+
+        [Fact]
+        private async void GetLockAsync_WhenCalled_CallRepoWithCorrectArgs()
+        {
+            // Arrange
+            SetUp();
+
+            // Act
+            var lk = await _sut.GetLockAsync(_lockId);
+
+            // Assert
+            _mockLockRepo.Verify(r => r.FindAsync(_lockId), Times.Once);
         }
     }
 }
