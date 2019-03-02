@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Planner.Api.Extensions;
+using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;

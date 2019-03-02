@@ -15,5 +15,6 @@ namespace Planner.Domain.Repositories.Interfaces
         Task AddRangeAsync(IEnumerable<T> entities);
         void Delete(T entity);
         Task Delete(Guid id);
+        void DeleteRange(IEnumerable<T> entities);
     }
 }

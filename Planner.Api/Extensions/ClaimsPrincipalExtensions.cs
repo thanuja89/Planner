@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 
-namespace Planner.Api.Extensions
+namespace Planner.Api.Services
 {
     public static class ClaimsPrincipalExtensions
     {

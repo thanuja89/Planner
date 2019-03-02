@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Planner.Domain.Entities;
 using Planner.Dto;
 
-namespace Planner.Api.Extensions
+namespace Planner.Api.Services
 {
     public class IdentityResolver : IValueResolver<PostScheduledTaskDTO, ScheduledTask, string>
     {

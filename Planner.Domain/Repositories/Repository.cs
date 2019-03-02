@@ -56,5 +56,10 @@ namespace Planner.Domain.Repositories
             var entity = await Entities.FindAsync(id);
             Entities.Remove(entity);
         }
+
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            Entities.RemoveRange(entities);
+        }
     }
 }

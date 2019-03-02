@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace Planner.Api.Extensions.Middlewares
+namespace Planner.Api.Middlewares
 {
     public class GlobalExceptionHandlerMiddleware
     {

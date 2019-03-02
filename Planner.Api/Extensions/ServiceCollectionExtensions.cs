@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Planner.Api.Extensions
+namespace Planner.Api.Services
 {
     public static class ServiceCollectionExtensions
     {

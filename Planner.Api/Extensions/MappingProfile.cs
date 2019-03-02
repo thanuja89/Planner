@@ -4,7 +4,7 @@ using Planner.Domain.Entities;
 using Planner.Dto;
 using System;
 
-namespace Planner.Api.Extensions
+namespace Planner.Api.Services
 {
     public class MappingProfile : Profile
     {

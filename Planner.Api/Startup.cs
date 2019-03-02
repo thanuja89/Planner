@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Planner.Api.Extensions;
+using Planner.Api.Services;
 using Planner.Domain;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories;
@@ -20,9 +20,13 @@ namespace Planner.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _env;
+
+        public Startup(IConfiguration configuration
+            , IHostingEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -76,8 +80,14 @@ namespace Planner.Api
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
+            services.AddScoped<ISyncronizationLockRepository, SyncronizationLockRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<SyncronizationService>();
+            services.AddSingleton<ISyncronizationService, SyncronizationService>();
+
+            if (!_env.IsDevelopment())
+            {
+                services.AddHostedService<LockCleanUpHostedService>();
+            }
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
