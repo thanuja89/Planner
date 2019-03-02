@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Planner.Api.Extensions.Middlewares;
+using Planner.Api.Middlewares;
 
-namespace Planner.Api.Extensions
+namespace Planner.Api.Services
 {
     public static class ExceptionHandlerMiddlewareExtensions
     {

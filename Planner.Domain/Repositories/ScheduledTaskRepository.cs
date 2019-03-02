@@ -33,7 +33,7 @@ namespace Planner.Domain.Repositories
                 .ContinueWith(t => (IEnumerable<ScheduledTask>) t);
         }
 
-        public Task AddNewScheduledTasksAsync(IEnumerable<ScheduledTask> scheduledTasks, string userId)
+        public Task AddOrUpdateScheduledTasksAsync(IEnumerable<ScheduledTask> scheduledTasks, string userId)
         {
             if (scheduledTasks == null)
                 return Task.CompletedTask;

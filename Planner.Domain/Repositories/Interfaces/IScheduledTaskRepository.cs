@@ -9,6 +9,6 @@ namespace Planner.Domain.Repositories.Interfaces
     {
         Task<IEnumerable<ScheduledTask>> GetScheduledTasksForUser(string userId);
         Task<IEnumerable<ScheduledTask>> GetNewScheduledTasksForUserAsync(string userId, DateTime lastSyncedOn);
-        Task AddNewScheduledTasksAsync(IEnumerable<ScheduledTask> scheduledTasks, string userId);
+        Task AddOrUpdateScheduledTasksAsync(IEnumerable<ScheduledTask> scheduledTasks, string userId);
     }
 }
