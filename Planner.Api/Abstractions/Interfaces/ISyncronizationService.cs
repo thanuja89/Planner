@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using Planner.Domain.Entities;
 
-namespace Planner.Api.Services
+namespace Planner.Api.Abstractions
 {
     public interface ISyncronizationService
     {
         Task<SyncronizationLock> GetLockAsync(Guid id);
         Task ReleaseLockAsync(string userId);
         Task ReleaseLockAsync(SyncronizationLock syncLock);
-        Task<SyncronizationLock> TakeLockAsync(string userId);
+        Task<LockResult> TakeLockAsync(string userId);
     }
 }

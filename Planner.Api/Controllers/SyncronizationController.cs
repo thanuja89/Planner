@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Planner.Api.Abstractions;
 using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
@@ -45,7 +46,7 @@ namespace Planner.Api.Controllers
                 string userId = User.GetUserId();
                 var lk = await _syncService.TakeLockAsync(userId);
 
-                if (lk == null)
+                if (!lk.IsSucceeded)
                     return Conflict();
 
                 var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync(userId, lastSyncedOn);
@@ -53,8 +54,8 @@ namespace Planner.Api.Controllers
                 return Ok(new SyncronizationDTO()
                 {
                     PutScheduledTasks = _mapper.Map<IEnumerable<GetScheduledTaskDTO>>(newTasks),
-                    LockId = lk.Id,
-                    ExpiresOn = lk.ExpiresOn
+                    LockId = lk.Lock.Id,
+                    ExpiresOn = lk.Lock.ExpiresOn
                 });
             }
             catch (Exception ex)

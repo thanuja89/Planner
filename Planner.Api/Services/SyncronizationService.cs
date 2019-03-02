@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Planner.Api.Abstractions;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
@@ -27,7 +28,7 @@ namespace Planner.Api.Services
             _logger = logger;
         }
 
-        public async Task<SyncronizationLock> TakeLockAsync(string userId)
+        public async Task<LockResult> TakeLockAsync(string userId)
         {
             try
             {
@@ -36,7 +37,7 @@ namespace Planner.Api.Services
                 var lk = await _lockRepo.GetSyncronizationLockByUserId(userId);
 
                 if (lk != null)
-                    return null;
+                    return LockResult.FailedResult;
 
                 var currentDate = DateTime.UtcNow;
 
@@ -51,7 +52,11 @@ namespace Planner.Api.Services
                 await _lockRepo.AddAsync(newLock);
                 await _unitOfWork.CompleteAsync();
 
-                return newLock;
+                return new LockResult()
+                {
+                    IsSucceeded = true,
+                    Lock = newLock
+                };
             }
             finally
             {

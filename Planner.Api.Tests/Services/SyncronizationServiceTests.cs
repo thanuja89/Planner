@@ -54,7 +54,8 @@ namespace Planner.Api.Tests.Services
             var lk = await _sut.TakeLockAsync(_userId);
 
             // Assert
-            Assert.NotNull(lk);
+            Assert.True(lk.IsSucceeded);
+            Assert.NotNull(lk.Lock);
         }
 
         [Fact]
@@ -68,7 +69,8 @@ namespace Planner.Api.Tests.Services
             var lk = await _sut.TakeLockAsync(_userId);
 
             // Assert
-            Assert.Null(lk);
+            Assert.False(lk.IsSucceeded);
+            Assert.Null(lk.Lock);
         }
     }
 }
