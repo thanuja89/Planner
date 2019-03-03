@@ -15,7 +15,7 @@ namespace Planner.Api.Services
         private readonly IScheduledTaskRepository _scheduledTaskRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<SyncronizationService> _logger;
-        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1);
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         public SyncronizationService(ISyncronizationLockRepository lockRepo
             , IScheduledTaskRepository scheduledTaskRepo
@@ -32,7 +32,7 @@ namespace Planner.Api.Services
         {
             try
             {
-                await _semaphore.WaitAsync(1000);
+                await _semaphore.WaitAsync();
 
                 var lk = await _lockRepo.GetSyncronizationLockByUserId(userId);
 
