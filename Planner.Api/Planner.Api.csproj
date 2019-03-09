@@ -19,8 +19,4 @@
     <ProjectReference Include="..\Planner.Dto\Planner.Dto.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Abstractions\Interfaces\" />
-  </ItemGroup>
-
 </Project>
