@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Planner.Api.Abstractions;
 using Planner.Api.Services;
 using Planner.Domain;
 using Planner.Domain.Entities;
@@ -81,14 +79,7 @@ namespace Planner.Api
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
-            services.AddScoped<ISyncronizationLockRepository, SyncronizationLockRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<ISyncronizationService, SyncronizationService>();
-
-            if (!_env.IsDevelopment())
-            {
-                services.AddHostedService<LockCleanUpHostedService>();
-            }
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

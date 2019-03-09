@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Planner.Api.Abstractions;
 using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
@@ -21,19 +20,16 @@ namespace Planner.Api.Controllers
     {
         private readonly IScheduledTaskRepository _scheduledTaskRepo;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ISyncronizationService _syncService;
         private readonly IMapper _mapper;
         private readonly ILogger<SyncronizationController> _logger;
 
         public SyncronizationController(IScheduledTaskRepository scheduledTaskRepo
             , IUnitOfWork unitOfWork
-            , ISyncronizationService syncService
             , IMapper mapper
             , ILogger<SyncronizationController> logger)
         {
             _scheduledTaskRepo = scheduledTaskRepo;
             _unitOfWork = unitOfWork;
-            _syncService = syncService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -43,20 +39,9 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                string userId = User.GetUserId();
-                var lk = await _syncService.TakeLockAsync(userId);
+                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync(User.GetUserId(), lastSyncedOn);
 
-                if (!lk.IsSucceeded)
-                    return Conflict();
-
-                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync(userId, lastSyncedOn);
-
-                return Ok(new SyncronizationDTO()
-                {
-                    PutScheduledTasks = _mapper.Map<IEnumerable<GetScheduledTaskDTO>>(newTasks),
-                    LockId = lk.Lock.Id,
-                    ExpiresOn = lk.Lock.ExpiresOn
-                });
+                return Ok(_mapper.Map<IEnumerable<GetScheduledTaskDTO>>(newTasks));
             }
             catch (Exception ex)
             {
@@ -73,19 +58,9 @@ namespace Planner.Api.Controllers
                 if (taskDtos == null)
                     return BadRequest();
 
-                var lk = await _syncService.GetLockAsync(lockId);
-                string userId = User.GetUserId();
-
-                if (lk == null
-                    || lk.ApplicationUserId != userId
-                    || lk.ExpiresOn < DateTime.UtcNow)
-                    return BadRequest();
-
                 var tasks = _mapper.Map<IEnumerable<ScheduledTask>>(taskDtos);
 
-                await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, userId);
-
-                await _syncService.ReleaseLockAsync(lk);
+                await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, User.GetUserId());
 
                 return NoContent();
             }
