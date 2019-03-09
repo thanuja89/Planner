@@ -29,8 +29,7 @@ namespace Planner.Domain.Repositories
             return await Entities
                 .Where(t => t.ApplicationUserId == userId
                     && t.UpdatedOnUtc > lastSyncedOn)
-                .ToListAsync()
-                .ContinueWith(t => (IEnumerable<ScheduledTask>) t);
+                .ToListAsync();
         }
 
         public Task AddOrUpdateScheduledTasksAsync(IEnumerable<ScheduledTask> scheduledTasks, string userId)
