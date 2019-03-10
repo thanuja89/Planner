@@ -56,6 +56,14 @@ namespace Planner.Mobile.Core.Helpers
                     , startDate.Ticks, endDate.Ticks);
         }
 
+        public Task<List<ScheduledTask>> GetAllFromDateTimeAsync(DateTime dateTime)
+        {
+            return PlannerDatabase.Instance
+                .GetAll<ScheduledTask>()
+                .Where(t => t.ClientUpdatedOn >= dateTime)
+                .ToListAsync();
+        }
+
         public Task<ScheduledTask> GetByIdAsync(Guid id)
         {
             return PlannerDatabase.Instance
@@ -67,6 +75,12 @@ namespace Planner.Mobile.Core.Helpers
         {
             return PlannerDatabase.Instance
                 .InsertAsync(task);
+        }
+
+        public Task InsertAllAsync(IEnumerable<ScheduledTask> tasks)
+        {
+            return PlannerDatabase.Instance
+                .InsertAllAsync(tasks);
         }
 
         public Task UpdateAsync(ScheduledTask task)

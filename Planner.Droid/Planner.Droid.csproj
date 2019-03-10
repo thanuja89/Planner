@@ -67,12 +67,14 @@
     <Compile Include="Fragments\DateTimePickerFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
     <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Receivers\AlarmReceiver.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\SignInActivity.cs" />
     <Compile Include="Activities\SignUpActivity.cs" />
     <Compile Include="Activities\TasksActivity.cs" />
+    <Compile Include="Services\SyncService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

@@ -5,9 +5,9 @@ using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Helpers;
 using Planner.Dto;
-using Planner.Mobile.Core;
 using Planner.Mobile.Core.Helpers;
 using System;
+using Utilities = Planner.Mobile.Core.Utilities;
 
 namespace Planner.Droid.Activities
 {
