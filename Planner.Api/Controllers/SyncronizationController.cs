@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Planner.Api.Extensions;
 using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
@@ -35,11 +36,11 @@ namespace Planner.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(DateTime lastSyncedOn)
+        public async Task<IActionResult> Get([ModelBinder(binderType: typeof(DateTimeModelBinder))] DateTime lastSynced)
         {
             try
             {
-                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync(User.GetUserId(), lastSyncedOn);
+                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync(User.GetUserId(), lastSynced);
 
                 return Ok(_mapper.Map<IEnumerable<GetScheduledTaskDTO>>(newTasks));
             }
@@ -50,8 +51,8 @@ namespace Planner.Api.Controllers
             }
         }
 
-        [HttpPut("{lockId}")]
-        public async Task<IActionResult> Put(Guid lockId, IEnumerable<PutScheduledTaskDTO> taskDtos)
+        [HttpPut]
+        public async Task<IActionResult> Put(IEnumerable<PutScheduledTaskDTO> taskDtos)
         {
             try
             {
