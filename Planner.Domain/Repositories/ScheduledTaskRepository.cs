@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Planner.Domain.DataModels;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using System;
@@ -32,7 +33,7 @@ namespace Planner.Domain.Repositories
                 .ToListAsync();
         }
 
-        public Task AddOrUpdateScheduledTasksAsync(IEnumerable<ScheduledTask> scheduledTasks, string userId)
+        public Task AddOrUpdateScheduledTasksAsync(IEnumerable<ScheduledTaskDataModel> scheduledTasks, string userId)
         {
             if (scheduledTasks == null)
                 return Task.CompletedTask;
@@ -49,14 +50,14 @@ namespace Planner.Domain.Repositories
                 Value = dataTable
             };
 
-            return Context.Database.ExecuteSqlCommandAsync("SP_AddNewScheduledTasks @ChangedRequests, @UserId"
+            return Context.Database.ExecuteSqlCommandAsync("SP_AddNewScheduledTasks @Tasks, @UserId"
                 , new SqlParameter[] { tasksParam, userIdParam });
 
         }
 
         #region Helper methods
 
-        private DataTable MapToDataTable(IEnumerable<ScheduledTask> scheduledTasks)
+        private DataTable MapToDataTable(IEnumerable<ScheduledTaskDataModel> scheduledTasks)
         {
             var dataTable = new DataTable();
 
@@ -66,6 +67,11 @@ namespace Planner.Domain.Repositories
                 {
                     ColumnName = "Id",
                     DataType = typeof(Guid)
+                },
+                new DataColumn()
+                {
+                    ColumnName = "ClientUpdatedOnUtc",
+                    DataType = typeof(DateTime)
                 },
                 new DataColumn()
                 {
@@ -107,6 +113,7 @@ namespace Planner.Domain.Repositories
             foreach (var task in scheduledTasks)
             {
                 dataTable.Rows.Add(task.Id
+                    , task.ClientUpdatedOn
                     , task.Title
                     , task.Note
                     , task.Importance

@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,18 +14,30 @@ namespace Planner.Mobile.Core.Helpers
         public HttpHelper()
         {
             _httpClient = new HttpClient();
+
+            _httpClient.DefaultRequestHeaders
+                .Accept
+                .Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         public async Task<T> GetAsync<T>(string url)
         {
-            var response = await _httpClient.GetAsync($"{ CommonUrls.BASE_URI }{ url}");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return await DeserializeResponseAsync<T>(response);
-            }
+                var response = await _httpClient.GetAsync($"{ CommonUrls.BASE_URI }{ url}");
 
-            return default;
+                if (response.IsSuccessStatusCode)
+                {
+                    return await DeserializeResponseAsync<T>(response);
+                }
+
+                return default;
+            }
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
         }
 
         public async Task<T> PostForResultAsync<T>(string url, object obj)

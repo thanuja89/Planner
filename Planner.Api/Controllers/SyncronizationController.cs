@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Planner.Api.Extensions;
-using Planner.Api.Services;
-using Planner.Domain.Entities;
+using Planner.Domain.DataModels;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
 using Planner.Dto;
@@ -15,9 +13,9 @@ using System.Threading.Tasks;
 namespace Planner.Api.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     [ApiController]
-    public class SyncronizationController : Controller
+    public class SyncronizationController : ControllerBase
     {
         private readonly IScheduledTaskRepository _scheduledTaskRepo;
         private readonly IUnitOfWork _unitOfWork;
@@ -40,7 +38,7 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync(User.GetUserId(), lastSynced);
+                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync("9adf5a07-47e5-4dce-a07a-87ac214be396", lastSynced);
 
                 return Ok(_mapper.Map<IEnumerable<GetScheduledTaskDTO>>(newTasks));
             }
@@ -59,9 +57,9 @@ namespace Planner.Api.Controllers
                 if (taskDtos == null)
                     return BadRequest();
 
-                var tasks = _mapper.Map<IEnumerable<ScheduledTask>>(taskDtos);
+                var tasks = _mapper.Map<IEnumerable<ScheduledTaskDataModel>>(taskDtos);
 
-                await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, User.GetUserId());
+                await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, "9adf5a07-47e5-4dce-a07a-87ac214be396");
 
                 return NoContent();
             }
