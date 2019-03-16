@@ -159,7 +159,8 @@ namespace Planner.Droid.Activities
                 IsAlarm = alarmCheckBox.Checked,
                 Importance = SelectedImportance,
                 Note = noteEditText.Text,
-                Repeat = (Frequency) _selectedRepeatIndex
+                Repeat = (Frequency) _selectedRepeatIndex,
+                ClientUpdatedOn = DateTime.UtcNow
             };
 
             await _taskDataHelper.InsertAsync(task);

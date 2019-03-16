@@ -7,6 +7,7 @@ using Planner.Mobile.Core.Helpers;
 using Planner.Mobile.Core.Services;
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Planner.Droid.Services
@@ -16,6 +17,8 @@ namespace Planner.Droid.Services
     {
         private readonly SyncHelper _syncHelper;
         private readonly ScheduledTaskDataHelper _dataHelper;
+
+        private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         public SyncService()
         {
@@ -31,28 +34,42 @@ namespace Planner.Droid.Services
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
-            Task.Run(SyncAsync);
+            _ = SyncAsync(); // Cannot use async await on this method, and we don't want to block the UI thread. Warning suppressed on purpose.
 
             return StartCommandResult.Sticky;
         }
 
         private async Task SyncAsync()
         {
+            bool lockTaken = false;
+
             try
             {
-                await RetriveAndSaveNewTasksAsync();
+                lockTaken = await _semaphore.WaitAsync(0);
 
-                var lastSynced = Utilities.GetDateTimeFromPreferences(this ,"LastPushedOn");
+                if (lockTaken)
+                {
+                    await RetriveAndSaveNewTasksAsync();
 
-                var newTasksToPush = await _dataHelper.GetAllFromDateTimeAsync(lastSynced);
+                    var lastSynced = Utilities.GetDateTimeFromPreferences(this, "LastPushedOn");
 
-                await _syncHelper.PushAsync(newTasksToPush);
+                    var newTasksToPush = await _dataHelper.GetAllFromDateTimeAsync(lastSynced);
 
-                Utilities.SaveDateTimeToPreferences(this, "LastPushedOn", DateTime.UtcNow);
+                    await _syncHelper.PushAsync(newTasksToPush);
+
+                    Utilities.SaveDateTimeToPreferences(this, "LastPushedOn", DateTime.UtcNow);
+                }               
             }
             catch (Exception ex)
             {
-                throw;
+
+            }
+            finally
+            {
+                if (lockTaken)
+                {
+                    _semaphore.Release(); 
+                }
             }
         }
 
