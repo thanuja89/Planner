@@ -6,6 +6,7 @@ using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Receivers;
+using Planner.Droid.Services;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -170,7 +171,15 @@ namespace Planner.Droid.Activities
                 SetAlarm(task.Start, task);
             }
 
+            StartSyncService();
+
             StartActivity(typeof(TasksActivity));
+        }
+
+        private void StartSyncService()
+        {
+            var intent = new Intent(this, typeof(SyncService));
+            StartService(intent);
         }
 
         private void SetAlarm(DateTime time, ScheduledTask task)

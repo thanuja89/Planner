@@ -30,6 +30,11 @@ namespace Planner.Mobile.Core.Data
             }
         }
 
+        public Task RunInTransactionAsync<T>(Action<SQLiteConnection> action) where T : new()
+        {
+            return _connection.RunInTransactionAsync(action);
+        }
+
         public AsyncTableQuery<T> GetAll<T>() where T : new()
         {
             return _connection.Table<T>();
@@ -48,6 +53,17 @@ namespace Planner.Mobile.Core.Data
         public Task InsertAllAsync<T>(IEnumerable<T> items) where T : new()
         {
             return _connection.InsertAllAsync(items);
+        }
+
+        public Task InsertOrUpdateAllAsync<T>(IEnumerable<T> items) where T : new()
+        {
+            return RunInTransactionAsync<T>(c => 
+            {
+                foreach (var item in items)
+                {
+                    c.InsertOrReplace(item);
+                }
+            });
         }
 
         public Task UpdateAsync<T>(T item) where T : new()

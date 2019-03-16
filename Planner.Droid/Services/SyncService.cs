@@ -49,15 +49,17 @@ namespace Planner.Droid.Services
 
                 if (lockTaken)
                 {
-                    await RetriveAndSaveNewTasksAsync();
+                    var lastSynced = Utilities.GetDateTimeFromPreferences(this, "LastSyncedOn");
 
-                    var lastSynced = Utilities.GetDateTimeFromPreferences(this, "LastPushedOn");
+                    var newTasksFromServer = await _syncHelper.PullAsync(lastSynced);
 
-                    var newTasksToPush = await _dataHelper.GetAllFromDateTimeAsync(lastSynced);
+                    var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(lastSynced);
 
-                    await _syncHelper.PushAsync(newTasksToPush);
+                    await _syncHelper.PushAsync(newTasksInClient);
 
-                    Utilities.SaveDateTimeToPreferences(this, "LastPushedOn", DateTime.UtcNow);
+                    await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer);
+
+                    Utilities.SaveDateTimeToPreferences(this, "LastSyncedOn", DateTime.UtcNow);
                 }               
             }
             catch (Exception ex)
@@ -71,20 +73,6 @@ namespace Planner.Droid.Services
                     _semaphore.Release(); 
                 }
             }
-        }
-
-        private async Task RetriveAndSaveNewTasksAsync()
-        {
-            var lastSynced = Utilities.GetDateTimeFromPreferences(this, "LastPulledOn");
-
-            var tasks = await _syncHelper.PullAsync(lastSynced);
-
-            if (tasks == null || tasks.Count() < 1)
-                return;
-
-            await _dataHelper.InsertAllAsync(tasks);
-
-            Utilities.SaveDateTimeToPreferences(this, "LastPulledOn", DateTime.UtcNow);
-        }      
+        }     
     }
 }

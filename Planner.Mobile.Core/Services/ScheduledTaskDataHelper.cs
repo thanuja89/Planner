@@ -83,6 +83,12 @@ namespace Planner.Mobile.Core.Helpers
                 .InsertAllAsync(tasks);
         }
 
+        public Task InsertOrUpdateAllAsync(IEnumerable<ScheduledTask> tasks)
+        {
+            return PlannerDatabase.Instance
+                .InsertOrUpdateAllAsync(tasks);
+        }
+
         public Task UpdateAsync(ScheduledTask task)
         {
             return PlannerDatabase.Instance

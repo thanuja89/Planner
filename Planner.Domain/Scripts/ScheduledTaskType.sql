@@ -1,20 +1,11 @@
--- ================================
--- Create User-defined Table Type
--- ================================
-USE PlannerDb
+USE [PlannerDb]
 GO
 
-BEGIN TRAN
 
-	IF TYPE_ID(N'ScheduledTaskType') IS NOT NULL
-		DROP TYPE [dbo].[ScheduledTaskType]
-	
-	GO
-	
-	CREATE TYPE [dbo].[ScheduledTaskType] AS TABLE(
+/****** Object:  UserDefinedTableType [dbo].[ScheduledTaskType]    Script Date: 3/16/2019 12:23:05 PM ******/
+CREATE TYPE [dbo].[ScheduledTaskType] AS TABLE(
 		[Id] [uniqueidentifier] NOT NULL,
-		[CreatedOnUtc] [datetime2](7) NOT NULL,
-		[UpdatedOnUtc] [datetime2](7) NULL,
+		[ClientUpdatedOnUtc] [datetime2](7) NULL,
 		[Title] [varchar](255) NULL,
 		[Note] [nvarchar](max) NULL,
 		[Importance] [nvarchar](max) NOT NULL,
@@ -23,5 +14,6 @@ BEGIN TRAN
 		[End] [datetime2](7) NOT NULL,
 		[IsAlarm] [bit] NOT NULL
 	)
+GO
 
-ROLLBACK TRAN
+

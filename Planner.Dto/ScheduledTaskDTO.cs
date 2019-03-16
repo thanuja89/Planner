@@ -31,6 +31,7 @@ namespace Planner.Dto
 
     public class PutScheduledTaskDTO : ScheduledTaskDTO
     {
-
+        public Guid Id { get; set; }
+        public DateTime ClientUpdatedOn { get; set; }
     }
 }

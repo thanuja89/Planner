@@ -37,7 +37,7 @@ namespace Planner.Api.Extensions
 
             DateTime.TryParseExact(value, "yyyyMMddHHmmss"
                 , CultureInfo.InvariantCulture.DateTimeFormat
-                , DateTimeStyles.AssumeUniversal
+                , DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
                 , out DateTime dateTime);
 
             bindingContext.Result = ModelBindingResult.Success(dateTime);
