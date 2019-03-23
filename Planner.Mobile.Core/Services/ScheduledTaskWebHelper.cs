@@ -1,5 +1,6 @@
 ﻿using Planner.Dto;
 using Planner.Mobile.Core.Data;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace Planner.Mobile.Core.Helpers
             return _httpService.GetAsync<IEnumerable<ScheduledTask>>("ScheduledTask");
         }
 
-        public Task<IEnumerable<ScheduledTask>> GetScheduledTaskAsync(int id)
+        public Task<IEnumerable<ScheduledTask>> GetScheduledTaskAsync(Guid id)
         {
             return _httpService.GetAsync<IEnumerable<ScheduledTask>>($"ScheduledTask/{ id }");
         }
@@ -30,12 +31,12 @@ namespace Planner.Mobile.Core.Helpers
             return _httpService.PostAsync("ScheduledTask", task);
         }
 
-        public Task UpdateScheduledTaskAsync(int id, ScheduledTask taskDTO)
+        public Task<HttpResponseMessage> UpdateScheduledTaskAsync(Guid id, ScheduledTask taskDTO)
         {
             return _httpService.PutAsync($"ScheduledTask/{ id }", taskDTO);
         }
 
-        public Task DeleteScheduledTaskAsync(int id)
+        public Task<HttpResponseMessage> DeleteScheduledTaskAsync(Guid id)
         {
             return _httpService.DeleteAsync($"ScheduledTask/{ id }");
         }

@@ -176,22 +176,22 @@ namespace Planner.Droid.Activities
 
             //StartSyncService();
 
-            PostToServer(task);// warning suppressed on purpose
+            _ = PostToServerAsync(task); // warning suppressed on purpose
 
             StartActivity(typeof(TasksActivity));
         }
 
-        private void PostToServer(ScheduledTask task)
+        private Task PostToServerAsync(ScheduledTask task)
         {
-            _ = _taskWebHelper.CreateScheduledTaskAsync(task)
-                    .ContinueWith(t => 
+            return _taskWebHelper.CreateScheduledTaskAsync(task)
+                .ContinueWith(t => 
+                {
+                    if (t.Result.IsSuccessStatusCode)
                     {
-                        if (t.Result.IsSuccessStatusCode)
-                        {
-                            _taskDataHelper.UpdateSyncStatusAsync(task.Id);
-                        }
-                    }, 
-                    TaskContinuationOptions.OnlyOnRanToCompletion);
+                        _taskDataHelper.UpdateSyncStatusAsync(task.Id);
+                    }
+                }, 
+                TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         private void StartSyncService()

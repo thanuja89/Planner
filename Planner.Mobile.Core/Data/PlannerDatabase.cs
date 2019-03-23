@@ -94,9 +94,9 @@ namespace Planner.Mobile.Core.Data
             return _connection.ExecuteAsync(command, objs);
         }
 
-        public Task DeleteAsync<T>(T item) where T : new()
+        public Task DeleteAsync<T>(Guid id) where T : new()
         {
-            return _connection.DeleteAsync(item);
+            return _connection.DeleteAsync<T>(id);
         }
 
         private void InitDatabase()
