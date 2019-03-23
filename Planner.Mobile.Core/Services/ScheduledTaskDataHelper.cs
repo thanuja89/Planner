@@ -19,6 +19,7 @@ namespace Planner.Mobile.Core.Helpers
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
+                .Where(t => !t.IsDeleted)
                 .Take(take)
                 .ToListAsync();
         }
@@ -103,10 +104,20 @@ namespace Planner.Mobile.Core.Helpers
                                        WHERE Id = ?", id);
         }
 
-        public Task DeleteAsync(ScheduledTask task)
+        public Task MarkAsDeletedAsync(Guid id)
         {
             return PlannerDatabase.Instance
-                .DeleteAsync(task);
+                .ExecuteCommandAsync(@"UPDATE ScheduledTask
+                                        SET IsDeleted = 1
+                                       WHERE Id = ?", id);
+        }
+
+        public Task DeleteAsync(Guid id)
+        {
+            return PlannerDatabase.Instance
+                .ExecuteCommandAsync(@"DELETE 
+                                       FROM ScheduledTask
+                                       WHERE Id = ?", id);
         }
     }
 }

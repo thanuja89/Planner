@@ -6,6 +6,7 @@ using Android.Support.V7.Widget;
 using Planner.Droid.Controls;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,10 +21,12 @@ namespace Planner.Droid.Activities
         private TaskViewAdapter _adapter;
         private FloatingActionButton createButton;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
+        private readonly ScheduledTaskWebHelper _taskWebHelper;
 
         public TasksActivity()
         {
             _taskDataHelper = new ScheduledTaskDataHelper();
+            _taskWebHelper = new ScheduledTaskWebHelper();
             _layoutManager = new LinearLayoutManager(this);
         }
 
@@ -62,7 +65,24 @@ namespace Planner.Droid.Activities
 
         private async void Adapter_ItemDeleteClick(object sender, int e)
         {
-            await _taskDataHelper.DeleteAsync(_tasks[e]);
+            Guid id = _tasks[e].Id;
+
+            await _taskDataHelper.MarkAsDeletedAsync(id);
+
+            _ = UpdateServerAsync(id); // warning suppressed on purpose
+        }
+
+        private Task UpdateServerAsync(Guid id)
+        {
+            return _taskWebHelper.DeleteScheduledTaskAsync(id)
+                .ContinueWith(t =>
+                {
+                    if (t.Result.IsSuccessStatusCode)
+                    {
+                        _taskDataHelper.DeleteAsync(id);
+                    }
+                },
+                TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         private void FindViews()
