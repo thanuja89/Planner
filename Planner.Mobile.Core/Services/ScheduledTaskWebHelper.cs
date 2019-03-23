@@ -1,5 +1,7 @@
 ﻿using Planner.Dto;
+using Planner.Mobile.Core.Data;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Planner.Mobile.Core.Helpers
@@ -13,24 +15,24 @@ namespace Planner.Mobile.Core.Helpers
             _httpService = new HttpHelper();
         }
 
-        public Task<IEnumerable<GetScheduledTaskDTO>> GetScheduledTasksAsync()
+        public Task<IEnumerable<ScheduledTask>> GetScheduledTasksAsync()
         {
-            return _httpService.GetAsync<IEnumerable<GetScheduledTaskDTO>>("ScheduledTask");
+            return _httpService.GetAsync<IEnumerable<ScheduledTask>>("ScheduledTask");
         }
 
-        public Task<IEnumerable<GetScheduledTaskDTO>> GetScheduledTaskAsync(int id)
+        public Task<IEnumerable<ScheduledTask>> GetScheduledTaskAsync(int id)
         {
-            return _httpService.GetAsync<IEnumerable<GetScheduledTaskDTO>>($"ScheduledTask/{ id }");
+            return _httpService.GetAsync<IEnumerable<ScheduledTask>>($"ScheduledTask/{ id }");
         }
 
-        public Task<GetScheduledTaskDTO> CreateScheduledTaskAsync(ScheduledTaskDTO taskDTO)
+        public Task<HttpResponseMessage> CreateScheduledTaskAsync(ScheduledTask task)
         {
-            return _httpService.PostForResultAsync<GetScheduledTaskDTO>("ScheduledTask", taskDTO);
+            return _httpService.PostAsync("ScheduledTask", task);
         }
 
-        public Task<GetScheduledTaskDTO> UpdateScheduledTaskAsync(int id, ScheduledTaskDTO taskDTO)
+        public Task UpdateScheduledTaskAsync(int id, ScheduledTask taskDTO)
         {
-            return _httpService.PutForResultAsync<GetScheduledTaskDTO>($"ScheduledTask/{ id }", taskDTO);
+            return _httpService.PutAsync($"ScheduledTask/{ id }", taskDTO);
         }
 
         public Task DeleteScheduledTaskAsync(int id)

@@ -21,7 +21,7 @@ namespace Planner.Domain.Repositories
         {
             return await Entities
                 .AsNoTracking()
-                .Where(t => t.ApplicationUserId == userId)
+                .Where(t => t.ApplicationUserId == userId && !t.IsDeleted)
                 .ToListAsync();
         }
 
@@ -107,6 +107,11 @@ namespace Planner.Domain.Repositories
                 {
                     ColumnName = "IsAlarm",
                     DataType = typeof(bool)
+                },
+                new DataColumn()
+                {
+                    ColumnName = "IsDeleted",
+                    DataType = typeof(bool)
                 }
             });
 
@@ -120,7 +125,8 @@ namespace Planner.Domain.Repositories
                     , task.Repeat
                     , task.Start
                     , task.End
-                    , task.IsAlarm);
+                    , task.IsAlarm
+                    , task.IsDeleted);
             }
 
             return dataTable;

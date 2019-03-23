@@ -18,6 +18,15 @@ namespace Planner.Mobile.Core.Helpers
             _httpClient.DefaultRequestHeaders
                 .Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            _httpClient.DefaultRequestHeaders
+                .Authorization = new AuthenticationHeaderValue("bearer"
+                    , "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy" +
+                    "8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjlhZGY1YTA3LTQ3ZTUtNGRjZS1hMDdhL" +
+                    "Tg3YWMyMTRiZTM5NiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL" +
+                    "25hbWUiOiJ0aGFudWphODl4IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9j" +
+                    "bGFpbXMvZW1haWxhZGRyZXNzIjoidGhhbnVqYUBnbWFpbC5jb20iLCJleHAiOjE1NTMzMTkzNzAsImlzcyI6Imh0dHA" +
+                    "6Ly9sb2NhbGhvc3Q6NDQzNjMvIiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo0NDM2My8ifQ.4LAqhlLrUHAjLGpO7w0YsrZ4cdALG3kaAffVJIjB1Vw");
         }
 
         public async Task<T> GetAsync<T>(string url)

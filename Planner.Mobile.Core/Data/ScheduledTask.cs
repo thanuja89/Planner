@@ -16,6 +16,8 @@ namespace Planner.Mobile.Core.Data
         public DateTime End { get; set; }
         public bool IsAlarm { get; set; }
         public DateTime ClientUpdatedOn { get; set; }
+        public bool IsDeleted { get; set; }
+        public bool IsChangesSynced { get; set; }
     }
 
     public enum Importance

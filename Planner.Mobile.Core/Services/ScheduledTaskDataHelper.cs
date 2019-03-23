@@ -95,6 +95,14 @@ namespace Planner.Mobile.Core.Helpers
                 .UpdateAsync(task);
         }
 
+        public Task UpdateSyncStatusAsync(Guid id)
+        {
+            return PlannerDatabase.Instance
+                .ExecuteCommandAsync(@"UPDATE ScheduledTask
+                                        SET IsChangesSynced = 1
+                                       WHERE Id = ?", id);
+        }
+
         public Task DeleteAsync(ScheduledTask task)
         {
             return PlannerDatabase.Instance

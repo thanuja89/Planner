@@ -66,9 +66,32 @@ namespace Planner.Mobile.Core.Data
             });
         }
 
+        public Task InsertOrUpdateAllTasksAsync(IEnumerable<ScheduledTask> items)
+        {
+            return RunInTransactionAsync<ScheduledTask>(c =>
+            {
+                foreach (var item in items)
+                {
+                    if (item.IsDeleted)
+                    {
+                        c.Delete(item);
+                    }
+                    else
+                    {
+                        c.InsertOrReplace(item);
+                    }                                         
+                }
+            });
+        }
+
         public Task UpdateAsync<T>(T item) where T : new()
         {
             return _connection.UpdateAsync(item);
+        }
+
+        public Task ExecuteCommandAsync(string command, params object[] objs)
+        {
+            return _connection.ExecuteAsync(command, objs);
         }
 
         public Task DeleteAsync<T>(T item) where T : new()

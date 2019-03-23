@@ -10,6 +10,7 @@ using Planner.Droid.Services;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
+using System.Threading.Tasks;
 
 namespace Planner.Droid.Activities
 {
@@ -40,6 +41,7 @@ namespace Planner.Droid.Activities
 
         private int _selectedRepeatIndex = 0;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
+        private readonly ScheduledTaskWebHelper _taskWebHelper;
 
         public Mobile.Core.Data.Importance SelectedImportance
         {
@@ -65,6 +67,7 @@ namespace Planner.Droid.Activities
         public CreateTaskActivity()
         {
             _taskDataHelper = new ScheduledTaskDataHelper();
+            _taskWebHelper = new ScheduledTaskWebHelper();
 
             _items = Enum.GetNames(typeof(Frequency));
         }
@@ -160,7 +163,7 @@ namespace Planner.Droid.Activities
                 IsAlarm = alarmCheckBox.Checked,
                 Importance = SelectedImportance,
                 Note = noteEditText.Text,
-                Repeat = (Frequency) _selectedRepeatIndex,
+                Repeat = (Frequency)_selectedRepeatIndex,
                 ClientUpdatedOn = DateTime.UtcNow
             };
 
@@ -171,9 +174,24 @@ namespace Planner.Droid.Activities
                 SetAlarm(task.Start, task);
             }
 
-            StartSyncService();
+            //StartSyncService();
+
+            PostToServer(task);// warning suppressed on purpose
 
             StartActivity(typeof(TasksActivity));
+        }
+
+        private void PostToServer(ScheduledTask task)
+        {
+            _ = _taskWebHelper.CreateScheduledTaskAsync(task)
+                    .ContinueWith(t => 
+                    {
+                        if (t.Result.IsSuccessStatusCode)
+                        {
+                            _taskDataHelper.UpdateSyncStatusAsync(task.Id);
+                        }
+                    }, 
+                    TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         private void StartSyncService()

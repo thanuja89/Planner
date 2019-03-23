@@ -16,6 +16,7 @@ namespace Planner.Domain.Entities
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public bool IsAlarm { get; set; }
+        public bool IsDeleted { get; set; }
         public DateTime? UpdatedOnUtc { get; set; }
 
         [Required]
