@@ -35,8 +35,6 @@ namespace Planner.Domain
         private void Seed()
         {
             Database.ExecuteSqlCommand(@"
-                USE PlannerDb;
-                
                 BEGIN TRAN
                 
                 	IF TYPE_ID(N'ScheduledTaskType') IS NOT NULL
@@ -48,21 +46,20 @@ namespace Planner.Domain
 							DROP PROCEDURE [dbo].[SP_AddNewScheduledTasks]
 
                 		DROP TYPE [dbo].[ScheduledTaskType]                       
-                    END               	
-
+                    END 
                     CREATE TYPE [dbo].[ScheduledTaskType] AS TABLE(
-	                	[Id] [uniqueidentifier] NOT NULL,
-	                	[ClientUpdatedOnUtc] [datetime2](7) NULL,
-	                	[Title] [varchar](255) NULL,
-	                	[Note] [nvarchar](max) NULL,
-	                	[Importance] [nvarchar](max) NOT NULL,
-	                	[Repeat] [nvarchar](max) NOT NULL,
-	                	[Start] [datetime2](7) NOT NULL,
-	                	[End] [datetime2](7) NOT NULL,
-	                	[IsAlarm] [bit] NOT NULL
-	                )
-                
-                ROLLBACK TRAN");
+                    		[Id] [uniqueidentifier] NOT NULL,
+                    		[ClientUpdatedOnUtc] [datetime2](7) NULL,
+                    		[Title] [varchar](255) NULL,
+                    		[Note] [nvarchar](max) NULL,
+                    		[Importance] [nvarchar](max) NOT NULL,
+                    		[Repeat] [nvarchar](max) NOT NULL,
+                    		[Start] [datetime2](7) NOT NULL,
+                    		[End] [datetime2](7) NOT NULL,
+                    		[IsAlarm] [bit] NOT NULL,
+                    		[IsDeleted] [bit] NOT NULL
+                    	)
+                COMMIT TRAN");
 
             Database.ExecuteSqlCommand(@"
                 CREATE OR ALTER   PROCEDURE [dbo].[SP_AddNewScheduledTasks](@Tasks [ScheduledTaskType] READONLY, @UserId VARCHAR(100)) 
@@ -75,50 +72,61 @@ namespace Planner.Domain
                     
                     		BEGIN TRANSACTION
                     
-                    		MERGE ScheduledTasks S
-                    		USING @Tasks T
-                    			ON T.Id = S.Id
-                    
-                    		WHEN MATCHED AND S.[UpdatedOnUtc] < T.[ClientUpdatedOnUtc] THEN
+                    		-- Insert
+
+							INSERT INTO ScheduledTasks  
+							(
+                    			 [Id]
+                    			,[CreatedOnUtc]
+                    			,[UpdatedOnUtc]
+                    			,[Title]
+                    			,[Note]
+                    			,[Importance]
+                    			,[Repeat]
+                    			,[Start]
+                    			,[End]
+                    			,[IsAlarm]
+                    			,[ApplicationUserId]
+                    		)
+                    		SELECT 
+                    			 T.[Id]
+                    			,GETUTCDATE()
+                    			,GETUTCDATE()
+                    			,T.[Title]
+                    			,T.[Note]
+                    			,T.[Importance]
+                    			,T.[Repeat]
+                    			,T.[Start]
+                    			,T.[End]
+                    			,T.[IsAlarm]
+                    			,@UserId
                     		
-                    			UPDATE SET
-                    				  S.Title = T.Title
-                    				 ,S.Note = T.Note
-                    				 ,S.Importance = T.Importance
-                    				 ,S.[Repeat] = T.[Repeat]
-                    				 ,S.[Start] = T.[Start]
-                    				 ,S.[End] = T.[End]
-                    				 ,S.IsAlarm = T.IsAlarm
-                    				 ,S.[UpdatedOnUtc] = GETUTCDATE()
-                    
-                    		WHEN NOT MATCHED THEN
-                    
-                    			INSERT (
-                    				 [Id]
-                    				,[CreatedOnUtc]
-                    				,[UpdatedOnUtc]
-                    				,[Title]
-                    				,[Note]
-                    				,[Importance]
-                    				,[Repeat]
-                    				,[Start]
-                    				,[End]
-                    				,[IsAlarm]
-                    				,[ApplicationUserId]
-                    			)
-                    			VALUES (
-                    				 T.[Id]
-                    				,GETUTCDATE()
-                    				,GETUTCDATE()
-                    				,T.[Title]
-                    				,T.[Note]
-                    				,T.[Importance]
-                    				,T.[Repeat]
-                    				,T.[Start]
-                    				,T.[End]
-                    				,T.[IsAlarm]
-                    				,@UserId
-                    			);
+							FROM @Tasks T
+							WHERE NOT EXISTS 
+								(
+									SELECT 1 
+									FROM ScheduledTasks
+									WHERE Id = T.Id
+								)
+								AND T.IsDeleted = 0;
+							
+							
+							-- Update & Delete
+
+							UPDATE S 
+								SET
+                    				  Title = T.Title
+                    				 ,Note = T.Note
+                    				 ,Importance = T.Importance
+                    				 ,[Repeat] = T.[Repeat]
+                    				 ,[Start] = T.[Start]
+                    				 ,[End] = T.[End]
+                    				 ,IsAlarm = T.IsAlarm
+                    				 ,[UpdatedOnUtc] = GETUTCDATE()
+									 ,IsDeleted = T.IsDeleted
+							FROM ScheduledTasks S
+								INNER JOIN @Tasks T ON S.Id = T.Id
+							WHERE T.[ClientUpdatedOnUtc] > S.[UpdatedOnUtc]
                     
                     		COMMIT TRANSACTION;
                     

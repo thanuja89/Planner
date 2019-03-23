@@ -73,7 +73,7 @@ namespace Planner.Droid.Controls
             // Set the ImageView and TextView in this ViewHolder's CardView 
             // from this position in the photo album: 
             vh.Title.Text = _tasks[position].Title;
-            vh.Start.Text = _tasks[position].Start.ToLongDateString();
+            vh.Start.Text = _tasks[position].Start == DateTime.MinValue ? "N/A" : _tasks[position].Start.ToLongDateString();
             vh.Repeat.Text = _tasks[position].Repeat.ToString();
         }
 

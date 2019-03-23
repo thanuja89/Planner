@@ -22,16 +22,22 @@ namespace Planner.Dto
     public class GetScheduledTaskDTO : ScheduledTaskDTO
     {
         public Guid Id { get; set; }
+        public bool IsDeleted { get; set; }
     }
 
     public class PostScheduledTaskDTO : ScheduledTaskDTO
     {
-        
+        public Guid Id { get; set; }
     }
 
     public class PutScheduledTaskDTO : ScheduledTaskDTO
     {
         public Guid Id { get; set; }
         public DateTime ClientUpdatedOn { get; set; }
+    }
+
+    public class SyncScheduledTaskDTO : PutScheduledTaskDTO
+    {
+        public bool IsDeleted { get; set; }
     }
 }
