@@ -39,7 +39,7 @@ namespace Planner.Droid.Controls
     {
         // Event handler for item clicks:
         public event EventHandler<int> ItemClick;
-        public event EventHandler<int> ItemDeleteClick;
+        public event EventHandler<Guid> ItemDeleteClick;
 
         // Underlying data set (a photo album):
         private List<ScheduledTask> _tasks;
@@ -91,7 +91,7 @@ namespace Planner.Droid.Controls
 
         void OnDeleteClick(int position)
         {
-            ItemDeleteClick?.Invoke(this, position);
+            ItemDeleteClick?.Invoke(this, _tasks[position].Id);
 
             _tasks.Remove(_tasks[position]);
             NotifyItemRemoved(position);

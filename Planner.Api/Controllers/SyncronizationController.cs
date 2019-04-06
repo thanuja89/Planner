@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Planner.Api.Extensions;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 namespace Planner.Api.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class SyncronizationController : ControllerBase
     {
@@ -38,7 +39,7 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync("9adf5a07-47e5-4dce-a07a-87ac214be396", lastSynced);
+                var newTasks = await _scheduledTaskRepo.GetNewScheduledTasksForUserAsync(User.GetUserId(), lastSynced);
 
                 return Ok(_mapper.Map<IEnumerable<GetScheduledTaskDTO>>(newTasks));
             }
@@ -59,7 +60,8 @@ namespace Planner.Api.Controllers
 
                 var tasks = _mapper.Map<IEnumerable<ScheduledTaskDataModel>>(taskDtos);
 
-                await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, "9adf5a07-47e5-4dce-a07a-87ac214be396");
+                // "9adf5a07-47e5-4dce-a07a-87ac214be396"
+                await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, User.GetUserId());
 
                 return NoContent();
             }

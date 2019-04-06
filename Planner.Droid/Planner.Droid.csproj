@@ -60,6 +60,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\EditTaskActivity.cs" />
     <Compile Include="Controls\TaskRecyclerView.cs" />
     <Compile Include="Activities\CreateTaskActivity.cs" />
     <Compile Include="AppConstants.cs" />
