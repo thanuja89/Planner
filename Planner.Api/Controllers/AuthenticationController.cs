@@ -8,7 +8,6 @@ using Planner.Domain.Entities;
 using Planner.Dto;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
@@ -16,19 +15,19 @@ using System.Threading.Tasks;
 
 namespace Planner.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IConfiguration _config;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<AuthController> _logger;
+        private readonly ILogger<AuthenticationController> _logger;
 
-        public AuthController(IConfiguration config
+        public AuthenticationController(IConfiguration config
             , SignInManager<ApplicationUser> signInManager
             , UserManager<ApplicationUser> userManager
-            , ILogger<AuthController> logger)
+            , ILogger<AuthenticationController> logger)
         {
             _config = config;
             _signInManager = signInManager;
