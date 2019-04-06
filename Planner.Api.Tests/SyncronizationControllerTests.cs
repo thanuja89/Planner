@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Planner.Api.Controllers;
+using Planner.Domain.DataModels;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
-using Planner.Domain.UnitOfWork;
 using Planner.Dto;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Planner.Api.Tests
@@ -23,12 +23,11 @@ namespace Planner.Api.Tests
         private Mock<IScheduledTaskRepository> _mockRepo;
         private Mock<IMapper> _mockMapper;
         private Mock<ILogger<SyncronizationController>> _mockLogger;
-        private Mock<IUnitOfWork> _mockLUOW;
-        //private Mock<IUrlHelper> _urlHelper;
         private SyncronizationController _sut;
 
+        #region Get Method Tests
         [Fact]
-        public async void Get_WhenCalled_CallsRepoAndMapperWithCorrectArgs()
+        public async Task Get_WhenCalled_CallsRepoAndMapperWithCorrectArgs()
         {
             // Arrange
             SetUp();
@@ -53,7 +52,7 @@ namespace Planner.Api.Tests
         }
 
         [Fact]
-        public async void Get_WhenCalled_ReturnsOkWithTaskDTOs()
+        public async Task Get_WhenCalled_ReturnsOkWithTaskDTOs()
         {
             // Arrange
             SetUp();
@@ -65,6 +64,79 @@ namespace Planner.Api.Tests
             var okResult = Assert.IsType<OkObjectResult>(result);
             Assert.IsAssignableFrom<IEnumerable<GetScheduledTaskDTO>>(okResult.Value);
         }
+        #endregion
+
+        #region Put Method Tests
+        [Fact]
+        public async Task Put_WhenCalled_CallsRepoAndMapperWithCorrectArgs()
+        {
+            // Arrange
+            SetUp();
+
+            var tasks = new ScheduledTaskDataModel[] {
+                new ScheduledTaskDataModel()
+                {
+                    //Id = 1,
+                    Start = DateTime.UtcNow,
+                    End = DateTime.UtcNow
+                }
+            };
+
+            var taskDTOs = new PutScheduledTaskDTO[] {
+                new PutScheduledTaskDTO()
+                {
+                    //Id = 1,
+                    Start = DateTime.UtcNow,
+                    End = DateTime.UtcNow
+                }
+            };
+
+            _mockMapper.Setup(m => m.Map<IEnumerable<ScheduledTaskDataModel>>(It.IsAny<IEnumerable<PutScheduledTaskDTO>>()))
+                .Returns(tasks);
+
+            // Act
+            var result = await _sut.Put(taskDTOs);
+
+            // Assert
+            _mockMapper.Verify(m => m.Map<IEnumerable<ScheduledTaskDataModel>>(taskDTOs));
+            _mockRepo.Verify(m => m.AddOrUpdateScheduledTasksAsync(tasks, _userId));
+        }
+
+        [Fact]
+        public async Task Put_WhenCalledWithValidArgs_ReturnsNoContent()
+        {
+            // Arrange
+            SetUp();
+
+            var taskDTOs = new PutScheduledTaskDTO[] {
+                new PutScheduledTaskDTO()
+                {
+                    //Id = 1,
+                    Start = DateTime.UtcNow,
+                    End = DateTime.UtcNow
+                }
+            };
+
+            // Act
+            var result = await _sut.Put(taskDTOs);
+
+            // Assert
+            Assert.IsAssignableFrom<NoContentResult>(result);
+        }
+
+        [Fact]
+        public async Task Put_WhenCalledWithInValidArgs_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            // Act
+            var result = await _sut.Put(null);
+
+            // Assert
+            Assert.IsAssignableFrom<BadRequestResult>(result);
+        }
+        #endregion
 
         #region Private Methods
         private void SetUp()
@@ -75,15 +147,11 @@ namespace Planner.Api.Tests
             _mockRepo = new Mock<IScheduledTaskRepository>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILogger<SyncronizationController>>();
-            _mockLUOW = new Mock<IUnitOfWork>();
 
             var claimsPrinc = new ClaimsPrincipal(new ClaimsIdentity(
                 new Claim[] { new Claim(ClaimTypes.NameIdentifier, _userId) }));
 
-            //_urlHelper = new Mock<IUrlHelper>();
-            //_urlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns("http://localhost/api/ScheduledTask/1");
-
-            _sut = new SyncronizationController(_mockRepo.Object, _mockLUOW.Object, _mockMapper.Object, _mockLogger.Object)
+            _sut = new SyncronizationController(_mockRepo.Object, _mockMapper.Object, _mockLogger.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
@@ -92,7 +160,6 @@ namespace Planner.Api.Tests
                         User = claimsPrinc
                     }
                 },
-                //Url = _urlHelper.Object
             };
         }
         #endregion
