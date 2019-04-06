@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Planner.Api.Extensions;
 using Planner.Domain.DataModels;
 using Planner.Domain.Repositories.Interfaces;
-using Planner.Domain.UnitOfWork;
 using Planner.Dto;
 using System;
 using System.Collections.Generic;
@@ -19,17 +18,14 @@ namespace Planner.Api.Controllers
     public class SyncronizationController : ControllerBase
     {
         private readonly IScheduledTaskRepository _scheduledTaskRepo;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<SyncronizationController> _logger;
 
         public SyncronizationController(IScheduledTaskRepository scheduledTaskRepo
-            , IUnitOfWork unitOfWork
             , IMapper mapper
             , ILogger<SyncronizationController> logger)
         {
             _scheduledTaskRepo = scheduledTaskRepo;
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
         }

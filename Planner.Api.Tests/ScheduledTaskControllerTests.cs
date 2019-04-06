@@ -11,6 +11,7 @@ using Planner.Dto;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Planner.Api.Tests
@@ -25,9 +26,9 @@ namespace Planner.Api.Tests
         private Mock<IUrlHelper> _urlHelper;
         private ScheduledTaskController _sut;
 
-        #region GET Tests
+        #region GET Method Tests
         [Fact]
-        public async void Get_ValidPrinciple_CallsRepoWithCorrectArgs()
+        public async Task Get_ValidPrinciple_CallsRepoWithCorrectArgs()
         {
             // Arrange
             SetUp();
@@ -40,7 +41,7 @@ namespace Planner.Api.Tests
         }
 
         [Fact]
-        public async void Get_ValidPrinciple_ReturnsOkWithTaskDTOs()
+        public async Task Get_ValidPrinciple_ReturnsOkWithTaskDTOs()
         {
             // Arrange
             SetUp();
@@ -54,7 +55,7 @@ namespace Planner.Api.Tests
         }
 
         [Fact]
-        public async void Get_ValidId_CallsRepoWithCorrectArgs()
+        public async Task Get_ValidId_CallsRepoWithCorrectArgs()
         {
             // Arrange
             SetUp();
@@ -68,7 +69,7 @@ namespace Planner.Api.Tests
         }
 
         [Fact]
-        public async void Get_ValidId_ReturnsOk()
+        public async Task Get_ValidId_ReturnsOk()
         {
             // Arrange
             SetUp();
@@ -83,7 +84,7 @@ namespace Planner.Api.Tests
         }
 
         [Fact]
-        public async void Get_InvalidId_ReturnsNotFound()
+        public async Task Get_InvalidId_ReturnsNotFound()
         {
             // Arrange
             SetUp();
@@ -99,9 +100,9 @@ namespace Planner.Api.Tests
 
         #endregion
 
-        #region POST Tests
+        #region POST Method Tests
         [Fact]
-        public async void Post_ValidObject_CallsMapperAndRepoWithCorrectArgsAndReturnsOk()
+        public async Task Post_ValidObject_CallsMapperAndRepoWithCorrectArgsAndReturnsOk()
         {
             // Arrange
             SetUp();
@@ -133,9 +134,9 @@ namespace Planner.Api.Tests
         }
         #endregion
 
-        #region PUT Tests
+        #region PUT Method Tests
         [Fact]
-        public async void Put_ValidObject_CallsMapperAndRepoWithCorrectArgsAndReturnsOk()
+        public async Task Put_ValidObject_CallsMapperAndRepoWithCorrectArgsAndReturnsOk()
         {
             // Arrange
             SetUp();
@@ -169,9 +170,9 @@ namespace Planner.Api.Tests
         }
         #endregion
 
-        #region PUT Tests
+        #region PUT Method Tests
         [Fact]
-        public async void Delete_ValidObject_CallsRepoWithCorrectArgsAndReturnsNoContent()
+        public async Task Delete_ValidObject_CallsRepoWithCorrectArgsAndReturnsNoContent()
         {
             // Arrange
             SetUp();
