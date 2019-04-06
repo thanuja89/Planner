@@ -9,6 +9,7 @@ namespace Planner.Droid.Fragments
     public class DateTimePickerFragment : DialogFragment
     {
         public const string TAG = "X:DateTimePickerFragment";
+        private DateTime? _initialDate;
 
         private EventHandler<DateTime> _okButtonHandler;
         private DatePicker datePicker;
@@ -16,11 +17,12 @@ namespace Planner.Droid.Fragments
         private Button cancelButton;
         private Button okButton;
 
-        public static DateTimePickerFragment NewInstance(EventHandler<DateTime> okButtonHandler)
+        public static DateTimePickerFragment NewInstance(EventHandler<DateTime> okButtonHandler, DateTime? date = null)
         {
             DateTimePickerFragment frag = new DateTimePickerFragment
             {
-                _okButtonHandler = okButtonHandler
+                _okButtonHandler = okButtonHandler,
+                _initialDate = date
             };
             return frag;
         }
@@ -40,9 +42,9 @@ namespace Planner.Droid.Fragments
 
         private void SetDefaultValues()
         {
-            var tommorow = DateTime.Now.AddDays(1);
+            var date = _initialDate ?? DateTime.Now.AddDays(1);
 
-            datePicker.UpdateDate(tommorow.Year, tommorow.Month - 1, tommorow.Day);
+            datePicker.UpdateDate(date.Year, date.Month - 1, date.Day);
         }
 
         private void HandleEvents()

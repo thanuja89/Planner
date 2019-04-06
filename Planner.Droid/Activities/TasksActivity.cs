@@ -63,13 +63,13 @@ namespace Planner.Droid.Activities
             }
         }
 
-        private async void Adapter_ItemDeleteClick(object sender, int e)
+        private async void Adapter_ItemDeleteClick(object sender, Guid e)
         {
-            Guid id = _tasks[e].Id;
+            //Guid id = _tasks[e].Id;
 
-            await _taskDataHelper.MarkAsDeletedAsync(id);
+            await _taskDataHelper.MarkAsDeletedAsync(e);
 
-            _ = UpdateServerAsync(id); // warning suppressed on purpose
+            _ = UpdateServerAsync(e); // warning suppressed on purpose
         }
 
         private Task UpdateServerAsync(Guid id)
