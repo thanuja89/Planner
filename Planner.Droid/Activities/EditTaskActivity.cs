@@ -5,6 +5,7 @@ using Android.Support.V7.App;
 using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
+using Planner.Droid.Helpers;
 using Planner.Droid.Receivers;
 using Planner.Droid.Services;
 using Planner.Mobile.Core.Data;
@@ -18,7 +19,6 @@ namespace Planner.Droid.Activities
     public class EditTaskActivity : AppCompatActivity
     {
         private EditText titleEditText;
-        private EditText descriptionEditText;
         private EditText noteEditText;
         private TableRow startDateRow;
         private TableRow endDateRow;
@@ -27,7 +27,6 @@ namespace Planner.Droid.Activities
         private TextView startTimeTextView;
         private TextView endTimeTextView;
         private CheckBox alarmCheckBox;
-        private CheckBox notifyCheckBox;
         private RadioGroup importanceRadioGroup;
         private LinearLayout repeatLayout;
         private TextView repeatSelectedTextView;
@@ -110,7 +109,6 @@ namespace Planner.Droid.Activities
         public void FindViews()
         {
             titleEditText = FindViewById<EditText>(Resource.Id.createTask_TitleEditText);
-            descriptionEditText = FindViewById<EditText>(Resource.Id.createTask_DescriptionEditText);
             noteEditText = FindViewById<EditText>(Resource.Id.createTask_NoteEditText);
             startDateRow = FindViewById<TableRow>(Resource.Id.createTask_StartDateRow);
             endDateRow = FindViewById<TableRow>(Resource.Id.createTask_EndDateRow);
@@ -119,7 +117,7 @@ namespace Planner.Droid.Activities
             startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
             endTimeTextView = FindViewById<TextView>(Resource.Id.createTask_EndTimeTextView);
             alarmCheckBox = FindViewById<CheckBox>(Resource.Id.createTask_AlarmCheckBox);
-            notifyCheckBox = FindViewById<CheckBox>(Resource.Id.createTask_AlertCheckBox);
+
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
             repeatLayout = FindViewById<LinearLayout>(Resource.Id.createTask_RepeatLayout);
             repeatSelectedTextView = FindViewById<TextView>(Resource.Id.createTask_RepeatSelectedTextView);
@@ -129,17 +127,15 @@ namespace Planner.Droid.Activities
         private void SetValues()
         {
             titleEditText.Text = _scheduledTask.Title;
-            // descriptionEditText.Text = _scheduledTask.Description;
             noteEditText.Text = _scheduledTask.Note;
 
-            startDateTextView.Text = _scheduledTask.Start.ToShortDateString();
-            startTimeTextView.Text = _scheduledTask.Start.ToShortTimeString();
+            startDateTextView.Text = _scheduledTask.Start == DateTime.MinValue ? "-" : _scheduledTask.Start.ToShortDateString();
+            startTimeTextView.Text = _scheduledTask.Start == DateTime.MinValue ? "-" : _scheduledTask.Start.ToShortTimeString();
 
-            endDateTextView.Text = _scheduledTask.End.ToShortDateString();
-            endTimeTextView.Text = _scheduledTask.End.ToShortTimeString();
+            endDateTextView.Text = _scheduledTask.End == DateTime.MinValue ? "-" : _scheduledTask.End.ToShortDateString();
+            endTimeTextView.Text = _scheduledTask.End == DateTime.MinValue ? "-" : _scheduledTask.End.ToShortTimeString();
 
             alarmCheckBox.Selected = _scheduledTask.IsAlarm;
-            //notifyCheckBox.Selected = _scheduledTask.IsNotify;
 
             SelectedImportance = _scheduledTask.Importance;
 
@@ -199,36 +195,32 @@ namespace Planner.Droid.Activities
             if (!ValidateInputs())
                 return;
 
-            var task = new ScheduledTask()
-            {
-                Id = Guid.NewGuid(),
-                Title = titleEditText.Text,
-                Start = _startDate,
-                End = _endDate,
-                IsAlarm = alarmCheckBox.Checked,
-                Importance = SelectedImportance,
-                Note = noteEditText.Text,
-                Repeat = (Frequency)_selectedRepeatIndex,
-                ClientUpdatedOn = DateTime.UtcNow
-            };
+            _scheduledTask.Title = titleEditText.Text;
+            _scheduledTask.Start = _startDate;
+            _scheduledTask.End = _endDate;
+            _scheduledTask.IsAlarm = alarmCheckBox.Checked;
+            _scheduledTask.Importance = SelectedImportance;
+            _scheduledTask.Note = noteEditText.Text;
+            _scheduledTask.Repeat = (Frequency)_selectedRepeatIndex;
+            _scheduledTask.ClientUpdatedOn = DateTime.UtcNow;
 
-            await _taskDataHelper.InsertAsync(task);
+            await _taskDataHelper.UpdateAsync(_scheduledTask);
 
-            if (task.Start > DateTime.Now)
-            {
-                SetAlarm(task.Start, task);
-            }
+            //if (task.Start > DateTime.Now)
+            //{
+            //    SetAlarm(task.Start, task);
+            //}
 
             //StartSyncService();
 
-            _ = PostToServerAsync(task); // warning suppressed on purpose
+            //_ = PostToServerAsync(_scheduledTask); // warning suppressed on purpose
 
             StartActivity(typeof(TasksActivity));
         }
 
         private Task PostToServerAsync(ScheduledTask task)
         {
-            return _taskWebHelper.CreateScheduledTaskAsync(task)
+            return _taskWebHelper.UpdateScheduledTaskAsync(task.Id, task)
                 .ContinueWith(t =>
                 {
                     if (t.Result.IsSuccessStatusCode)
@@ -245,23 +237,12 @@ namespace Planner.Droid.Activities
             StartService(intent);
         }
 
-        private void SetAlarm(DateTime time, ScheduledTask task)
-        {
-            Java.Util.Calendar calendar = Java.Util.Calendar.Instance;
-            calendar.TimeInMillis = Java.Lang.JavaSystem.CurrentTimeMillis();
+        //private void SetAlarm(ScheduledTask task)
+        //{
+        //    var alarmManager = (AlarmManager)GetSystemService(AlarmService);
 
-            calendar.Set(time.Year, time.Month - 1, time.Day, time.Hour, time.Minute, 0);
-
-            var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-            alarmIntent.PutExtra(AlarmReceiver.Constants.TITLE_PARAM_NAME, task.Title);
-            alarmIntent.PutExtra(AlarmReceiver.Constants.MESSAGE_PARAM_NAME, task.Note);
-
-            var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
-
-            var alarmManager = (AlarmManager)GetSystemService(AlarmService);
-
-            alarmManager.Set(AlarmType.Rtc, calendar.TimeInMillis, pending);
-        }
+        //    Utilities.SetAlarm(ApplicationContext, alarmManager, task);
+        //}
 
         private bool ValidateInputs()
         {
@@ -270,9 +251,9 @@ namespace Planner.Droid.Activities
                 return true;
             }
 
-            if (!descriptionEditText.IsEmpty())
+            if (!noteEditText.IsEmpty())
             {
-                descriptionEditText.Error = "Description can not be empty.";
+                noteEditText.Error = "Description can not be empty.";
                 return true;
             }
 

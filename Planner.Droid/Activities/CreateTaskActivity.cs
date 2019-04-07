@@ -18,7 +18,6 @@ namespace Planner.Droid.Activities
     public class CreateTaskActivity : AppCompatActivity
     {
         private EditText titleEditText;
-        private EditText descriptionEditText;
         private EditText noteEditText;
         private TableRow startDateRow;
         private TableRow endDateRow;
@@ -27,7 +26,6 @@ namespace Planner.Droid.Activities
         private TextView startTimeTextView;
         private TextView endTimeTextView;
         private CheckBox alarmCheckBox;
-        private CheckBox notifyCheckBox;
         private RadioGroup importanceRadioGroup;
         private LinearLayout repeatLayout;
         private TextView repeatSelectedTextView;
@@ -86,7 +84,6 @@ namespace Planner.Droid.Activities
         public void FindViews()
         {
             titleEditText = FindViewById<EditText>(Resource.Id.createTask_TitleEditText);
-            descriptionEditText = FindViewById<EditText>(Resource.Id.createTask_DescriptionEditText);
             noteEditText = FindViewById<EditText>(Resource.Id.createTask_NoteEditText);
             startDateRow = FindViewById<TableRow>(Resource.Id.createTask_StartDateRow);
             endDateRow = FindViewById<TableRow>(Resource.Id.createTask_EndDateRow);
@@ -95,7 +92,6 @@ namespace Planner.Droid.Activities
             startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
             endTimeTextView = FindViewById<TextView>(Resource.Id.createTask_EndTimeTextView);
             alarmCheckBox = FindViewById<CheckBox>(Resource.Id.createTask_AlarmCheckBox);
-            notifyCheckBox = FindViewById<CheckBox>(Resource.Id.createTask_AlertCheckBox);
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
             repeatLayout = FindViewById<LinearLayout>(Resource.Id.createTask_RepeatLayout);
             repeatSelectedTextView = FindViewById<TextView>(Resource.Id.createTask_RepeatSelectedTextView);
@@ -151,34 +147,42 @@ namespace Planner.Droid.Activities
 
         private async void SaveButton_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs())
-                return;
-
-            var task = new ScheduledTask()
+            try
             {
-                Id = Guid.NewGuid(),
-                Title = titleEditText.Text,
-                Start = _startDate,
-                End = _endDate,
-                IsAlarm = alarmCheckBox.Checked,
-                Importance = SelectedImportance,
-                Note = noteEditText.Text,
-                Repeat = (Frequency)_selectedRepeatIndex,
-                ClientUpdatedOn = DateTime.UtcNow
-            };
+                if (!ValidateInputs())
+                    return;
 
-            await _taskDataHelper.InsertAsync(task);
+                var task = new ScheduledTask()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = titleEditText.Text,
+                    Start = _startDate,
+                    End = _endDate,
+                    IsAlarm = alarmCheckBox.Checked,
+                    Importance = SelectedImportance,
+                    Note = noteEditText.Text,
+                    Repeat = (Frequency)_selectedRepeatIndex,
+                    ClientUpdatedOn = DateTime.UtcNow
+                };
 
-            if (task.Start > DateTime.Now)
-            {
-                SetAlarm(task.Start, task);
+                await _taskDataHelper.InsertAsync(task);
+
+                //if (task.Start > DateTime.Now)
+                //{
+                //    SetAlarm(task.Start, task);
+                //}
+
+                //StartSyncService();
+
+                //_ = PostToServerAsync(task); // warning suppressed on purpose
+
+                StartActivity(typeof(TasksActivity));
             }
+            catch (Exception ex)
+            {
 
-            //StartSyncService();
-
-            _ = PostToServerAsync(task); // warning suppressed on purpose
-
-            StartActivity(typeof(TasksActivity));
+                throw;
+            }
         }
 
         private Task PostToServerAsync(ScheduledTask task)
@@ -225,9 +229,9 @@ namespace Planner.Droid.Activities
                 return true;
             }
 
-            if (!descriptionEditText.IsEmpty())
+            if (!noteEditText.IsEmpty())
             {
-                descriptionEditText.Error = "Description can not be empty.";
+                noteEditText.Error = "Description can not be empty.";
                 return true;
             }
 

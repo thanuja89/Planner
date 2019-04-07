@@ -31,9 +31,9 @@ namespace Planner.Mobile.Core.Helpers
             return _httpService.PostAsync("ScheduledTask", task);
         }
 
-        public Task<HttpResponseMessage> UpdateScheduledTaskAsync(Guid id, ScheduledTask taskDTO)
+        public Task<HttpResponseMessage> UpdateScheduledTaskAsync(Guid id, ScheduledTask task)
         {
-            return _httpService.PutAsync($"ScheduledTask/{ id }", taskDTO);
+            return _httpService.PutAsync($"ScheduledTask/{ id }", task);
         }
 
         public Task<HttpResponseMessage> DeleteScheduledTaskAsync(Guid id)
