@@ -8,6 +8,8 @@ namespace Planner.Mobile.Core.Data
     {
         [PrimaryKey]
         public Guid Id { get; set; }
+        //[PrimaryKey, AutoIncrement]
+        //public int NotificationId { get; set; }
         public string Title { get; set; }
         public string Note { get; set; }
         public Importance Importance { get; set; }

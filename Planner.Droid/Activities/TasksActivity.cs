@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
@@ -54,13 +55,22 @@ namespace Planner.Droid.Activities
 
                 _adapter = new TaskViewAdapter(_tasks);
                 _adapter.ItemDeleteClick += Adapter_ItemDeleteClick;
+                _adapter.ItemClick += Adapter_ItemClick;
 
                 recyclerView.SetAdapter(_adapter);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
+        }
+
+        private void Adapter_ItemClick(object sender, int e)
+        {
+            var intent = new Intent(this, typeof(EditTaskActivity));
+            intent.PutExtra("TaskId", _tasks[e].Id.ToString());
+
+            StartActivity(intent);
         }
 
         private async void Adapter_ItemDeleteClick(object sender, Guid e)
