@@ -167,14 +167,12 @@ namespace Planner.Droid.Activities
 
                 await _taskDataHelper.InsertAsync(task);
 
-                //if (task.Start > DateTime.Now)
-                //{
-                //    SetAlarm(task.Start, task);
-                //}
+                if (task.Start > DateTime.Now)
+                {
+                    SetAlarm(task.Start, task);
+                }
 
-                //StartSyncService();
-
-                //_ = PostToServerAsync(task); // warning suppressed on purpose
+                _ = PostToServerAsync(task); // warning suppressed on purpose
 
                 StartActivity(typeof(TasksActivity));
             }
@@ -196,12 +194,6 @@ namespace Planner.Droid.Activities
                     }
                 }, 
                 TaskContinuationOptions.OnlyOnRanToCompletion);
-        }
-
-        private void StartSyncService()
-        {
-            var intent = new Intent(this, typeof(SyncService));
-            StartService(intent);
         }
 
         private void SetAlarm(DateTime time, ScheduledTask task)

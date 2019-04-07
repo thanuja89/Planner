@@ -24,7 +24,7 @@ namespace Planner.Mobile.Core.Data
                 if (database == null)
                 {
                     database = new PlannerDatabase(
-                      Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlannerSQLite.db3"));
+                      Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PlannerSQLitex.db3"));
                 }
                 return database;
             }
