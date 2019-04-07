@@ -206,10 +206,12 @@ namespace Planner.Droid.Activities
             _scheduledTask.Note = noteEditText.Text;
             _scheduledTask.Repeat = (Frequency)_selectedRepeatIndex;
             _scheduledTask.ClientUpdatedOn = DateTime.UtcNow;
+            _scheduledTask.IsChangesSynced = false;
 
             await _taskDataHelper.UpdateAsync(_scheduledTask);
 
-            UpdateAlarm();
+            if(_scheduledTask.Start != _oldStartDate)
+                UpdateAlarm();
 
             _ = PostToServerAsync(_scheduledTask); // warning suppressed on purpose
 

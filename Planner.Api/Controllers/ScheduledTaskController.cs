@@ -65,8 +65,7 @@ namespace Planner.Api.Controllers
                 {
                     var entity = _mapper.Map<ScheduledTask>(task);
 
-                    await _scheduledTaskRepo.AddAsync(entity);
-                    await _unitOfWork.CompleteAsync();
+                    await CreateScheduledTaskAsync(entity);
 
                     var uri = Url.Link("TaskGet", new { entity.Id });
 
@@ -91,8 +90,15 @@ namespace Planner.Api.Controllers
                     var task = await _scheduledTaskRepo.FindAsync(id);
 
                     if (task == null)
-                        return NotFound($"Sheduled Task {id} was not found");
+                    {
+                        var entity = _mapper.Map<ScheduledTask>(taskDto);
+                        entity.ApplicationUserId = User.GetUserId();
 
+                        await CreateScheduledTaskAsync(entity);
+
+                        return Ok(_mapper.Map<GetScheduledTaskDTO>(entity));
+                    }
+                        
                     _mapper.Map(taskDto, task);
 
                     await _unitOfWork.CompleteAsync();
@@ -130,6 +136,12 @@ namespace Planner.Api.Controllers
             }
 
             return BadRequest();
+        }
+
+        private async Task CreateScheduledTaskAsync(ScheduledTask entity)
+        {
+            await _scheduledTaskRepo.AddAsync(entity);
+            await _unitOfWork.CompleteAsync();
         }
     }
 }
