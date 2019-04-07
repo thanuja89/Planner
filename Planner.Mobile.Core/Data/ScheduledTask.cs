@@ -6,10 +6,9 @@ namespace Planner.Mobile.Core.Data
     [Table("ScheduledTask")]
     public class ScheduledTask
     {
-        [PrimaryKey]
         public Guid Id { get; set; }
-        //[PrimaryKey, AutoIncrement]
-        //public int NotificationId { get; set; }
+        [PrimaryKey, AutoIncrement]
+        public int ClientSideId { get; set; }
         public string Title { get; set; }
         public string Note { get; set; }
         public Importance Importance { get; set; }

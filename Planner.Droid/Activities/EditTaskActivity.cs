@@ -36,6 +36,8 @@ namespace Planner.Droid.Activities
         private DateTime _startDate;
         private DateTime _endDate;
 
+        private DateTime _oldStartDate;
+
         private readonly string[] _items;
 
         private int _selectedRepeatIndex = 0;
@@ -141,6 +143,7 @@ namespace Planner.Droid.Activities
 
             _selectedRepeatIndex = (int)_scheduledTask.Repeat;
             repeatSelectedTextView.Text = _scheduledTask.Repeat.ToString();
+            _oldStartDate = _scheduledTask.Start;
         }
 
         private void HandleEvents()
@@ -206,43 +209,41 @@ namespace Planner.Droid.Activities
 
             await _taskDataHelper.UpdateAsync(_scheduledTask);
 
-            //if (task.Start > DateTime.Now)
-            //{
-            //    SetAlarm(task.Start, task);
-            //}
+            UpdateAlarm();
 
-            //StartSyncService();
-
-            //_ = PostToServerAsync(_scheduledTask); // warning suppressed on purpose
+            _ = PostToServerAsync(_scheduledTask); // warning suppressed on purpose
 
             StartActivity(typeof(TasksActivity));
         }
 
-        private Task PostToServerAsync(ScheduledTask task)
+        private async Task PostToServerAsync(ScheduledTask task)
         {
-            return _taskWebHelper.UpdateScheduledTaskAsync(task.Id, task)
-                .ContinueWith(t =>
+            try
+            {
+                var response = await _taskWebHelper.UpdateScheduledTaskAsync(task.Id, task);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    if (t.Result.IsSuccessStatusCode)
-                    {
-                        _taskDataHelper.UpdateSyncStatusAsync(task.Id);
-                    }
-                },
-                TaskContinuationOptions.OnlyOnRanToCompletion);
+                    await _taskDataHelper.UpdateSyncStatusAsync(task.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
-        private void StartSyncService()
+        private void UpdateAlarm()
         {
-            var intent = new Intent(this, typeof(SyncService));
-            StartService(intent);
+            if (_scheduledTask.Start <= DateTime.Now)
+                return;
+
+            var alarmManager = (AlarmManager)GetSystemService(AlarmService);
+
+            Utilities.CancelAlarm(ApplicationContext, alarmManager, _scheduledTask);
+
+            Utilities.SetAlarm(ApplicationContext, alarmManager, _scheduledTask);
         }
-
-        //private void SetAlarm(ScheduledTask task)
-        //{
-        //    var alarmManager = (AlarmManager)GetSystemService(AlarmService);
-
-        //    Utilities.SetAlarm(ApplicationContext, alarmManager, task);
-        //}
 
         private bool ValidateInputs()
         {
