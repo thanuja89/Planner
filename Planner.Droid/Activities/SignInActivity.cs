@@ -12,7 +12,7 @@ using System;
 
 namespace Planner.Droid.Activities
 {
-    //[Activity(Label = "Sign In", MainLauncher = true)]
+    [Activity(Label = "Sign In")]
     public class SignInActivity : Activity
     {
         private readonly AuthHelper _authHelper;
@@ -81,7 +81,10 @@ namespace Planner.Droid.Activities
                 var tokenDto = await _authHelper.SignInAsync(dto);
 
                 if (tokenDto != null && tokenDto.Token != null)
+                {
                     SaveToken(tokenDto.Token);
+                    StartActivity(typeof(TasksActivity));
+                }
 
                 progressBar.Visibility = ViewStates.Invisible;
             }
