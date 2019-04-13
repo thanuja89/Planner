@@ -3,6 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Planner.Mobile.Core;
+using Planner.Mobile.Core.Helpers;
 using System;
 
 namespace Planner.Droid.Activities
@@ -19,8 +20,13 @@ namespace Planner.Droid.Activities
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            if (IsLoggedIn())
+            var token = GetToken();
+
+            if (token != null)
+            {
+                HttpHelper.Init(token);
                 StartActivity(typeof(TasksActivity));
+            }              
             else
                 StartActivity(typeof(SignInActivity));
         }
@@ -30,13 +36,13 @@ namespace Planner.Droid.Activities
             throw new NotImplementedException();
         }
 
-        private bool IsLoggedIn()
+        private string GetToken()
         {
             var prefs = Application.Context.GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
 
             var token = prefs.GetString(PreferenceItemKeys.TOKEN, null);
 
-            return token != null;
+            return token;
         }
     }
 }
