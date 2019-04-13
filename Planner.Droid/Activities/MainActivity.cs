@@ -1,11 +1,9 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Preferences;
 using Android.Support.V7.App;
 using Planner.Mobile.Core;
 using System;
-using System.Threading.Tasks;
 
 namespace Planner.Droid.Activities
 {

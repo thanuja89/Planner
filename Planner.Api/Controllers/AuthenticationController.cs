@@ -121,6 +121,31 @@ namespace Planner.Api.Controllers
             });
         }
 
+        [AllowAnonymous]
+        [HttpGet("{action}")]
+        public async Task<IActionResult> TestTokenProvider()
+        {
+            var user = await _userManager.FindByNameAsync("thanuja");
+
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            var tokenx = await _userManager.CreateSecurityTokenAsync(user);
+
+            return Ok(token);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{action}")]
+        public async Task<IActionResult> TestTokenProviderValidation(string token)
+        {
+            var user = await _userManager.FindByNameAsync("thanuja");
+
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+
+
+            return Ok(result);
+        }
+
         private string BuildToken(ApplicationUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
