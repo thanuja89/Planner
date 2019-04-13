@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,8 +45,11 @@ namespace Planner.Api
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
                 opt.User.RequireUniqueEmail = true;
+
+                opt.Tokens.EmailConfirmationTokenProvider = "NumericTokenProvider";
             })
-                .AddEntityFrameworkStores<PlannerDbContext>();
+                .AddEntityFrameworkStores<PlannerDbContext>()
+                .AddTokenProvider<NumericTokenProvider>("NumericTokenProvider");
 
             services.AddCors(options =>
             {
@@ -80,6 +84,9 @@ namespace Planner.Api
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.Configure<EmailSenderOptions>(Configuration.GetSection("Mail"));
+            services.AddScoped<IEmailSender, SMTPEmailSender>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
