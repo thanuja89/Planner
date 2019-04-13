@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Planner.Api.Controllers;
+using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Dto;
 using System;
@@ -19,6 +20,7 @@ namespace Planner.Api.Tests
     {
         private ApplicationUser _user;
         private Mock<ILogger<AuthenticationController>> _mockLogger;
+        private Mock<IEmailSender> _mockEmailSender;
         private Mock<SignInManager<ApplicationUser>> _mockSignInManager;
         private Mock<UserManager<ApplicationUser>> _mockUserManager;
         private Mock<IConfiguration> _mockConfiguration;
@@ -62,6 +64,8 @@ namespace Planner.Api.Tests
             _mockLogger = new Mock<ILogger<AuthenticationController>>();
             _mockConfiguration = new Mock<IConfiguration>();
             _mockLogger = new Mock<ILogger<AuthenticationController>>();
+            //IEmailSender emailSender
+            _mockEmailSender = new Mock<IEmailSender>();
 
             _mockUserManager = new Mock<UserManager<ApplicationUser>>(new Mock<IUserStore<ApplicationUser>>().Object,
                new Mock<IOptions<IdentityOptions>>().Object,
@@ -85,7 +89,8 @@ namespace Planner.Api.Tests
             _sut = new AuthenticationController(_mockConfiguration.Object
                 , _mockSignInManager.Object
                 , _mockUserManager.Object
-                , _mockLogger.Object);
+                , _mockLogger.Object
+                , _mockEmailSender.Object);
         }
         #endregion
     }

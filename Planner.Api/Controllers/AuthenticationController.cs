@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Dto;
 using System;
@@ -23,16 +24,19 @@ namespace Planner.Api.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AuthenticationController> _logger;
+        private readonly IEmailSender _emailSender;
 
         public AuthenticationController(IConfiguration config
             , SignInManager<ApplicationUser> signInManager
             , UserManager<ApplicationUser> userManager
-            , ILogger<AuthenticationController> logger)
+            , ILogger<AuthenticationController> logger
+            , IEmailSender emailSender)
         {
             _config = config;
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            _emailSender = emailSender;
         }
 
         [AllowAnonymous]
@@ -82,6 +86,8 @@ namespace Planner.Api.Controllers
 
                     if (result.Succeeded)
                     {
+                        await SendConfirmationEmaiAsync(appUser);
+
                         return Ok(new SignUpResultDTO()
                         {
                             Succeeded = true
@@ -121,31 +127,6 @@ namespace Planner.Api.Controllers
             });
         }
 
-        [AllowAnonymous]
-        [HttpGet("{action}")]
-        public async Task<IActionResult> TestTokenProvider()
-        {
-            var user = await _userManager.FindByNameAsync("thanuja");
-
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-            var tokenx = await _userManager.CreateSecurityTokenAsync(user);
-
-            return Ok(token);
-        }
-
-        [AllowAnonymous]
-        [HttpGet("{action}")]
-        public async Task<IActionResult> TestTokenProviderValidation(string token)
-        {
-            var user = await _userManager.FindByNameAsync("thanuja");
-
-            var result = await _userManager.ConfirmEmailAsync(user, token);
-
-
-            return Ok(result);
-        }
-
         private string BuildToken(ApplicationUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -177,6 +158,13 @@ namespace Planner.Api.Controllers
             }
             
             return null;
+        }
+
+        private async Task SendConfirmationEmaiAsync(ApplicationUser user)
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            await _emailSender.SendEmailAsync(user.Email, "Email Confirmation Code", $"Your Confirmation Code is {token}");
         }
     }
 }
