@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Planner.Droid.Activities
 {
-    [Activity(Label = "TasksActivity", MainLauncher = true)]
+    [Activity(Label = "TasksActivity")]
     public class TasksActivity : AppCompatActivity
     {
         private RecyclerView recyclerView;
