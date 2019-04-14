@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.App.Job;
 using Android.Content;
 using Android.Preferences;
 using Planner.Droid.Receivers;
@@ -56,6 +57,13 @@ namespace Planner.Droid.Helpers
             var pending = PendingIntent.GetBroadcast(context, task.ClientSideId, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
             alarmManager.Cancel(pending);
+        }
+
+        public static JobInfo.Builder CreateJobBuilderUsingJobId<T>(this Context context, int jobId) where T : JobService
+        {
+            var javaClass = Java.Lang.Class.FromType(typeof(T));
+            var componentName = new ComponentName(context, javaClass);
+            return new JobInfo.Builder(jobId, componentName);
         }
     }
 }

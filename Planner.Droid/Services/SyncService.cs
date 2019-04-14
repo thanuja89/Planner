@@ -4,6 +4,7 @@ using Planner.Droid.Helpers;
 using Planner.Mobile.Core.Helpers;
 using Planner.Mobile.Core.Services;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -62,9 +63,15 @@ namespace Planner.Droid.Services
 
                     var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(lastSynced);
 
-                    await _syncHelper.PushAsync(newTasksInClient);
+                    if (newTasksInClient != null && newTasksInClient.Count > 0)
+                    {
+                        await _syncHelper.PushAsync(newTasksInClient); 
+                    }
 
-                    await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer);
+                    if (newTasksFromServer != null && newTasksFromServer.Any())
+                    {
+                        await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer); 
+                    }
 
                     Utilities.SaveDateTimeToPreferences(context, "LastSyncedOn", DateTime.UtcNow);
                 }

@@ -8,6 +8,7 @@ using Planner.Domain.Repositories.Interfaces;
 using Planner.Dto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Planner.Api.Controllers
@@ -51,7 +52,7 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                if (taskDtos == null)
+                if (taskDtos == null || !taskDtos.Any())
                     return BadRequest();
 
                 var tasks = _mapper.Map<IEnumerable<ScheduledTaskDataModel>>(taskDtos);

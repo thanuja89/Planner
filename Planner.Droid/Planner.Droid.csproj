@@ -72,6 +72,8 @@
     <Compile Include="Fragments\TimePickerFragment.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Helpers\Utilities.cs" />
+    <Compile Include="Jobs\SyncJobService.cs" />
+    <Compile Include="PlannerApp.cs" />
     <Compile Include="Receivers\AlarmReceiver.cs" />
     <Compile Include="Receivers\SyncReceiver.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Activities\SignInActivity.cs" />
     <Compile Include="Activities\SignUpActivity.cs" />
     <Compile Include="Activities\TasksActivity.cs" />
+    <Compile Include="Services\SyncNetworkCallback.cs" />
     <Compile Include="Services\SyncService.cs" />
   </ItemGroup>
   <ItemGroup>
