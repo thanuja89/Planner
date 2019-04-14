@@ -8,24 +8,26 @@ namespace Planner.Api.Services
     public class SMTPEmailSender : IEmailSender
     {
         private readonly EmailSenderOptions _options;
-        private readonly SmtpClient _client;
 
         public SMTPEmailSender(IOptions<EmailSenderOptions> optionsAccessor)
         {
             _options = optionsAccessor.Value;
-
-            _client = new SmtpClient(_options.Host, _options.Port)
-            {
-                Credentials = new NetworkCredential(_options.Email, _options.Password),
-                EnableSsl = _options.EnableSsl
-            };
         }
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            var mailMessage = new MailMessage(_options.Email, email, subject, message);
+            var client = new SmtpClient(_options.Host, _options.Port)
+            {
+                Credentials = new NetworkCredential(_options.Email, _options.Password),
+                EnableSsl = _options.EnableSsl
+            };
 
-            return _client.SendMailAsync(mailMessage);
+            using (client)
+            {
+                var mailMessage = new MailMessage(_options.Email, email, subject, message);
+
+                return client.SendMailAsync(mailMessage); 
+            }
         }
     }
 }

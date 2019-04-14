@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Util;
 using Planner.Mobile.Core;
@@ -16,6 +17,7 @@ namespace Planner.Droid.Activities
         {
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironment_UnhandledExceptionRaiser; ;
 
             base.OnCreate(savedInstanceState);
             // Set our view from the "main" layout resource
@@ -40,6 +42,11 @@ namespace Planner.Droid.Activities
             }
         }
 
+        private void AndroidEnvironment_UnhandledExceptionRaiser(object sender, RaiseThrowableEventArgs e)
+        {
+            e.Handled = true;
+        }
+
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             throw new NotImplementedException();
@@ -52,6 +59,11 @@ namespace Planner.Droid.Activities
             var token = prefs.GetString(PreferenceItemKeys.TOKEN, null);
 
             return token;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
     }
 }

@@ -25,6 +25,13 @@ namespace Planner.Mobile.Core.Helpers
             _helper = new HttpHelper(token);
         }
 
+        public static bool IsInitialized {
+            get
+            {
+                return _helper != null;
+            }
+        }
+
         public async Task<T> GetAsync<T>(string url)
         {
             var response = await _httpClient.GetAsync(url);
@@ -115,13 +122,19 @@ namespace Planner.Mobile.Core.Helpers
 
         private void InitClient(string token = null)
         {
-            _httpClient = new HttpClient();
+            var handler = new HttpClientHandler()
+            {
+                UseProxy = false
+            };
+
+            _httpClient = new HttpClient(handler)
+            {
+                BaseAddress = new Uri(CommonUrls.BASE_URI)
+            };
 
             _httpClient.DefaultRequestHeaders
                 .Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            _httpClient.BaseAddress = new Uri(CommonUrls.BASE_URI);
 
             if (token != null)
             {
