@@ -4,6 +4,7 @@ using Android.Support.V4.App;
 using Android.Util;
 using Planner.Droid.Activities;
 using System;
+using System.Threading.Tasks;
 
 namespace Planner.Droid.Receivers
 {
@@ -12,21 +13,24 @@ namespace Planner.Droid.Receivers
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            try
+            Task.Run(() =>
             {
-                var channel = BuildChannel();
+                try
+                {
+                    var channel = BuildChannel();
 
-                var notificationManager = (NotificationManager)context.GetSystemService(Context.NotificationService);
-                notificationManager.CreateNotificationChannel(channel);
+                    var notificationManager = (NotificationManager)context.GetSystemService(Context.NotificationService);
+                    notificationManager.CreateNotificationChannel(channel);
 
-                var notification = BuildNotification(context, intent);
+                    var notification = BuildNotification(context, intent);
 
-                notificationManager.Notify(Constants.NOTIFICATION_ID, notification);
-            }
-            catch (Exception ex)
-            {
-                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
-            }
+                    notificationManager.Notify(Constants.NOTIFICATION_ID, notification);
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+                }
+            });
         }
 
         private NotificationChannel BuildChannel()

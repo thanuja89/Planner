@@ -1,24 +1,20 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
+﻿using Android.Content;
 using Android.Util;
 using Planner.Droid.Helpers;
 using Planner.Mobile.Core.Helpers;
 using Planner.Mobile.Core.Services;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Planner.Droid.Services
 {
-    [Service]
-    public class SyncService : Service
+    public class SyncService
     {
         private readonly SyncHelper _syncHelper;
         private readonly ScheduledTaskDataHelper _dataHelper;
 
+        private static object _initLock = new object();
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         public SyncService()
@@ -27,25 +23,30 @@ namespace Planner.Droid.Services
             _dataHelper = new ScheduledTaskDataHelper();
         }
 
-        public override IBinder OnBind(Intent intent)
+        private static SyncService _syncService;
+
+        public static SyncService Instance
         {
-            return null;
+            get
+            {
+                if (_syncService == null)
+                {
+                    lock (_initLock)
+                    {
+                        if (_syncService == null)
+                        {
+                            _syncService = new SyncService();
+                            return _syncService;
+                        }
+                    }
+                }
+
+                return _syncService;
+            }
         }
 
-        [return: GeneratedEnum]
-        public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
-        {
-            /*
-              Cannot use async await on this method, and we don't want to block the UI thread. 
-              Warning suppressed on purpose.
-            */
-            _ = SyncAsync();
-            
 
-            return StartCommandResult.Sticky;
-        }
-
-        private async Task SyncAsync()
+        public async Task SyncAsync(Context context)
         {
             bool lockTaken = false;
 
@@ -55,7 +56,7 @@ namespace Planner.Droid.Services
 
                 if (lockTaken)
                 {
-                    var lastSynced = Utilities.GetDateTimeFromPreferences(this, "LastSyncedOn");
+                    var lastSynced = Utilities.GetDateTimeFromPreferences(context, "LastSyncedOn");
 
                     var newTasksFromServer = await _syncHelper.PullAsync(lastSynced);
 
@@ -65,8 +66,8 @@ namespace Planner.Droid.Services
 
                     await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer);
 
-                    Utilities.SaveDateTimeToPreferences(this, "LastSyncedOn", DateTime.UtcNow);
-                }               
+                    Utilities.SaveDateTimeToPreferences(context, "LastSyncedOn", DateTime.UtcNow);
+                }
             }
             catch (Exception ex)
             {
@@ -76,9 +77,9 @@ namespace Planner.Droid.Services
             {
                 if (lockTaken)
                 {
-                    _semaphore.Release(); 
+                    _semaphore.Release();
                 }
             }
-        }     
+        }
     }
 }

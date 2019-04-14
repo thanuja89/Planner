@@ -56,7 +56,6 @@ namespace Planner.Api.Controllers
 
                 var tasks = _mapper.Map<IEnumerable<ScheduledTaskDataModel>>(taskDtos);
 
-                // "9adf5a07-47e5-4dce-a07a-87ac214be396"
                 await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, User.GetUserId());
 
                 return NoContent();
