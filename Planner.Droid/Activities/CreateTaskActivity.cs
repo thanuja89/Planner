@@ -2,11 +2,11 @@
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
+using Android.Util;
 using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Receivers;
-using Planner.Droid.Services;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -178,8 +178,7 @@ namespace Planner.Droid.Activities
             }
             catch (Exception ex)
             {
-
-                throw;
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
             }
         }
 
@@ -188,9 +187,16 @@ namespace Planner.Droid.Activities
             return _taskWebHelper.CreateScheduledTaskAsync(task)
                 .ContinueWith(t => 
                 {
-                    if (t.Result.IsSuccessStatusCode)
+                    try
                     {
-                        _taskDataHelper.UpdateSyncStatusAsync(task.Id);
+                        if (t.Result.IsSuccessStatusCode)
+                        {
+                            _taskDataHelper.UpdateSyncStatusAsync(task.Id);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
                     }
                 }, 
                 TaskContinuationOptions.OnlyOnRanToCompletion);

@@ -127,6 +127,24 @@ namespace Planner.Api.Controllers
             });
         }
 
+        [AllowAnonymous]
+        [HttpPost("{action}")]
+        public async Task<IActionResult> Test()
+        {
+            try
+            {
+                var appUser = await _userManager.FindByNameAsync("thanuja");
+
+                await SendConfirmationEmaiAsync(appUser);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         private string BuildToken(ApplicationUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

@@ -38,8 +38,8 @@ namespace Planner.Droid.Controls
     public class TaskViewAdapter : RecyclerView.Adapter
     {
         // Event handler for item clicks:
-        public event EventHandler<int> ItemClick;
-        public event EventHandler<Guid> ItemDeleteClick;
+        public event EventHandler<ScheduledTask> ItemClick;
+        public event EventHandler<ScheduledTask> ItemDeleteClick;
 
         // Underlying data set (a photo album):
         private List<ScheduledTask> _tasks;
@@ -86,12 +86,12 @@ namespace Planner.Droid.Controls
         // Raise an event when the item-click takes place:
         void OnClick(int position)
         {
-            ItemClick?.Invoke(this, position);
+            ItemClick?.Invoke(this, _tasks[position]);
         }
 
         void OnDeleteClick(int position)
         {
-            ItemDeleteClick?.Invoke(this, _tasks[position].Id);
+            ItemDeleteClick?.Invoke(this, _tasks[position]);
 
             _tasks.Remove(_tasks[position]);
             NotifyItemRemoved(position);

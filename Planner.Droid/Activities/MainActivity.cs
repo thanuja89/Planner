@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
+using Android.Util;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -20,15 +21,23 @@ namespace Planner.Droid.Activities
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
-            var token = GetToken();
-
-            if (token != null)
+            try
             {
-                HttpHelper.Init(token);
-                StartActivity(typeof(TasksActivity));
-            }              
-            else
+                var token = GetToken();
+
+                if (token != null)
+                {
+                    HttpHelper.Init(token);
+                    StartActivity(typeof(TasksActivity));
+                }
+                else
+                    StartActivity(typeof(SignInActivity));
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
                 StartActivity(typeof(SignInActivity));
+            }
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

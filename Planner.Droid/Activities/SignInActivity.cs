@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Planner.Droid.Extensions;
@@ -91,6 +92,8 @@ namespace Planner.Droid.Activities
             }
             catch (Exception ex)
             {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
                 progressBar.Visibility = ViewStates.Invisible;
                 _dialogHelper.ShowError(this, ex);
             }

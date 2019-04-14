@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
+using Android.Util;
 using Planner.Droid.Controls;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
@@ -61,25 +62,30 @@ namespace Planner.Droid.Activities
             }
             catch (Exception ex)
             {
-                throw ex;
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
             }
         }
 
-        private void Adapter_ItemClick(object sender, int e)
+        private void Adapter_ItemClick(object sender, ScheduledTask e)
         {
             var intent = new Intent(this, typeof(EditTaskActivity));
-            intent.PutExtra("TaskId", _tasks[e].Id.ToString());
+            intent.PutExtra("TaskId", e.Id.ToString());
 
             StartActivity(intent);
         }
 
-        private async void Adapter_ItemDeleteClick(object sender, Guid e)
+        private async void Adapter_ItemDeleteClick(object sender, ScheduledTask e)
         {
-            //Guid id = _tasks[e].Id;
+            try
+            {
+                await _taskDataHelper.MarkAsDeletedAsync(e.Id);
 
-            await _taskDataHelper.MarkAsDeletedAsync(e);
-
-            _ = UpdateServerAsync(e); // warning suppressed on purpose
+                _ = UpdateServerAsync(e.Id); // warning suppressed on purpose
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+            }
         }
 
         private Task UpdateServerAsync(Guid id)
@@ -87,9 +93,16 @@ namespace Planner.Droid.Activities
             return _taskWebHelper.DeleteScheduledTaskAsync(id)
                 .ContinueWith(t =>
                 {
-                    if (t.Result.IsSuccessStatusCode)
+                    try
                     {
-                        _taskDataHelper.DeleteAsync(id);
+                        if (t.Result.IsSuccessStatusCode)
+                        {
+                            _taskDataHelper.DeleteAsync(id);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
                     }
                 },
                 TaskContinuationOptions.OnlyOnRanToCompletion);
