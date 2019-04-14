@@ -17,7 +17,7 @@ namespace Planner.Api.Services
             _client = new SmtpClient(_options.Host, _options.Port)
             {
                 Credentials = new NetworkCredential(_options.Email, _options.Password),
-                EnableSsl = true
+                EnableSsl = _options.EnableSsl
             };
         }
 

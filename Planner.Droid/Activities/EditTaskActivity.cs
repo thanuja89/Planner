@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
+using Android.Util;
 using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
@@ -195,27 +196,34 @@ namespace Planner.Droid.Activities
 
         private async void SaveButton_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs())
-                return;
+            try
+            {
+                if (!ValidateInputs())
+                    return;
 
-            _scheduledTask.Title = titleEditText.Text;
-            _scheduledTask.Start = _startDate;
-            _scheduledTask.End = _endDate;
-            _scheduledTask.IsAlarm = alarmCheckBox.Checked;
-            _scheduledTask.Importance = SelectedImportance;
-            _scheduledTask.Note = noteEditText.Text;
-            _scheduledTask.Repeat = (Frequency)_selectedRepeatIndex;
-            _scheduledTask.ClientUpdatedOn = DateTime.UtcNow;
-            _scheduledTask.IsChangesSynced = false;
+                _scheduledTask.Title = titleEditText.Text;
+                _scheduledTask.Start = _startDate;
+                _scheduledTask.End = _endDate;
+                _scheduledTask.IsAlarm = alarmCheckBox.Checked;
+                _scheduledTask.Importance = SelectedImportance;
+                _scheduledTask.Note = noteEditText.Text;
+                _scheduledTask.Repeat = (Frequency)_selectedRepeatIndex;
+                _scheduledTask.ClientUpdatedOn = DateTime.UtcNow;
+                _scheduledTask.IsChangesSynced = false;
 
-            await _taskDataHelper.UpdateAsync(_scheduledTask);
+                await _taskDataHelper.UpdateAsync(_scheduledTask);
 
-            if(_scheduledTask.Start != _oldStartDate)
-                UpdateAlarm();
+                if (_scheduledTask.Start != _oldStartDate)
+                    UpdateAlarm();
 
-            _ = PostToServerAsync(_scheduledTask); // warning suppressed on purpose
+                _ = PostToServerAsync(_scheduledTask); // warning suppressed on purpose
 
-            StartActivity(typeof(TasksActivity));
+                StartActivity(typeof(TasksActivity));
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+            }
         }
 
         private async Task PostToServerAsync(ScheduledTask task)
@@ -231,7 +239,7 @@ namespace Planner.Droid.Activities
             }
             catch (Exception ex)
             {
-                throw;
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
             }
         }
 

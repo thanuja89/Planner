@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Planner.Droid.Helpers;
 using Planner.Mobile.Core.Helpers;
 using Planner.Mobile.Core.Services;
@@ -34,7 +35,12 @@ namespace Planner.Droid.Services
         [return: GeneratedEnum]
         public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
         {
-            _ = SyncAsync(); // Cannot use async await on this method, and we don't want to block the UI thread. Warning suppressed on purpose.
+            /*
+              Cannot use async await on this method, and we don't want to block the UI thread. 
+              Warning suppressed on purpose.
+            */
+            _ = SyncAsync();
+            
 
             return StartCommandResult.Sticky;
         }
@@ -64,7 +70,7 @@ namespace Planner.Droid.Services
             }
             catch (Exception ex)
             {
-
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
             }
             finally
             {
