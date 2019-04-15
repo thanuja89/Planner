@@ -157,16 +157,12 @@ namespace Planner.Api.Controllers
 
 # if DEBUG
         [AllowAnonymous]
-        [HttpPost("{action}")]
+        [HttpGet("{action}")]
         public async Task<IActionResult> Test()
         {
             try
             {
-                var appUser = await _userManager.FindByNameAsync("thanuja");
-
-                await SendConfirmationEmaiAsync(appUser);
-
-                return Ok();
+                return Ok("Test");
             }
             catch (Exception ex)
             {
