@@ -21,6 +21,7 @@ namespace Planner.Droid.Services
             }
             catch (System.Exception ex)
             {
+
             }
         }
     }

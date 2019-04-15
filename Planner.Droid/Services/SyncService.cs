@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.Util;
+using Android.Widget;
 using Planner.Droid.Helpers;
 using Planner.Mobile.Core.Helpers;
 using Planner.Mobile.Core.Services;
@@ -49,6 +50,8 @@ namespace Planner.Droid.Services
 
         public async Task SyncAsync(Context context)
         {
+            Toast.MakeText(context, "Connecting", ToastLength.Long);
+
             bool lockTaken = false;
 
             try

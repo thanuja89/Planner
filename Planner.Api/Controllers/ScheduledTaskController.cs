@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Planner.Api.Extensions;
-using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
@@ -39,21 +38,37 @@ namespace Planner.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var tasks = await _scheduledTaskRepo.GetScheduledTasksForUser(User.GetUserId());
+            try
+            {
+                var tasks = await _scheduledTaskRepo.GetScheduledTasksForUser(User.GetUserId());
 
-            return Ok(_mapper.Map<IEnumerable<GetScheduledTaskDTO>>(tasks));
+                return Ok(_mapper.Map<IEnumerable<GetScheduledTaskDTO>>(tasks));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Threw exception while retrieving ScheduledTasks: { ex }");
+                return new StatusCodeResult(500);
+            }
         }
 
         // GET: api/ScheduledTask/1
         [HttpGet("{id}", Name = "TaskGet")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var task = await _scheduledTaskRepo.GetByIdAsync(id);
+            try
+            {
+                var task = await _scheduledTaskRepo.GetByIdAsync(id);
 
-            if (task == null)
-                return NotFound($"Sheduled Task {id} was not found");
+                if (task == null)
+                    return NotFound($"Sheduled Task {id} was not found");
 
-            return Ok(_mapper.Map<GetScheduledTaskDTO>(task));
+                return Ok(_mapper.Map<GetScheduledTaskDTO>(task));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Threw exception while retrieving ScheduledTask: { ex }");
+                return new StatusCodeResult(500);
+            }
         }
 
         [HttpPost]
