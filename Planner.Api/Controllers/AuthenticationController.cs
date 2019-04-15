@@ -62,7 +62,7 @@ namespace Planner.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Threw exception while creating Token: { ex }");
-                throw;
+                return new StatusCodeResult(500);
             }
 
             return BadRequest();
@@ -90,7 +90,8 @@ namespace Planner.Api.Controllers
 
                         return Ok(new SignUpResultDTO()
                         {
-                            Succeeded = true
+                            Succeeded = true,
+                            UserId = appUser.Id
                         });
                     }
 
@@ -127,6 +128,34 @@ namespace Planner.Api.Controllers
             });
         }
 
+        [HttpPost("{action}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmationRequestDto dto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.FindByIdAsync(dto.UserId);
+
+                    if (user == null)
+                        return BadRequest();
+
+                    await _userManager.ConfirmEmailAsync(user, dto.Code);
+
+                    return Ok();
+                }
+
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Threw exception while confirming emai for user: { ex }");
+                return new StatusCodeResult(500);
+            }
+        }
+
+# if DEBUG
         [AllowAnonymous]
         [HttpPost("{action}")]
         public async Task<IActionResult> Test()
@@ -144,6 +173,7 @@ namespace Planner.Api.Controllers
                 throw ex;
             }
         }
+#endif
 
         private string BuildToken(ApplicationUser user)
         {
