@@ -1,4 +1,5 @@
-﻿using Android.Content;
+﻿using Android.App;
+using Android.Content;
 using Android.Util;
 using Android.Widget;
 using Planner.Droid.Helpers;
@@ -50,30 +51,31 @@ namespace Planner.Droid.Services
 
         public async Task SyncAsync(Context context)
         {
-            Toast.MakeText(context, "Connecting", ToastLength.Long);
-
             bool lockTaken = false;
 
             try
             {
+                var lastSynced = Utilities.GetDateTimeFromPreferences(context, "LastSyncedOn");
+
+                if ((DateTime.UtcNow - lastSynced).TotalSeconds < 60)
+                    return;
+
                 lockTaken = await _semaphore.WaitAsync(0);
 
                 if (lockTaken)
                 {
-                    var lastSynced = Utilities.GetDateTimeFromPreferences(context, "LastSyncedOn");
-
                     var newTasksFromServer = await _syncHelper.PullAsync(lastSynced);
 
                     var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(lastSynced);
 
                     if (newTasksInClient != null && newTasksInClient.Count > 0)
                     {
-                        await _syncHelper.PushAsync(newTasksInClient); 
+                        await _syncHelper.PushAsync(newTasksInClient);
                     }
 
                     if (newTasksFromServer != null && newTasksFromServer.Any())
                     {
-                        await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer); 
+                        await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer);
                     }
 
                     Utilities.SaveDateTimeToPreferences(context, "LastSyncedOn", DateTime.UtcNow);

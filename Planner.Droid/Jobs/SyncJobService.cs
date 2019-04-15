@@ -3,6 +3,7 @@ using Android.App;
 using Android.App.Job;
 using Planner.Droid.Services;
 using Planner.Mobile.Core.Helpers;
+using System.Threading.Tasks;
 
 namespace Planner.Droid.Jobs
 {
@@ -14,7 +15,7 @@ namespace Planner.Droid.Jobs
             if (!HttpHelper.IsInitialized)
                 return true;
 
-            _ = SyncService.Instance.SyncAsync(this); // Warning suppressed on purpuse
+            Task.Run(() => SyncService.Instance.SyncAsync(Application.Context));
 
             return true;
         }
