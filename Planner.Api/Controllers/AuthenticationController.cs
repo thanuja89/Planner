@@ -158,17 +158,8 @@ namespace Planner.Api.Controllers
 # if DEBUG
         [AllowAnonymous]
         [HttpGet("{action}")]
-        public async Task<IActionResult> Test()
-        {
-            try
-            {
-                return Ok("Test");
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+        public IActionResult Test() =>  Ok("Test");         
+        
 #endif
 
         private string BuildToken(ApplicationUser user)
