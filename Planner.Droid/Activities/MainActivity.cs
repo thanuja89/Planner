@@ -29,7 +29,7 @@ namespace Planner.Droid.Activities
 
                 if (token != null)
                 {
-                    HttpHelper.Init(token);
+                    AuthenticatedHttpHelper.Init(token);
                     StartActivity(typeof(TasksActivity));
                 }
                 else

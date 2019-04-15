@@ -84,7 +84,7 @@ namespace Planner.Droid.Activities
                 if (tokenDto != null && tokenDto.Token != null)
                 {
                     SaveToken(tokenDto.Token);
-                    HttpHelper.Init(tokenDto.Token);
+                    AuthenticatedHttpHelper.Init(tokenDto.Token);
                     StartActivity(typeof(TasksActivity));
                 }
 

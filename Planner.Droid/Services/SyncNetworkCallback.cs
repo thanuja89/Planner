@@ -15,7 +15,7 @@ namespace Planner.Droid.Services
             {
                 base.OnAvailable(network);
 
-                if (!HttpHelper.IsInitialized)
+                if (!AuthenticatedHttpHelper.IsInitialized)
                     return;
 
                 Task.Run(() => SyncService.Instance.SyncAsync(Application.Context));
