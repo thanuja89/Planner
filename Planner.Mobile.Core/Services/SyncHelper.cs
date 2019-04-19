@@ -12,7 +12,7 @@ namespace Planner.Mobile.Core.Services
     {
         public async Task<IEnumerable<ScheduledTask>> PullAsync(DateTime lastSynced)
         {
-            var tasks = await AuthenticatedHttpHelper.Instance.GetAsync<List<GetScheduledTaskDTO>>($"Syncronization?lastSynced={lastSynced:yyyyMMddHHmmss}");
+            var tasks = await HttpHelper.Instance.GetAsync<List<GetScheduledTaskDTO>>($"Syncronization?lastSynced={lastSynced:yyyyMMddHHmmss}");
             
             if(tasks != null)
             {
@@ -38,7 +38,7 @@ namespace Planner.Mobile.Core.Services
 
         public Task PushAsync(IEnumerable<ScheduledTask> tasks)
         {
-            return AuthenticatedHttpHelper.Instance.PutAsync("Syncronization", tasks);
+            return HttpHelper.Instance.PutAsync("Syncronization", tasks);
         }
     }
 }

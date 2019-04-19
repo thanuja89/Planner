@@ -12,7 +12,7 @@ namespace Planner.Droid.Jobs
     {
         public override bool OnStartJob(JobParameters @params)
         {
-            if (!AuthenticatedHttpHelper.IsInitialized)
+            if (!HttpHelper.IsInitialized)
                 return true;
 
             Task.Run(() => SyncService.Instance.SyncAsync(Application.Context));

@@ -18,16 +18,17 @@ namespace Planner.Mobile.Core.Helpers
 
         public HttpHelper(string token) => InitClient(token);
 
-        public static HttpHelper Instance
+        public static HttpHelper Instance => _helper ?? throw new InvalidOperationException("Helper not intialized.");
+
+        public static void Init(string token)
         {
+            _helper = new HttpHelper(token);
+        }
+
+        public static bool IsInitialized {
             get
             {
-                if (_helper == null)
-                {
-                    _helper = new HttpHelper();    
-                }
-
-                return _helper;
+                return _helper != null;
             }
         }
 
