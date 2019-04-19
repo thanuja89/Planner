@@ -20,7 +20,7 @@ namespace Planner.Droid.Services
         private static object _initLock = new object();
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-        private SyncService()
+        public SyncService()
         {
             _syncHelper = new SyncHelper();
             _dataHelper = new ScheduledTaskDataHelper();
