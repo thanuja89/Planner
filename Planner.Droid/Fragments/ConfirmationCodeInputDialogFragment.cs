@@ -6,33 +6,29 @@ using System;
 
 namespace Planner.Droid.Fragments
 {
-    public class InputDialogFragment : DialogFragment
+    public class ConfirmationCodeInputDialogFragment : DialogFragment
     {
-        public const string TAG = "X:InputDialogFragment";
+        public const string TAG = "X:ConfirmationCodeInputDialogFragment";
         private Action<string> _onOkButtonClicked;
-        private string _labelText;
 
-        private TextView labelTextView;
         private EditText inputEditText;
         private Button okButton;
+        private Button cancelButton;
 
-        public static InputDialogFragment NewInstance(string labelText, Action<string> onOkButtonClicked)
+        public static ConfirmationCodeInputDialogFragment NewInstance(Action<string> onOkButtonClicked)
         {
-            InputDialogFragment frag = new InputDialogFragment
+            ConfirmationCodeInputDialogFragment frag = new ConfirmationCodeInputDialogFragment
             {
-                _onOkButtonClicked = onOkButtonClicked,
-                _labelText = labelText
+                _onOkButtonClicked = onOkButtonClicked
             };
             return frag;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            var view = inflater.Inflate(Resource.Layout.fragment_input_dialog, container);
+            var view = inflater.Inflate(Resource.Layout.fragment_confirmation_code_input_dialog, container);
 
             FindViews(view);
-
-            labelTextView.Text = _labelText;
 
             HandleEvents();
 
@@ -41,16 +37,21 @@ namespace Planner.Droid.Fragments
 
         private void FindViews(View view)
         {
-
-            labelTextView = view.FindViewById<TextView>(Resource.Id.inputDialog_LabelTextView);
             inputEditText = view.FindViewById<EditText>(Resource.Id.inputDialog_InputEditText);
 
             okButton = view.FindViewById<Button>(Resource.Id.inputDialog_OkButton);
+            cancelButton = view.FindViewById<Button>(Resource.Id.inputDialog_CancelButton);
         }
 
         private void HandleEvents()
         {
             okButton.Click += OkButton_Click;
+            cancelButton.Click += CancelButton_Click;
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            Dismiss();
         }
 
         private void OkButton_Click(object sender, EventArgs e)

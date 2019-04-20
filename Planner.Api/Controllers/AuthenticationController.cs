@@ -95,12 +95,27 @@ namespace Planner.Api.Controllers
                         });
                     }
 
-                    if ((await _userManager.FindByNameAsync(register.Username)) != null)
-                        return BadRequest(new SignUpResultDTO()
+                    var user = await _userManager.FindByNameAsync(register.Username);
+
+                    if (user != null)
+                    {
+                        if (user.Email == register.Email)
                         {
-                            Succeeded = false,
-                            ErrorType = SignUpErrorType.UsernameExists
-                        });
+                            return Ok(new SignUpResultDTO()
+                            {
+                                Succeeded = true,
+                                UserId = user.Id
+                            });
+                        }
+                        else
+                        {
+                            return BadRequest(new SignUpResultDTO()
+                            {
+                                Succeeded = false,
+                                ErrorType = SignUpErrorType.UsernameExists
+                            });
+                        }
+                    }                       
 
                     if ((await _userManager.FindByEmailAsync(register.Email)) != null)
                         return BadRequest(new SignUpResultDTO()

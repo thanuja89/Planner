@@ -97,7 +97,7 @@ namespace Planner.Droid.Activities
 
         private void ShowConfirmationCodeDialog(string userId)
         {
-            InputDialogFragment frag = InputDialogFragment.NewInstance("Enter confirmation code", async s => 
+            ConfirmationCodeInputDialogFragment frag = ConfirmationCodeInputDialogFragment.NewInstance(async s => 
             {
                 try
                 {
@@ -112,7 +112,7 @@ namespace Planner.Droid.Activities
                 }
             });
 
-            frag.Show(FragmentManager, InputDialogFragment.TAG);
+            frag.Show(FragmentManager, ConfirmationCodeInputDialogFragment.TAG);
         }
 
         #region Validation
