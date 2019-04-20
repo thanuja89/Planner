@@ -56,7 +56,7 @@ namespace Planner.Api.Controllers
                         {
                             Token = tokenString
                         });
-                    } 
+                    }
                 }
             }
             catch (Exception ex)
@@ -115,7 +115,7 @@ namespace Planner.Api.Controllers
                                 ErrorType = SignUpErrorType.UsernameExists
                             });
                         }
-                    }                       
+                    }
 
                     if ((await _userManager.FindByEmailAsync(register.Email)) != null)
                         return BadRequest(new SignUpResultDTO()
@@ -129,7 +129,7 @@ namespace Planner.Api.Controllers
             {
                 _logger.LogError($"Threw exception while creating User: { ex }");
 
-                return StatusCode((int) HttpStatusCode.InternalServerError, new SignUpResultDTO()
+                return StatusCode((int)HttpStatusCode.InternalServerError, new SignUpResultDTO()
                 {
                     Succeeded = false,
                     ErrorType = SignUpErrorType.ServerError
@@ -170,10 +170,32 @@ namespace Planner.Api.Controllers
             }
         }
 
+        [HttpPost("{action}/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResendConfirmationEmail(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+
+                if (user == null)
+                    return BadRequest();
+
+                await SendConfirmationEmaiAsync(user);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Threw exception while confirming emai for user: { ex }");
+                return new StatusCodeResult(500);
+            }
+        }
+
 # if DEBUG
         [AllowAnonymous]
         [HttpGet("{action}")]
-        public async Task<IActionResult> Test()
+        public IActionResult Test()
         {
             try
             {
@@ -186,6 +208,7 @@ namespace Planner.Api.Controllers
         }
 #endif
 
+        #region Private Methods
         private string BuildToken(ApplicationUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -215,7 +238,7 @@ namespace Planner.Api.Controllers
             {
                 return await _userManager.FindByNameAsync(login.Username);
             }
-            
+
             return null;
         }
 
@@ -225,5 +248,7 @@ namespace Planner.Api.Controllers
 
             await _emailSender.SendEmailAsync(user.Email, "Email Confirmation Code", $"Your Confirmation Code is {token}");
         }
+
+        #endregion
     }
 }
