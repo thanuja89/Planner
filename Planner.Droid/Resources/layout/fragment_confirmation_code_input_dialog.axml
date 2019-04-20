@@ -38,14 +38,27 @@
             android:layout_height="wrap_content">
             <Button
                 android:layout_width="0dp"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:id="@+id/inputDialog_OkButton"
                 android:text="Ok"/>
             <Button
                 android:layout_width="0dp"
+                android:layout_weight="0.5"
                 android:layout_height="wrap_content"
                 android:id="@+id/inputDialog_CancelButton"
                 android:text="Cancel"/>
         </LinearLayout>
+        <TextView
+				android:text="Resend Code"
+				android:textAppearance="?android:attr/textAppearanceSmall"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/inputDialog_ResendTextView"
+				android:layout_gravity="right"
+				android:layout_alignParentRight="true"
+				android:layout_centerInParent="true"
+				android:layout_marginRight="5dp"
+				android:textColor="#ff2196f3" />
     </LinearLayout>
 </RelativeLayout>

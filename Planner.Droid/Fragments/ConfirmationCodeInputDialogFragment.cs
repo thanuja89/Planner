@@ -10,16 +10,19 @@ namespace Planner.Droid.Fragments
     {
         public const string TAG = "X:ConfirmationCodeInputDialogFragment";
         private Action<string> _onOkButtonClicked;
+        private Action _resendClicked;
 
         private EditText inputEditText;
+        private TextView resendTextView;
         private Button okButton;
         private Button cancelButton;
 
-        public static ConfirmationCodeInputDialogFragment NewInstance(Action<string> onOkButtonClicked)
+        public static ConfirmationCodeInputDialogFragment NewInstance(Action<string> onOkButtonClicked, Action resendClicked)
         {
             ConfirmationCodeInputDialogFragment frag = new ConfirmationCodeInputDialogFragment
             {
-                _onOkButtonClicked = onOkButtonClicked
+                _onOkButtonClicked = onOkButtonClicked,
+                _resendClicked = resendClicked
             };
             return frag;
         }
@@ -38,6 +41,7 @@ namespace Planner.Droid.Fragments
         private void FindViews(View view)
         {
             inputEditText = view.FindViewById<EditText>(Resource.Id.inputDialog_InputEditText);
+            resendTextView = view.FindViewById<TextView>(Resource.Id.inputDialog_ResendTextView);
 
             okButton = view.FindViewById<Button>(Resource.Id.inputDialog_OkButton);
             cancelButton = view.FindViewById<Button>(Resource.Id.inputDialog_CancelButton);
@@ -47,6 +51,12 @@ namespace Planner.Droid.Fragments
         {
             okButton.Click += OkButton_Click;
             cancelButton.Click += CancelButton_Click;
+            resendTextView.Click += ResendTextView_Click;
+        }
+
+        private void ResendTextView_Click(object sender, EventArgs e)
+        {
+            _resendClicked?.Invoke();
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
