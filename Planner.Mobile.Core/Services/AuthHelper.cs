@@ -1,4 +1,5 @@
 ﻿using Planner.Dto;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Planner.Mobile.Core.Helpers
@@ -20,6 +21,11 @@ namespace Planner.Mobile.Core.Helpers
         public Task<SignUpResultDTO> SignUpAsync(CreateAccountDto accountDto)
         {
             return _httpService.PostForResultAsync<SignUpResultDTO>("Auth/CreateAccount", accountDto, true);
+        }
+
+        public Task<HttpResponseMessage> ConfirmEmailAsync(ConfirmationRequestDto requestDto)
+        {
+            return _httpService.PostAsync("Auth/ConfirmEmail", requestDto);
         }
     }
 }

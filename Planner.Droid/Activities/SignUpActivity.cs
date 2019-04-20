@@ -4,6 +4,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Planner.Droid.Extensions;
+using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
 using Planner.Dto;
 using Planner.Mobile.Core.Helpers;
@@ -75,8 +76,7 @@ namespace Planner.Droid.Activities
 
                 if (result.Succeeded)
                 {
-                    _dialogHelper.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
-                        , (o, ea) => StartActivity(typeof(SignInActivity)));
+                    ShowConfirmationCodeDialog(result.UserId);                   
 
                     return;
                 }
@@ -93,6 +93,26 @@ namespace Planner.Droid.Activities
             {
                 progressBar.Visibility = ViewStates.Invisible;
             }
+        }
+
+        private void ShowConfirmationCodeDialog(string userId)
+        {
+            InputDialogFragment frag = InputDialogFragment.NewInstance("Enter confirmation code", async s => 
+            {
+                try
+                {
+                    await _authHelper.ConfirmEmailAsync(new ConfirmationRequestDto { Code = s, UserId = userId });
+
+                    _dialogHelper.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
+                            , (o, ea) => StartActivity(typeof(SignInActivity)));
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+                }
+            });
+
+            frag.Show(FragmentManager, InputDialogFragment.TAG);
         }
 
         #region Validation
