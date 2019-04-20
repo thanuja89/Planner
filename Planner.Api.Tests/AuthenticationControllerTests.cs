@@ -28,6 +28,7 @@ namespace Planner.Api.Tests
         private AuthenticationController _sut;
 
         #region CreateToken Method Tests
+
         [Fact]
         public async Task CreateToken_WhenCalledWithValidArgs_ReturnsOkWithToken()
         {
@@ -49,6 +50,139 @@ namespace Planner.Api.Tests
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
             Assert.IsAssignableFrom<TokenDto>(okResult.Value);
         }
+
+        [Fact]
+        public async Task CreateToken_WhenCalledWithInValidCreds_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            var login = new TokenRequestDto();
+
+            _mockSignInManager
+                .Setup(m => m.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
+
+            // Act
+            var result = await _sut.CreateToken(login);
+
+            // Assert
+            Assert.IsAssignableFrom<BadRequestResult>(result);
+        }
+
+        #endregion
+
+        #region CreateAccount Method Tests
+
+        [Fact]
+        public async Task CreateAccount_WhenCalledWithValidArgs_CallsEmailSenderAndReturnsOkWithSuccess()
+        {
+            // Arrange
+            SetUp();
+
+            var acc = new CreateAccountDto();
+            string code = "12346";
+
+            _mockUserManager
+                .Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            _mockUserManager.Setup(m => m.GenerateEmailConfirmationTokenAsync(It.IsAny<ApplicationUser>())).ReturnsAsync(code);
+
+            // Act
+            var result = await _sut.CreateAccount(acc);
+
+            // Assert
+            var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(okResult.Value);
+            Assert.True(dto.Succeeded);
+        }
+
+        [Fact]
+        public async Task CreateAccount_WhenUsernameExistsForAnotherEmail_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            var acc = new CreateAccountDto()
+            {
+                Email = "aaa@aa.com",
+                Username = "BBBBBBBBBBB",
+                Password = "password"
+            };
+
+            _mockUserManager
+                .Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            _mockUserManager.Setup(m => m.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(_user);
+
+            // Act
+            var result = await _sut.CreateAccount(acc);
+
+            // Assert
+            var badRequestResult = Assert.IsAssignableFrom<BadRequestObjectResult>(result);
+            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(badRequestResult.Value);
+            Assert.False(dto.Succeeded);
+        }
+
+        [Fact]
+        public async Task CreateAccount_WhenUsernameExistsForSameEmail_ReturnsOk()
+        {
+            // Arrange
+            SetUp();
+
+            var acc = new CreateAccountDto()
+            {
+                Email = "ddad@dawd.com",
+                Username = "BBBBBBBBBBB",
+                Password = "password"
+            };
+
+            _mockUserManager
+                .Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            _mockUserManager.Setup(m => m.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(_user);
+
+            // Act
+            var result = await _sut.CreateAccount(acc);
+
+            // Assert
+            var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(okResult.Value);
+            Assert.True(dto.Succeeded);
+        }
+
+        [Fact]
+        public async Task CreateAccount_WhenEmailExistsForDifferentUsername_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            var acc = new CreateAccountDto()
+            {
+                Email = "ddad@dawd.com",
+                Username = "CCCCCCCC",
+                Password = "password"
+            };
+
+            _mockUserManager
+                .Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            _mockUserManager.Setup(m => m.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(null as ApplicationUser);
+            _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(_user);
+
+            // Act
+            var result = await _sut.CreateAccount(acc);
+
+            // Assert
+            var badRequestResult = Assert.IsAssignableFrom<BadRequestObjectResult>(result);
+            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(badRequestResult.Value);
+            Assert.False(dto.Succeeded);
+        }
+
         #endregion
 
         #region Private Methods
