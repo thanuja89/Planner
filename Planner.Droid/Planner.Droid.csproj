@@ -66,6 +66,7 @@
     <Compile Include="AppConstants.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Fragments\InputDialogFragment.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Fragments\DatePickerFragment.cs" />
     <Compile Include="Fragments\DateTimePickerFragment.cs" />
@@ -178,7 +179,9 @@
       <Name>Planner.Mobile.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fragment_input_dialog.axml" />
+  </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\baseline_add_alarm_24.xml" />
   </ItemGroup>

@@ -2,7 +2,9 @@
 {
     public class CommonUrls
     {
-        public const string BASE_URI = "http://thanu.localhost.run/api/";
+        // 
+        //public const string BASE_URI = "http://10.0.2.2:58709/api/";
+        public const string BASE_URI = "http://32ec835b.ngrok.io/api/";
     }
 
     public class PreferenceKeys

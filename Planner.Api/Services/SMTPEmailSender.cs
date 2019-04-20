@@ -14,7 +14,7 @@ namespace Planner.Api.Services
             _options = optionsAccessor.Value;
         }
 
-        public Task SendEmailAsync(string email, string subject, string message)
+        public async Task SendEmailAsync(string email, string subject, string message)
         {
             var client = new SmtpClient(_options.Host, _options.Port)
             {
@@ -26,7 +26,7 @@ namespace Planner.Api.Services
             {
                 var mailMessage = new MailMessage(_options.Email, email, subject, message);
 
-                return client.SendMailAsync(mailMessage); 
+                await client.SendMailAsync(mailMessage); 
             }
         }
     }
