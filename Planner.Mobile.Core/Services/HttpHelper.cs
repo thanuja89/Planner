@@ -89,6 +89,11 @@ namespace Planner.Mobile.Core.Helpers
             return _httpClient.PostAsync(url, content);
         }
 
+        public Task<HttpResponseMessage> PostAsync(string url)
+        {
+            return _httpClient.PostAsync(url, null);
+        }
+
         public Task<HttpResponseMessage> PutAsync(string url, object obj)
         {
             var json = JsonConvert.SerializeObject(obj);

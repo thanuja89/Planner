@@ -27,5 +27,10 @@ namespace Planner.Mobile.Core.Helpers
         {
             return _httpService.PostAsync("Auth/ConfirmEmail", requestDto);
         }
+
+        public Task<HttpResponseMessage> ResendConfirmationEmailAsync(string userId)
+        {
+            return _httpService.PostAsync($"Auth/ResendConfirmationEmail/{userId}");
+        }
     }
 }

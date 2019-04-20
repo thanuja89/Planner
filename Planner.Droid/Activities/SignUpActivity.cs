@@ -9,6 +9,7 @@ using Planner.Droid.Helpers;
 using Planner.Dto;
 using Planner.Mobile.Core.Helpers;
 using System;
+using System.Threading.Tasks;
 using Utilities = Planner.Mobile.Core.Utilities;
 
 namespace Planner.Droid.Activities
@@ -76,12 +77,12 @@ namespace Planner.Droid.Activities
 
                 if (result.Succeeded)
                 {
-                    ShowConfirmationCodeDialog(result.UserId);                   
+                    ShowConfirmationCodeDialog(result.UserId);
 
                     return;
                 }
 
-                HandleError(result.ErrorType);               
+                HandleError(result.ErrorType);
             }
             catch (Exception ex)
             {
@@ -97,22 +98,47 @@ namespace Planner.Droid.Activities
 
         private void ShowConfirmationCodeDialog(string userId)
         {
-            ConfirmationCodeInputDialogFragment frag = ConfirmationCodeInputDialogFragment.NewInstance(async s => 
+            ConfirmationCodeInputDialogFragment frag = ConfirmationCodeInputDialogFragment.NewInstance(s =>
             {
-                try
-                {
-                    await _authHelper.ConfirmEmailAsync(new ConfirmationRequestDto { Code = s, UserId = userId });
-
-                    _dialogHelper.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
-                            , (o, ea) => StartActivity(typeof(SignInActivity)));
-                }
-                catch (Exception ex)
-                {
-                    Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
-                }
+                _ = ConfirmEmailAsync(userId, s);
+            },
+            () =>
+            {
+                _ = ResendConfirmationEmailAsync(userId);
             });
 
             frag.Show(FragmentManager, ConfirmationCodeInputDialogFragment.TAG);
+        }
+
+        private async Task ResendConfirmationEmailAsync(string userId)
+        {
+            try
+            {
+                await _authHelper.ResendConfirmationEmailAsync(userId);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+            }
+        }
+
+        private async Task ConfirmEmailAsync(string userId, string s)
+        {
+            try
+            {
+                await _authHelper.ConfirmEmailAsync(new ConfirmationRequestDto
+                {
+                    Code = s,
+                    UserId = userId
+                });
+
+                _dialogHelper.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
+                        , (o, ea) => StartActivity(typeof(SignInActivity)));
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+            }
         }
 
         #region Validation
@@ -165,7 +191,7 @@ namespace Planner.Droid.Activities
                 return false;
             }
 
-            if(passwordEditText.Text != confirmPasswordEditText.Text)
+            if (passwordEditText.Text != confirmPasswordEditText.Text)
             {
                 confirmPasswordEditText.Error = "Password and Confirm Password must match.";
                 return false;
