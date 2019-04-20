@@ -101,6 +101,8 @@ namespace Planner.Api.Controllers
                     {
                         if (user.Email == register.Email)
                         {
+                            await SendConfirmationEmaiAsync(appUser);
+
                             return Ok(new SignUpResultDTO()
                             {
                                 Succeeded = true,
