@@ -11,6 +11,7 @@ using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Dto;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -181,6 +182,118 @@ namespace Planner.Api.Tests
             var badRequestResult = Assert.IsAssignableFrom<BadRequestObjectResult>(result);
             var dto = Assert.IsAssignableFrom<SignUpResultDTO>(badRequestResult.Value);
             Assert.False(dto.Succeeded);
+        }
+
+        [Fact]
+        public async Task CreateAccount_WhenExceptionThrown_ReturnsStatusCode500()
+        {
+            // Arrange
+            SetUp();
+
+            var acc = new CreateAccountDto()
+            {
+                Email = "ddad@dawd.com",
+                Username = "CCCCCCCC",
+                Password = "password"
+            };
+
+            _mockUserManager
+                .Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ThrowsAsync(new InvalidOperationException());
+
+            // Act
+            var result = await _sut.CreateAccount(acc);
+
+            // Assert
+            var internalErrorResult = Assert.IsAssignableFrom<ObjectResult>(result);
+
+            Assert.Equal(internalErrorResult.StatusCode, (int?) HttpStatusCode.InternalServerError);
+
+            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(internalErrorResult.Value);
+
+            Assert.False(dto.Succeeded);
+        }
+
+        #endregion
+
+        #region Confirm Email Tests
+
+        [Fact]
+        public async Task ConfirmEmail_WhenCalledWithValidArgs_ReturnsOk()
+        {
+            // Arrange
+            SetUp();
+
+            var req = new ConfirmationRequestDto()
+            {
+                UserId = "aaaaaaa",
+                Code = "12345"
+            };
+
+            _mockUserManager
+                .Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(_user);
+
+            _mockUserManager
+                .Setup(m => m.ConfirmEmailAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            // Act
+            var result = await _sut.ConfirmEmail(req);
+
+            // Assert
+            Assert.IsAssignableFrom<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task ConfirmEmail_WhenCalledWithInvalidUserId_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            var req = new ConfirmationRequestDto()
+            {
+                UserId = "aaaaaaa",
+                Code = "12345"
+            };
+
+            _mockUserManager
+                .Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(null as ApplicationUser);
+
+            // Act
+            var result = await _sut.ConfirmEmail(req);
+
+            // Assert
+            Assert.IsAssignableFrom<BadRequestResult>(result);
+        }
+
+
+        [Fact]
+        public async Task ConfirmEmail_WhenCalledWithInvalidCode_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            var req = new ConfirmationRequestDto()
+            {
+                UserId = "aaaaaaa",
+                Code = "12345"
+            };
+
+            _mockUserManager
+                .Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(_user);
+
+            _mockUserManager
+                .Setup(m => m.ConfirmEmailAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            // Act
+            var result = await _sut.ConfirmEmail(req);
+
+            // Assert
+            Assert.IsAssignableFrom<BadRequestResult>(result);
         }
 
         #endregion

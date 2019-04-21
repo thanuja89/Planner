@@ -158,9 +158,12 @@ namespace Planner.Api.Controllers
                     if (user == null)
                         return BadRequest();
 
-                    await _userManager.ConfirmEmailAsync(user, dto.Code);
+                    var result = await _userManager.ConfirmEmailAsync(user, dto.Code);
 
-                    return Ok();
+                    if (result.Succeeded)
+                    {
+                        return Ok(); 
+                    }
                 }
 
                 return BadRequest();
