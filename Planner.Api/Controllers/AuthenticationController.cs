@@ -61,7 +61,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while creating Token: { ex }");
+                _logger.LogError("Threw exception while creating Token: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
 
@@ -129,7 +129,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while creating User: { ex }");
+                _logger.LogError("Threw exception while creating User: {@ex}", ex);
 
                 return StatusCode((int)HttpStatusCode.InternalServerError, new SignUpResultDTO()
                 {
@@ -170,7 +170,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while confirming emai for user: { ex }");
+                _logger.LogError("Threw exception while confirming email for user: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
         }
@@ -192,7 +192,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while confirming emai for user: { ex }");
+                _logger.LogError("Threw exception while confirming emai for user: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
         }
@@ -204,11 +204,12 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                return Ok("Test");
+                throw null;
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.LogError("Test ex {@ex}", ex);
+                return StatusCode(500);
             }
         }
 #endif

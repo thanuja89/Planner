@@ -42,7 +42,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while getting new ScheduledTasks: { ex }");
+                _logger.LogError("Threw exception while getting new ScheduledTasks: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
         }
@@ -63,7 +63,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while creating new ScheduledTasks: { ex }");
+                _logger.LogError("Threw exception while creating new ScheduledTasks: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
         }

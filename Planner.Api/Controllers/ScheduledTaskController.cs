@@ -46,7 +46,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while retrieving ScheduledTasks: { ex }");
+                _logger.LogError("Threw exception while retrieving ScheduledTasks: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
         }
@@ -66,7 +66,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while retrieving ScheduledTask: { ex }");
+                _logger.LogError("Threw exception while retrieving ScheduledTask: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
         }
@@ -88,7 +88,7 @@ namespace Planner.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Threw exception while creating ScheduledTask: { ex }");
+                    _logger.LogError("Threw exception while creating ScheduledTask: {@ex}", ex);
                 }
             }
 
@@ -122,7 +122,7 @@ namespace Planner.Api.Controllers
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Threw exception while creating ScheduledTask: { ex }");
+                    _logger.LogError("Threw exception while creating ScheduledTask: {@ex}", ex);
                 }
             }
 
@@ -147,7 +147,7 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Threw exception while creating ScheduledTask: { ex }");
+                _logger.LogError("Threw exception while creating ScheduledTask: {@ex}", ex);
             }
 
             return BadRequest();
