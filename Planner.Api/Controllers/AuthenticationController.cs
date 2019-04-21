@@ -88,11 +88,7 @@ namespace Planner.Api.Controllers
                     {
                         await SendConfirmationEmaiAsync(appUser);
 
-                        return Ok(new SignUpResultDTO()
-                        {
-                            Succeeded = true,
-                            UserId = appUser.Id
-                        });
+                        return Ok(SignUpResultDTO.Success(appUser.Id));
                     }
 
                     var user = await _userManager.FindByNameAsync(register.Username);
@@ -103,46 +99,26 @@ namespace Planner.Api.Controllers
                         {
                             await SendConfirmationEmaiAsync(appUser);
 
-                            return Ok(new SignUpResultDTO()
-                            {
-                                Succeeded = true,
-                                UserId = user.Id
-                            });
+                            return Ok(SignUpResultDTO.Success(user.Id));
                         }
                         else
                         {
-                            return BadRequest(new SignUpResultDTO()
-                            {
-                                Succeeded = false,
-                                ErrorType = SignUpErrorType.UsernameExists
-                            });
+                            return BadRequest(SignUpResultDTO.Failed(SignUpErrorType.UsernameExists));
                         }
                     }
 
                     if ((await _userManager.FindByEmailAsync(register.Email)) != null)
-                        return BadRequest(new SignUpResultDTO()
-                        {
-                            Succeeded = false,
-                            ErrorType = SignUpErrorType.EmailExists
-                        });
+                        return BadRequest(SignUpResultDTO.Failed(SignUpErrorType.EmailExists));
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError("Threw exception while creating User: {@ex}", ex);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, new SignUpResultDTO()
-                {
-                    Succeeded = false,
-                    ErrorType = SignUpErrorType.ServerError
-                });
+                return StatusCode((int) HttpStatusCode.InternalServerError, SignUpResultDTO.Failed(SignUpErrorType.ServerError));
             }
 
-            return BadRequest(new SignUpResultDTO()
-            {
-                Succeeded = false,
-                ErrorType = SignUpErrorType.Other
-            });
+            return BadRequest(SignUpResultDTO.Failed(SignUpErrorType.Other));
         }
 
         [HttpPost("{action}")]
