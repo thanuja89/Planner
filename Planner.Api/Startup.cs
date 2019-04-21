@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Planner.Api.Services;
 using Planner.Domain;
@@ -14,6 +15,8 @@ using Planner.Domain.Entities;
 using Planner.Domain.Repositories;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
+using Serilog;
+using System.IO;
 using System.Text;
 
 namespace Planner.Api
@@ -77,6 +80,7 @@ namespace Planner.Api
                      };
                  });
 
+
             services.AddHttpContextAccessor();
 
             services.AddAutoMapperWithProfile();
@@ -92,7 +96,7 @@ namespace Planner.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IHttpContextAccessor accessor)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseGlobalExceptionHandler();
 
@@ -105,6 +109,13 @@ namespace Planner.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.RollingFile(Path.Combine(env.ContentRootPath, "Logs\\Logs-{Date}.txt"))
+                .CreateLogger();
+
+            loggerFactory.AddSerilog();
 
             app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();

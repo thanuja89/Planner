@@ -25,7 +25,7 @@ namespace Planner.Api.Middlewares
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Exception caught at { nameof(GlobalExceptionHandlerMiddleware) }: { ex }");
+                _logger.LogError($"Exception caught at { nameof(GlobalExceptionHandlerMiddleware) }: {{@ex}}", ex);
 
                 throw;
             }
