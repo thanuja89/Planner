@@ -53,7 +53,7 @@ namespace Planner.Api.Tests
         }
 
         [Fact]
-        public async Task CreateToken_WhenCalledWithInValidCreds_ReturnsBadRequest()
+        public async Task CreateToken_WhenCalledWithInvalidCreds_ReturnsBadRequest()
         {
             // Arrange
             SetUp();
@@ -82,7 +82,7 @@ namespace Planner.Api.Tests
             SetUp();
 
             var acc = new CreateAccountDto();
-            string code = "12346";
+            string code = "0";
 
             _mockUserManager
                 .Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
@@ -108,8 +108,7 @@ namespace Planner.Api.Tests
             var acc = new CreateAccountDto()
             {
                 Email = "aaa@aa.com",
-                Username = "BBBBBBBBBBB",
-                Password = "password"
+                Username = _user.UserName
             };
 
             _mockUserManager
@@ -135,9 +134,8 @@ namespace Planner.Api.Tests
 
             var acc = new CreateAccountDto()
             {
-                Email = "ddad@dawd.com",
-                Username = "BBBBBBBBBBB",
-                Password = "password"
+                Email = _user.Email,
+                Username = _user.UserName
             };
 
             _mockUserManager
@@ -163,9 +161,8 @@ namespace Planner.Api.Tests
 
             var acc = new CreateAccountDto()
             {
-                Email = "ddad@dawd.com",
-                Username = "CCCCCCCC",
-                Password = "password"
+                Email = _user.Email,
+                Username = "AAAAAAA"
             };
 
             _mockUserManager
@@ -190,16 +187,11 @@ namespace Planner.Api.Tests
             // Arrange
             SetUp();
 
-            var acc = new CreateAccountDto()
-            {
-                Email = "ddad@dawd.com",
-                Username = "CCCCCCCC",
-                Password = "password"
-            };
+            var acc = new CreateAccountDto();
 
             _mockUserManager
                 .Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
-                .ThrowsAsync(new InvalidOperationException());
+                .ThrowsAsync(new Exception());
 
             // Act
             var result = await _sut.CreateAccount(acc);
@@ -227,7 +219,7 @@ namespace Planner.Api.Tests
             var req = new ConfirmationRequestDto()
             {
                 UserId = "aaaaaaa",
-                Code = "12345"
+                Code = "0"
             };
 
             _mockUserManager
@@ -251,11 +243,7 @@ namespace Planner.Api.Tests
             // Arrange
             SetUp();
 
-            var req = new ConfirmationRequestDto()
-            {
-                UserId = "aaaaaaa",
-                Code = "12345"
-            };
+            var req = new ConfirmationRequestDto();
 
             _mockUserManager
                 .Setup(m => m.FindByIdAsync(It.IsAny<string>()))
@@ -278,7 +266,7 @@ namespace Planner.Api.Tests
             var req = new ConfirmationRequestDto()
             {
                 UserId = "aaaaaaa",
-                Code = "12345"
+                Code = "0"
             };
 
             _mockUserManager
@@ -311,7 +299,6 @@ namespace Planner.Api.Tests
             _mockLogger = new Mock<ILogger<AuthenticationController>>();
             _mockConfiguration = new Mock<IConfiguration>();
             _mockLogger = new Mock<ILogger<AuthenticationController>>();
-            //IEmailSender emailSender
             _mockEmailSender = new Mock<IEmailSender>();
 
             _mockUserManager = new Mock<UserManager<ApplicationUser>>(new Mock<IUserStore<ApplicationUser>>().Object,
