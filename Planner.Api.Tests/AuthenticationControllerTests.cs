@@ -281,6 +281,81 @@ namespace Planner.Api.Tests
             var result = await _sut.ConfirmEmail(req);
 
             // Assert
+
+            Assert.IsAssignableFrom<BadRequestResult>(result);
+        }
+
+        #endregion
+
+        #region ResendConfirmationEmail Method Tests
+
+        [Fact]
+        public async Task ResendConfirmationEmail_WhenCalledWithValidArgs_GeneratesTokenAndCallsEmailSenderWithToken()
+        {
+            // Arrange
+            SetUp();
+
+            string userId = "AAAAAA";
+            string code = "0";
+
+            _mockUserManager
+                .Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(_user);
+
+            _mockUserManager
+                .Setup(m => m.GenerateEmailConfirmationTokenAsync(It.IsAny<ApplicationUser>()))
+                .ReturnsAsync(code);
+
+            // Act
+            var result = await _sut.ResendConfirmationEmail(userId);
+
+            // Assert
+            _mockUserManager.Verify(m => m.GenerateEmailConfirmationTokenAsync(_user));
+            _mockEmailSender.Verify(s => s.SendEmailAsync(It.IsAny<string>()
+                , It.IsAny<string>()
+                , It.Is<string>(m => m.Contains(code))));
+        }
+
+        [Fact]
+        public async Task ResendConfirmationEmail_WhenCalledWithValidArgs_ReturnsOk()
+        {
+            // Arrange
+            SetUp();
+
+            string userId = "AAAAAA";
+            string code = "0";
+
+            _mockUserManager
+                .Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(_user);
+
+            _mockUserManager
+                .Setup(m => m.GenerateEmailConfirmationTokenAsync(It.IsAny<ApplicationUser>()))
+                .ReturnsAsync(code);
+
+            // Act
+            var result = await _sut.ResendConfirmationEmail(userId);
+
+            // Assert
+            Assert.IsAssignableFrom<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task ResendConfirmationEmail_WhenCalledWithInvalidArgs_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            string userId = "AAAAAA";
+
+            _mockUserManager
+                .Setup(m => m.FindByIdAsync(It.IsAny<string>()))
+                .ReturnsAsync(null as ApplicationUser);
+
+            // Act
+            var result = await _sut.ResendConfirmationEmail(userId);
+
+            // Assert
             Assert.IsAssignableFrom<BadRequestResult>(result);
         }
 
