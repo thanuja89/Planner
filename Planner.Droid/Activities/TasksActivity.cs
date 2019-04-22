@@ -91,13 +91,13 @@ namespace Planner.Droid.Activities
         private Task UpdateServerAsync(Guid id)
         {
             return _taskWebHelper.DeleteScheduledTaskAsync(id)
-                .ContinueWith(t =>
+                .ContinueWith(async t =>
                 {
                     try
                     {
                         if (t.Result.IsSuccessStatusCode)
                         {
-                            _taskDataHelper.DeleteAsync(id);
+                            await _taskDataHelper.DeleteAsync(id);
                         }
                     }
                     catch (Exception ex)
