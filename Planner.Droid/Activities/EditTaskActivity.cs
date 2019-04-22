@@ -7,8 +7,6 @@ using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
-using Planner.Droid.Receivers;
-using Planner.Droid.Services;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -216,7 +214,7 @@ namespace Planner.Droid.Activities
                 if (_scheduledTask.Start != _oldStartDate)
                     UpdateAlarm();
 
-                _ = PostToServerAsync(_scheduledTask); // warning suppressed on purpose
+                _ = UpdateServerAsync(_scheduledTask); // warning suppressed on purpose
 
                 StartActivity(typeof(TasksActivity));
             }
@@ -226,7 +224,7 @@ namespace Planner.Droid.Activities
             }
         }
 
-        private async Task PostToServerAsync(ScheduledTask task)
+        private async Task UpdateServerAsync(ScheduledTask task)
         {
             try
             {

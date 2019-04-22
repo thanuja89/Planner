@@ -172,7 +172,7 @@ namespace Planner.Droid.Activities
                     SetAlarm(task.Start, task);
                 }
 
-                _ = PostToServerAsync(task); // warning suppressed on purpose
+                _ = UpdateToServerAsync(task); // warning suppressed on purpose
 
                 StartActivity(typeof(TasksActivity));
             }
@@ -182,24 +182,21 @@ namespace Planner.Droid.Activities
             }
         }
 
-        private Task PostToServerAsync(ScheduledTask task)
+        private async Task UpdateToServerAsync(ScheduledTask task)
         {
-            return _taskWebHelper.CreateScheduledTaskAsync(task)
-                .ContinueWith(t => 
+            try
+            {
+                var result = await _taskWebHelper.CreateScheduledTaskAsync(task);
+
+                if (result.IsSuccessStatusCode)
                 {
-                    try
-                    {
-                        if (t.Result.IsSuccessStatusCode)
-                        {
-                            _taskDataHelper.UpdateSyncStatusAsync(task.Id);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
-                    }
-                }, 
-                TaskContinuationOptions.OnlyOnRanToCompletion);
+                    await _taskDataHelper.UpdateSyncStatusAsync(task.Id);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+            }
         }
 
         private void SetAlarm(DateTime time, ScheduledTask task)
