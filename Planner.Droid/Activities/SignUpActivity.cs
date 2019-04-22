@@ -179,7 +179,7 @@ namespace Planner.Droid.Activities
 
             int requiredPasswordLength = 4;
 
-            if (passwordEditText.Text.Length <= requiredPasswordLength)
+            if (passwordEditText.Text.Length < requiredPasswordLength)
             {
                 passwordEditText.Error = $"Password must be at least { requiredPasswordLength } characters long.";
                 return false;

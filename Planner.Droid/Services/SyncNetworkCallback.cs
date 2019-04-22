@@ -1,6 +1,7 @@
 ﻿
 using Android.App;
 using Android.Net;
+using Android.Util;
 using Planner.Mobile.Core.Helpers;
 using System.Threading.Tasks;
 using static Android.Net.ConnectivityManager;
@@ -22,7 +23,7 @@ namespace Planner.Droid.Services
             }
             catch (System.Exception ex)
             {
-
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
             }
         }
     }

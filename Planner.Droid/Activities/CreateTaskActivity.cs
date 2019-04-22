@@ -6,6 +6,7 @@ using Android.Util;
 using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
+using Planner.Droid.Helpers;
 using Planner.Droid.Receivers;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
@@ -162,6 +163,7 @@ namespace Planner.Droid.Activities
                     Importance = SelectedImportance,
                     Note = noteEditText.Text,
                     Repeat = (Frequency)_selectedRepeatIndex,
+                    ApplicationUserId = Utilities.GetUserId(),
                     ClientUpdatedOn = DateTime.UtcNow
                 };
 

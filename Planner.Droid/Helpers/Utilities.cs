@@ -3,6 +3,7 @@ using Android.App.Job;
 using Android.Content;
 using Android.Preferences;
 using Planner.Droid.Receivers;
+using Planner.Mobile.Core;
 using Planner.Mobile.Core.Data;
 using System;
 
@@ -64,6 +65,15 @@ namespace Planner.Droid.Helpers
             var javaClass = Java.Lang.Class.FromType(typeof(T));
             var componentName = new ComponentName(context, javaClass);
             return new JobInfo.Builder(jobId, componentName);
+        }
+
+        public static string GetUserId()
+        {
+            var prefs = Application.Context.GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
+
+            var userId = prefs.GetString(PreferenceItemKeys.USER_ID, null);
+
+            return userId;
         }
     }
 }
