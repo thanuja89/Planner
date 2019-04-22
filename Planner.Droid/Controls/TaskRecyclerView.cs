@@ -20,7 +20,6 @@ namespace Planner.Droid.Controls
         {
             // Locate and cache view references:
             Title = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_TitleTextView);
-            Description = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_DescriptionTextView);
             Start = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_StartTextView);
             Repeat = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_RepeatTextView);
 
