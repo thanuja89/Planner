@@ -138,7 +138,7 @@ namespace Planner.Droid.Activities
             endDateTextView.Text = _scheduledTask.End == DateTime.MinValue ? "-" : _scheduledTask.End.ToShortDateString();
             endTimeTextView.Text = _scheduledTask.End == DateTime.MinValue ? "-" : _scheduledTask.End.ToShortTimeString();
 
-            alarmCheckBox.Selected = _scheduledTask.IsAlarm;
+            alarmCheckBox.Checked = _scheduledTask.IsAlarm;
 
             SelectedImportance = _scheduledTask.Importance;
 

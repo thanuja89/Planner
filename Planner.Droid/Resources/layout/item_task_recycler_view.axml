@@ -26,12 +26,6 @@
 				<TextView
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:text="Description"
-					android:textColor="#333333"
-					android:id="@+id/taskRecyclerView_DescriptionTextView" />
-				<TextView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
 					android:text="2018/01/01"
 					android:textColor="#333333"
 					android:id="@+id/taskRecyclerView_StartTextView" />

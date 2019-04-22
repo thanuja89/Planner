@@ -13,7 +13,7 @@ namespace Planner.Mobile.Core.Data
 
         private PlannerDatabase(string path)
         {
-            _connection = new SQLiteAsyncConnection(path);
+            _connection = new SQLiteAsyncConnection(path, false);
             InitDatabase();
         }
 
