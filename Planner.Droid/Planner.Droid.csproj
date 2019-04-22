@@ -74,6 +74,7 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Jobs\SyncJobService.cs" />
+    <Compile Include="Util\DateChangedEventArgs.cs" />
     <Compile Include="PlannerApp.cs" />
     <Compile Include="Receivers\AlarmReceiver.cs" />
     <Compile Include="Receivers\SyncReceiver.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Activities\TasksActivity.cs" />
     <Compile Include="Services\SyncNetworkCallback.cs" />
     <Compile Include="Services\SyncService.cs" />
+    <Compile Include="Util\TimeChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

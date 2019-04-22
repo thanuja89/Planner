@@ -27,12 +27,12 @@ namespace Planner.Droid.Activities
             {
                 var token = GetToken();
 
-                //if (token != null)
-                //{
-                //    HttpHelper.Init(token);
-                //    StartActivity(typeof(TasksActivity));
-                //}
-                //else
+                if (token != null)
+                {
+                    HttpHelper.Init(token);
+                    StartActivity(typeof(TasksActivity));
+                }
+                else
                     StartActivity(typeof(SignInActivity));
             }
             catch (Exception ex)

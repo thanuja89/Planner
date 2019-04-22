@@ -3,6 +3,7 @@ using Android.App.Job;
 using Android.Content;
 using Android.Preferences;
 using Planner.Droid.Receivers;
+using Planner.Droid.Util;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Data;
 using System;
@@ -74,6 +75,14 @@ namespace Planner.Droid.Helpers
             var userId = prefs.GetString(PreferenceItemKeys.USER_ID, null);
 
             return userId;
+        }
+
+        public static DateTime ToDateTime(Date date, Time time)
+        {
+            if (date == default && time == default)
+                return DateTime.MinValue;
+
+            return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
         }
     }
 }

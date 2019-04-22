@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.OS;
 using Android.Widget;
+using Planner.Droid.Util;
 using System;
 
 namespace Planner.Droid.Fragments
@@ -9,9 +10,9 @@ namespace Planner.Droid.Fragments
     {
         public const string TAG = "X:TimePickerFragment";
 
-        Action<(int hour, int minute)> _timeSelectedHandler;
+        Action<TimeChangedEventArgs> _timeSelectedHandler;
 
-        public static TimePickerFragment NewInstance(Action<(int hour, int minute)> onDateSelected)
+        public static TimePickerFragment NewInstance(Action<TimeChangedEventArgs> onDateSelected)
         {
             TimePickerFragment frag = new TimePickerFragment
             {
@@ -34,7 +35,10 @@ namespace Planner.Droid.Fragments
 
         public void OnTimeSet(TimePicker view, int hourOfDay, int minute)
         {
-            _timeSelectedHandler?.Invoke((hourOfDay, minute));
+            _timeSelectedHandler?.Invoke(new TimeChangedEventArgs()
+            {
+                Time = new Time(hourOfDay, minute)
+            });
         }
     }
 }
