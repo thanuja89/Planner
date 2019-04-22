@@ -83,8 +83,9 @@ namespace Planner.Droid.Activities
 
                 if (tokenDto != null && tokenDto.Token != null)
                 {
-                    SaveToken(tokenDto.Token);
+                    SaveUserInfo(tokenDto);
                     HttpHelper.Init(tokenDto.Token);
+
                     StartActivity(typeof(TasksActivity));
                 }
 
@@ -99,14 +100,17 @@ namespace Planner.Droid.Activities
             }
         }
 
-        private void SaveToken(string token)
+        private void SaveUserInfo(TokenDto dto)
         {
             var pref = Application.Context
                 .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
 
             var editor = pref.Edit();
 
-            editor.PutString(PreferenceItemKeys.TOKEN, token);
+            editor.PutString(PreferenceItemKeys.TOKEN, dto.Token);
+            editor.PutString(PreferenceItemKeys.USER_ID, dto.ApplicationUserId);
+            editor.PutString(PreferenceItemKeys.USERNAME, dto.Username);
+
             editor.Apply();
         }
 

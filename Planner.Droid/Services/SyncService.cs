@@ -66,7 +66,7 @@ namespace Planner.Droid.Services
                 {
                     var newTasksFromServer = await _syncHelper.PullAsync(lastSynced);
 
-                    var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(lastSynced);
+                    var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(Utilities.GetUserId(), lastSynced);
 
                     if (newTasksInClient != null && newTasksInClient.Count > 0)
                     {

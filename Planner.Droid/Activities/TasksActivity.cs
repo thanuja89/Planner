@@ -6,6 +6,7 @@ using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Util;
 using Planner.Droid.Controls;
+using Planner.Droid.Helpers;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -52,7 +53,7 @@ namespace Planner.Droid.Activities
                 recyclerView.SetLayoutManager(_layoutManager);
                 recyclerView.HasFixedSize = true;
 
-                _tasks = await _taskDataHelper.GetAsync();
+                _tasks = await _taskDataHelper.GetAsync(Utilities.GetUserId());
 
                 _adapter = new TaskViewAdapter(_tasks);
                 _adapter.ItemDeleteClick += Adapter_ItemDeleteClick;

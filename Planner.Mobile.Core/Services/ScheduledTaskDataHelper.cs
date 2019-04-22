@@ -8,60 +8,61 @@ namespace Planner.Mobile.Core.Helpers
 {
     public class ScheduledTaskDataHelper
     {
-        public Task<List<ScheduledTask>> GetAllAsync()
+        public Task<List<ScheduledTask>> GetAllAsync(string userId)
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
+                .Where(t => t.ApplicationUserId == userId && !t.IsDeleted)
                 .ToListAsync();
         }
 
-        public Task<List<ScheduledTask>> GetAsync(int take = 10)
+        public Task<List<ScheduledTask>> GetAsync(string userId, int take = 10)
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
-                .Where(t => !t.IsDeleted)
+                .Where(t => t.ApplicationUserId == userId && !t.IsDeleted)
                 .Take(take)
                 .ToListAsync();
         }
 
-        public Task<List<ScheduledTask>> GetSortedListAsync(Expression<Func<ScheduledTask, object>> orderBy, int take = 10)
+        public Task<List<ScheduledTask>> GetSortedListAsync(string userId, Expression<Func<ScheduledTask, object>> orderBy, int take = 10)
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
+                .Where(t => t.ApplicationUserId == userId && !t.IsDeleted)
                 .OrderBy(orderBy)
                 .Take(take)
                 .ToListAsync();
         }
 
-        public Task<List<ScheduledTask>> SearchAsync(string keyword, int take = 10)
+        public Task<List<ScheduledTask>> SearchAsync(string userId, string keyword, int take = 10)
         {
             return PlannerDatabase.Instance
                 .QueryAll<ScheduledTask>(@"
                     SELECT * FROM ScheduledTask 
-                    WHERE Title LIKE ?1
-                        OR Note LIKE ?1
+                    WHERE ApplicationUserId = 3 AND (Title LIKE ?1
+                        OR Note LIKE ?1)
                     ORDER BY Start
                     LIMIT ?2"
-                    , $"%{ keyword }%"
-                    , take);
+                    , $"%{ keyword }%", take, userId);
         }
 
-        public Task<List<ScheduledTask>> GetAllForRangeAsync(DateTime startDate, DateTime endDate)
+        public Task<List<ScheduledTask>> GetAllForRangeAsync(string userId, DateTime startDate, DateTime endDate)
         {
             return PlannerDatabase.Instance
                 .QueryAll<ScheduledTask>(@"
                     SELECT * FROM ScheduledTask 
-                    WHERE (Start BETWEEN ?1 AND ?2) 
+                    WHERE ApplicationUserId = 3 AND (Start BETWEEN ?1 AND ?2) 
                         OR (End BETWEEN ?1 AND ?2) 
                         OR (Start < ?1 AND End > ?2)"
-                    , startDate.Ticks, endDate.Ticks);
+                    , startDate.Ticks, endDate.Ticks, userId);
         }
 
-        public Task<List<ScheduledTask>> GetAllFromDateTimeAsync(DateTime dateTime)
+        public Task<List<ScheduledTask>> GetAllFromDateTimeAsync(string userId, DateTime dateTime)
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
-                .Where(t => t.ClientUpdatedOn >= dateTime)
+                .Where(t => t.ApplicationUserId == userId && t.ClientUpdatedOn >= dateTime)
                 .ToListAsync();
         }
 

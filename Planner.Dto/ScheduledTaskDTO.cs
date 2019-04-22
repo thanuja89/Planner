@@ -23,6 +23,7 @@ namespace Planner.Dto
     {
         public Guid Id { get; set; }
         public bool IsDeleted { get; set; }
+        public string ApplicationUserId { get; set; }
     }
 
     public class PostScheduledTaskDTO : ScheduledTaskDTO
