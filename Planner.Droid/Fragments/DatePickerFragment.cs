@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.OS;
 using Android.Widget;
+using Planner.Droid.Util;
 using System;
 
 namespace Planner.Droid.Fragments
@@ -9,9 +10,9 @@ namespace Planner.Droid.Fragments
     {
         public const string TAG = "X:DatePickerFragment";
 
-        Action<DateTime> _dateSelectedHandler;
+        Action<DateChangedEventArgs> _dateSelectedHandler;
 
-        public static DatePickerFragment NewInstance(Action<DateTime> onDateSelected)
+        public static DatePickerFragment NewInstance(Action<DateChangedEventArgs> onDateSelected)
         {
             DatePickerFragment frag = new DatePickerFragment
             {
@@ -35,8 +36,10 @@ namespace Planner.Droid.Fragments
 
         public void OnDateSet(DatePicker view, int year, int month, int dayOfMonth)
         {
-            DateTime selectedDate = new DateTime(year, month + 1, dayOfMonth);
-            _dateSelectedHandler?.Invoke(selectedDate);
+            _dateSelectedHandler?.Invoke(new DateChangedEventArgs()
+            {
+                Date = new Date(year, month + 1, dayOfMonth)
+            });
         }
     }
 }
