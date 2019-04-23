@@ -1,5 +1,4 @@
-﻿using Planner.Dto;
-using Planner.Mobile.Core.Data;
+﻿using Planner.Mobile.Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

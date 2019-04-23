@@ -7,6 +7,7 @@ using Android.Support.V7.Widget;
 using Android.Util;
 using Planner.Droid.Controls;
 using Planner.Droid.Helpers;
+using Planner.Droid.Services;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -79,34 +80,18 @@ namespace Planner.Droid.Activities
         {
             try
             {
+                await Task.Yield();
+
                 await _taskDataHelper.MarkAsDeletedAsync(e.Id);
 
-                _ = UpdateServerAsync(e.Id); // warning suppressed on purpose
+                _ = SyncService.Instance.SyncAsync(this); // warning suppressed on purpose
+
+                await _taskDataHelper.DeleteAsync(e.Id);
             }
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
             }
-        }
-
-        private Task UpdateServerAsync(Guid id)
-        {
-            return _taskWebHelper.DeleteScheduledTaskAsync(id)
-                .ContinueWith(async t =>
-                {
-                    try
-                    {
-                        if (t.Result.IsSuccessStatusCode)
-                        {
-                            await _taskDataHelper.DeleteAsync(id);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
-                    }
-                },
-                TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
         private void FindViews()

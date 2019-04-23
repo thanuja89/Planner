@@ -1,39 +1,17 @@
 ﻿using Planner.Dto;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Planner.Mobile.Core.Services
 {
     public class SyncHelper
     {
-        public async Task<IEnumerable<ScheduledTask>> PullAsync(DateTime lastSynced)
+        public Task<IEnumerable<GetScheduledTaskDTO>> PullAsync(long lastSynced)
         {
-            var tasks = await HttpHelper.Instance.GetAsync<List<GetScheduledTaskDTO>>($"Syncronization?lastSynced={lastSynced:yyyyMMddHHmmss}");
-            
-            if(tasks != null)
-            {
-                var entities = tasks
-                    .Select(t => new ScheduledTask()
-                    {
-                        Id = t.Id,
-                        Title = t.Title,
-                        Note = t.Note,
-                        Start = t.Start,
-                        End = t.End,
-                        Importance = (Data.Importance) t.Importance,
-                        Repeat = (Data.Frequency) t.Repeat,
-                        IsAlarm = t.IsAlarm
-                    })
-                    .ToList();
+            return HttpHelper.Instance.GetAsync<IEnumerable<GetScheduledTaskDTO>>($"Syncronization?lastSynced={lastSynced}");
 
-                return entities;
-            }
-
-            return default;
         }
 
         public Task PushAsync(IEnumerable<ScheduledTask> tasks)

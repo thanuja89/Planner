@@ -8,6 +8,7 @@ using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
 using Planner.Droid.Receivers;
+using Planner.Droid.Services;
 using Planner.Droid.Util;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
@@ -185,7 +186,7 @@ namespace Planner.Droid.Activities
                     Note = noteEditText.Text,
                     Repeat = (Frequency)_selectedRepeatIndex,
                     ApplicationUserId = Utilities.GetUserId(),
-                    ClientUpdatedOn = DateTime.UtcNow
+                    ClientUpdatedOnTicks = DateTime.UtcNow.Ticks
                 };
 
                 await _taskDataHelper.InsertAsync(task);
@@ -195,26 +196,9 @@ namespace Planner.Droid.Activities
                     SetAlarm(task.Start, task);
                 }
 
-                _ = UpdateToServerAsync(task); // warning suppressed on purpose
+                _ = SyncService.Instance.SyncAsync(this); // warning suppressed on purpose
 
                 StartActivity(typeof(TasksActivity));
-            }
-            catch (Exception ex)
-            {
-                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
-            }
-        }
-
-        private async Task UpdateToServerAsync(ScheduledTask task)
-        {
-            try
-            {
-                var result = await _taskWebHelper.CreateScheduledTaskAsync(task);
-
-                if (result.IsSuccessStatusCode)
-                {
-                    await _taskDataHelper.UpdateSyncStatusAsync(task.Id);
-                }
             }
             catch (Exception ex)
             {

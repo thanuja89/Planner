@@ -1,7 +1,9 @@
-﻿using SQLite;
+﻿using Planner.Dto;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Planner.Mobile.Core.Data
@@ -66,24 +68,6 @@ namespace Planner.Mobile.Core.Data
             });
         }
 
-        public Task InsertOrUpdateAllTasksAsync(IEnumerable<ScheduledTask> items)
-        {
-            return RunInTransactionAsync<ScheduledTask>(c =>
-            {
-                foreach (var item in items)
-                {
-                    if (item.IsDeleted)
-                    {
-                        c.Delete(item);
-                    }
-                    else
-                    {
-                        c.InsertOrReplace(item);
-                    }                                         
-                }
-            });
-        }
-
         public Task UpdateAsync<T>(T item) where T : new()
         {
             return _connection.UpdateAsync(item);
@@ -102,6 +86,48 @@ namespace Planner.Mobile.Core.Data
         private void InitDatabase()
         {
             _connection.CreateTableAsync<ScheduledTask>().Wait();
+            //_connection.Table<ScheduledTask>().DeleteAsync().Wait();
+        }
+
+        public Task InsertOrUpdateAllTasksAsync(IEnumerable<GetScheduledTaskDTO> items)
+        {
+            return RunInTransactionAsync<ScheduledTask>(conn =>
+            {
+                var deleteClause = new StringBuilder();
+
+                foreach (var item in items)
+                {
+                    if (item.IsDeleted)
+                        deleteClause.Append($"'{item.Id}',");
+                    else
+                    {
+                        var itm = conn.Find<ScheduledTask>(t => t.Id == item.Id);
+
+                        conn.InsertOrReplace(new ScheduledTask()
+                        {
+                            Id = item.Id,
+                            Title = item.Title,
+                            Note = item.Note,
+                            Start = item.Start,
+                            End = item.End,
+                            Importance = (Importance)item.Importance,
+                            Repeat = (Frequency)item.Repeat,
+                            IsAlarm = item.IsAlarm,
+                            ApplicationUserId = item.ApplicationUserId,
+                            ClientSideId = itm?.ClientSideId ?? 0
+                        });
+                    }
+                }
+
+                if (deleteClause.Length > 0)
+                {
+                    var clause = deleteClause.ToString().Substring(0, deleteClause.Length - 1);
+
+                    conn.Execute($@"DELETE 
+                               FROM ScheduledTask
+                               WHERE Id IN ({ clause })"); 
+                }
+            });
         }
 
         private void Seed()

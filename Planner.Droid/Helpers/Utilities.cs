@@ -12,25 +12,21 @@ namespace Planner.Droid.Helpers
 {
     public static class Utilities
     {
-        public static DateTime GetDateTimeFromPreferences(Context context, string key)
+        public static long GetLongFromPreferences(Context context, string key)
         {
             var pref = PreferenceManager.GetDefaultSharedPreferences(context);
 
-            var lastSyncedStr = pref.GetString(key, string.Empty);
+            var ticks = pref.GetLong(key, 0);
 
-            if (string.IsNullOrEmpty(lastSyncedStr))
-                return default;
-
-            DateTime.TryParse(lastSyncedStr, out DateTime date);
-            return date;
+            return ticks;
         }
 
-        public static void SaveDateTimeToPreferences(Context context, string key, DateTime dateTime)
+        public static void SaveLongToPreferences(Context context, string key, long ticks)
         {
             var pref = PreferenceManager.GetDefaultSharedPreferences(context);
             var editor = pref.Edit();
 
-            editor.PutString(key, dateTime.ToString());
+            editor.PutLong(key, ticks);
 
             editor.Apply();
         }

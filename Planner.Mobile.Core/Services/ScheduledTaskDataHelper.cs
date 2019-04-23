@@ -1,4 +1,5 @@
-﻿using Planner.Mobile.Core.Data;
+﻿using Planner.Dto;
+using Planner.Mobile.Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -58,11 +59,11 @@ namespace Planner.Mobile.Core.Helpers
                     , startDate.Ticks, endDate.Ticks, userId);
         }
 
-        public Task<List<ScheduledTask>> GetAllFromDateTimeAsync(string userId, DateTime dateTime)
+        public Task<List<ScheduledTask>> GetAllFromDateTimeAsync(string userId, long ticks)
         {
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
-                .Where(t => t.ApplicationUserId == userId && t.ClientUpdatedOn >= dateTime)
+                .Where(t => t.ApplicationUserId == userId && t.ClientUpdatedOnTicks >= ticks)
                 .ToListAsync();
         }
 
@@ -85,10 +86,10 @@ namespace Planner.Mobile.Core.Helpers
                 .InsertAllAsync(tasks);
         }
 
-        public Task InsertOrUpdateAllAsync(IEnumerable<ScheduledTask> tasks)
+        public Task InsertOrUpdateAllAsync(IEnumerable<GetScheduledTaskDTO> tasks)
         {
             return PlannerDatabase.Instance
-                .InsertOrUpdateAllAsync(tasks);
+                .InsertOrUpdateAllTasksAsync(tasks);
         }
 
         public Task UpdateAsync(ScheduledTask task)
@@ -97,20 +98,13 @@ namespace Planner.Mobile.Core.Helpers
                 .UpdateAsync(task);
         }
 
-        public Task UpdateSyncStatusAsync(Guid id)
-        {
-            return PlannerDatabase.Instance
-                .ExecuteCommandAsync(@"UPDATE ScheduledTask
-                                        SET IsChangesSynced = 1
-                                       WHERE Id = ?", id);
-        }
-
         public Task MarkAsDeletedAsync(Guid id)
         {
             return PlannerDatabase.Instance
                 .ExecuteCommandAsync(@"UPDATE ScheduledTask
-                                        SET IsDeleted = 1
-                                       WHERE Id = ?", id);
+                                        SET IsDeleted = 1,
+                                            ClientUpdatedOnTicks = ?2
+                                       WHERE Id = ?1", id, DateTime.UtcNow.Ticks);
         }
 
         public Task DeleteAsync(Guid id)
