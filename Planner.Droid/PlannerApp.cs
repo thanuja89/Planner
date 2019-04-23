@@ -16,9 +16,9 @@ namespace Planner.Droid
 #endif
     public class PlannerApp : Application
     {
-#if !DEBUG
+//#if !DEBUG
         private SyncNetworkCallback _networkCallback;
-#endif
+//#endif
         public PlannerApp(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
@@ -39,26 +39,26 @@ namespace Planner.Droid
 
             var jobScheduler = (JobScheduler) GetSystemService(JobSchedulerService);
             var scheduleResult = jobScheduler.Schedule(jobInfo);
-
-            var cm = (ConnectivityManager) GetSystemService(ConnectivityService);
-
-            var builder = new NetworkRequest.Builder();
-
-            _networkCallback = new SyncNetworkCallback();
-
-            if (cm != null)
-            {
-                cm.RegisterNetworkCallback(builder.Build(), _networkCallback);
-            }
 #endif
+            //var cm = (ConnectivityManager) GetSystemService(ConnectivityService);
+
+            //var builder = new NetworkRequest.Builder();
+
+            //_networkCallback = new SyncNetworkCallback();
+
+            //if (cm != null)
+            //{
+            //    cm.RegisterNetworkCallback(builder.Build(), _networkCallback);
+            //}
+//#endif
         }
 
         public override void OnTerminate()
         {
-#if !DEBUG
-            var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
-            cm.UnregisterNetworkCallback(_networkCallback);
-#endif
+//#if !DEBUG
+            //var cm = (ConnectivityManager)GetSystemService(ConnectivityService);
+            //cm.UnregisterNetworkCallback(_networkCallback);
+//#endif
             base.OnTerminate();
         }
     }

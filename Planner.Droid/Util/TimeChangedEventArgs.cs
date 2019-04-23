@@ -38,7 +38,10 @@ namespace Planner.Droid.Util
 
         public override string ToString()
         {
-            return new TimeSpan(Hour, Minute, 0).ToString(@"hh\:mm");
+            int hr = Hour > 12 ? (24 - Hour) : Hour;
+            string amPm = Hour > 12 ? "PM" : "AM";
+
+            return $"{hr}:{Minute} {amPm}";
         }
     }
 }
