@@ -34,11 +34,7 @@ namespace Planner.Dto
     public class PutScheduledTaskDTO : ScheduledTaskDTO
     {
         public Guid Id { get; set; }
-        public DateTime ClientUpdatedOn { get; set; }
-    }
-
-    public class SyncScheduledTaskDTO : PutScheduledTaskDTO
-    {
+        public long ClientUpdatedOnTicks { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

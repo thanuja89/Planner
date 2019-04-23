@@ -19,7 +19,8 @@ namespace Planner.Api.Services
             CreateMap<PutScheduledTaskDTO, ScheduledTask>()
                 .ForMember(t => t.UpdatedOnUtc, opt => opt.MapFrom(t => DateTime.UtcNow));
 
-            CreateMap<PutScheduledTaskDTO, ScheduledTaskDataModel>();
+            CreateMap<PutScheduledTaskDTO, ScheduledTaskDataModel>()
+                .ForMember(t => t.ClientUpdatedOn, opt => opt.MapFrom(t => new DateTime(t.ClientUpdatedOnTicks)));
         }
     }
 }

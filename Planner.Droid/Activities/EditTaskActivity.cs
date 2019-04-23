@@ -7,11 +7,11 @@ using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
+using Planner.Droid.Services;
 using Planner.Droid.Util;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
-using System.Threading.Tasks;
 
 namespace Planner.Droid.Activities
 {
@@ -231,34 +231,16 @@ namespace Planner.Droid.Activities
                 _scheduledTask.Importance = SelectedImportance;
                 _scheduledTask.Note = noteEditText.Text;
                 _scheduledTask.Repeat = (Frequency)_selectedRepeatIndex;
-                _scheduledTask.ClientUpdatedOn = DateTime.UtcNow;
-                _scheduledTask.IsChangesSynced = false;
+                _scheduledTask.ClientUpdatedOnTicks = DateTime.UtcNow.Ticks;
 
                 await _taskDataHelper.UpdateAsync(_scheduledTask);
 
                 if (_scheduledTask.Start != _oldStartDate)
                     UpdateAlarm();
 
-                _ = UpdateServerAsync(_scheduledTask); // warning suppressed on purpose
+                _ = SyncService.Instance.SyncAsync(this); // warning suppressed on purpose
 
                 StartActivity(typeof(TasksActivity));
-            }
-            catch (Exception ex)
-            {
-                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
-            }
-        }
-
-        private async Task UpdateServerAsync(ScheduledTask task)
-        {
-            try
-            {
-                var response = await _taskWebHelper.UpdateScheduledTaskAsync(task.Id, task);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    await _taskDataHelper.UpdateSyncStatusAsync(task.Id);
-                }
             }
             catch (Exception ex)
             {

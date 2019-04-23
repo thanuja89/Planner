@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
-using System.Globalization;
 using System.Threading.Tasks;
 
 namespace Planner.Api.Extensions
@@ -35,12 +34,9 @@ namespace Planner.Api.Extensions
                 return Task.CompletedTask;
             }
 
-            DateTime.TryParseExact(value, "yyyyMMddHHmmss"
-                , CultureInfo.InvariantCulture.DateTimeFormat
-                , DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
-                , out DateTime dateTime);
+            long.TryParse(value, out long ticks);
 
-            bindingContext.Result = ModelBindingResult.Success(dateTime);
+            bindingContext.Result = ModelBindingResult.Success(new DateTime(ticks));
 
             return Task.CompletedTask;
         }

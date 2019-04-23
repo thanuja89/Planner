@@ -1,7 +1,5 @@
-﻿using Android.App;
-using Android.Content;
+﻿using Android.Content;
 using Android.Util;
-using Android.Widget;
 using Planner.Droid.Helpers;
 using Planner.Mobile.Core.Helpers;
 using Planner.Mobile.Core.Services;
@@ -55,15 +53,12 @@ namespace Planner.Droid.Services
 
             try
             {
-                var lastSynced = Utilities.GetDateTimeFromPreferences(context, "LastSyncedOn");
-
-                if ((DateTime.UtcNow - lastSynced).TotalSeconds < 60)
-                    return;
-
                 lockTaken = await _semaphore.WaitAsync(0);
 
                 if (lockTaken)
                 {
+                    var lastSynced = Utilities.GetLongFromPreferences(context, "LastSyncedOn");
+
                     var newTasksFromServer = await _syncHelper.PullAsync(lastSynced);
 
                     var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(Utilities.GetUserId(), lastSynced);
@@ -78,7 +73,7 @@ namespace Planner.Droid.Services
                         await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer);
                     }
 
-                    Utilities.SaveDateTimeToPreferences(context, "LastSyncedOn", DateTime.UtcNow);
+                    Utilities.SaveLongToPreferences(context, "LastSyncedOn", DateTime.UtcNow.Ticks);
                 }
             }
             catch (Exception ex)
