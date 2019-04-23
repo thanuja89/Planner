@@ -10,24 +10,27 @@ namespace Planner.Droid.Fragments
     {
         public const string TAG = "X:TimePickerFragment";
 
+        private DateTime? _defaultDate;
+
         Action<TimeChangedEventArgs> _timeSelectedHandler;
 
-        public static TimePickerFragment NewInstance(Action<TimeChangedEventArgs> onDateSelected)
+        public static TimePickerFragment NewInstance(Action<TimeChangedEventArgs> onDateSelected, DateTime? defaultDate = null)
         {
             TimePickerFragment frag = new TimePickerFragment
             {
-                _timeSelectedHandler = onDateSelected
+                _timeSelectedHandler = onDateSelected,
+                _defaultDate = defaultDate
             };
             return frag;
         }
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
-            DateTime currentDateTime = DateTime.Now;
+            DateTime defaultDate = _defaultDate ?? DateTime.Now;
             TimePickerDialog dialog = new TimePickerDialog(Activity
                 , this
-                , currentDateTime.Hour
-                , currentDateTime.Minute
+                , defaultDate.Hour
+                , defaultDate.Minute
                 , true);
 
             return dialog;

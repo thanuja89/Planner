@@ -7,6 +7,7 @@ using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
+using Planner.Droid.Util;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -19,8 +20,6 @@ namespace Planner.Droid.Activities
     {
         private EditText titleEditText;
         private EditText noteEditText;
-        private TableRow startDateRow;
-        private TableRow endDateRow;
         private TextView startDateTextView;
         private TextView endDateTextView;
         private TextView startTimeTextView;
@@ -32,8 +31,10 @@ namespace Planner.Droid.Activities
         private Button saveButton;
         private Android.Support.V7.App.AlertDialog _dialog;
 
-        private DateTime _startDate;
-        private DateTime _endDate;
+        private Date _startDate;
+        private Date _endDate;
+        private Time _startTime;
+        private Time _endTime;
 
         private DateTime _oldStartDate;
 
@@ -111,8 +112,6 @@ namespace Planner.Droid.Activities
         {
             titleEditText = FindViewById<EditText>(Resource.Id.createTask_TitleEditText);
             noteEditText = FindViewById<EditText>(Resource.Id.createTask_NoteEditText);
-            startDateRow = FindViewById<TableRow>(Resource.Id.createTask_StartDateRow);
-            endDateRow = FindViewById<TableRow>(Resource.Id.createTask_EndDateRow);
             startDateTextView = FindViewById<TextView>(Resource.Id.createTask_StartDateTextView);
             endDateTextView = FindViewById<TextView>(Resource.Id.createTask_EndDateTextView);
             startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
@@ -147,8 +146,10 @@ namespace Planner.Droid.Activities
 
         private void HandleEvents()
         {
-            startDateRow.Click += StartDateRow_Click;
-            endDateRow.Click += EndDateRow_Click;
+            startDateTextView.Click += StartDateTextView_Click;
+            endDateTextView.Click += EndDateTextView_Click;
+            startTimeTextView.Click += StartTimeTextView_Click;
+            endTimeTextView.Click += EndTimeTextView_Click;
             repeatLayout.Click += RepeatLayout_Click;
             saveButton.Click += SaveButton_Click;
         }
@@ -168,28 +169,52 @@ namespace Planner.Droid.Activities
             _dialog.Show();
         }
 
-        private void EndDateRow_Click(object sender, EventArgs e)
+        private void EndDateTextView_Click(object sender, EventArgs e)
         {
-            DateTimePickerFragment frag = DateTimePickerFragment.NewInstance((o, date) =>
+            DatePickerFragment frag = DatePickerFragment.NewInstance(ev =>
             {
-                _endDate = date;
-                endDateTextView.Text = date.ToShortDateString();
-                endTimeTextView.Text = date.ToShortTimeString();
-            });
+                _endDate = ev.Date;
+                endDateTextView.Text = ev.Date.ToString();
+            }, 
+            _scheduledTask.End);
 
-            frag.Show(FragmentManager, DateTimePickerFragment.TAG);
+            frag.Show(FragmentManager, DatePickerFragment.TAG);
         }
 
-        private void StartDateRow_Click(object sender, EventArgs e)
+        private void StartDateTextView_Click(object sender, EventArgs e)
         {
-            DateTimePickerFragment frag = DateTimePickerFragment.NewInstance((o, date) =>
+            DatePickerFragment frag = DatePickerFragment.NewInstance(ev =>
             {
-                _startDate = date;
-                startDateTextView.Text = date.ToShortDateString();
-                startTimeTextView.Text = date.ToShortTimeString();
-            });
+                _startDate = ev.Date;
+                startDateTextView.Text = ev.Date.ToString();
+            }, 
+            _scheduledTask.Start);
 
-            frag.Show(FragmentManager, DateTimePickerFragment.TAG);
+            frag.Show(FragmentManager, DatePickerFragment.TAG);
+        }
+
+        private void EndTimeTextView_Click(object sender, EventArgs e)
+        {
+            TimePickerFragment frag = TimePickerFragment.NewInstance(ev =>
+            {
+                _endTime = ev.Time;
+                endTimeTextView.Text = ev.Time.ToString();
+            }, 
+            _scheduledTask.End);
+
+            frag.Show(FragmentManager, TimePickerFragment.TAG);
+        }
+
+        private void StartTimeTextView_Click(object sender, EventArgs e)
+        {
+            TimePickerFragment frag = TimePickerFragment.NewInstance(ev =>
+            {
+                _startTime = ev.Time;
+                startTimeTextView.Text = ev.Time.ToString();
+            },
+            _scheduledTask.Start);
+
+            frag.Show(FragmentManager, TimePickerFragment.TAG);
         }
 
         private async void SaveButton_Click(object sender, EventArgs e)
@@ -200,8 +225,8 @@ namespace Planner.Droid.Activities
                     return;
 
                 _scheduledTask.Title = titleEditText.Text;
-                _scheduledTask.Start = _startDate;
-                _scheduledTask.End = _endDate;
+                _scheduledTask.Start = Utilities.ToDateTime(_startDate, _startTime);
+                _scheduledTask.End = Utilities.ToDateTime(_endDate, _endTime);
                 _scheduledTask.IsAlarm = alarmCheckBox.Checked;
                 _scheduledTask.Importance = SelectedImportance;
                 _scheduledTask.Note = noteEditText.Text;
