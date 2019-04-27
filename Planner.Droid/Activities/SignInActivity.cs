@@ -22,7 +22,6 @@ namespace Planner.Droid.Activities
         private EditText usernameEditText;
         private EditText passwordEditText;
         private Button signInButton;
-        private CheckBox rememberMeCheckBox;
         private TextView signUpTextView;
 
         private ProgressBar progressBar;
@@ -48,7 +47,6 @@ namespace Planner.Droid.Activities
             usernameEditText = FindViewById<EditText>(Resource.Id.signIn_UsernameEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.signIn_PasswordEditText);
             signInButton = FindViewById<Button>(Resource.Id.signIn_SignInButton);
-            rememberMeCheckBox = FindViewById<CheckBox>(Resource.Id.signIn_RememberMeCheckBox);
             signUpTextView = FindViewById<TextView>(Resource.Id.signIn_SignUpTextView);
             progressBar = FindViewById<ProgressBar>(Resource.Id.signIn_circularProgressbar);
         }
@@ -81,6 +79,8 @@ namespace Planner.Droid.Activities
 
                 var tokenDto = await _authHelper.SignInAsync(dto);
 
+                progressBar.Visibility = ViewStates.Invisible;
+
                 if (tokenDto != null && tokenDto.Token != null)
                 {
                     SaveUserInfo(tokenDto);
@@ -88,8 +88,10 @@ namespace Planner.Droid.Activities
 
                     StartActivity(typeof(TasksActivity));
                 }
-
-                progressBar.Visibility = ViewStates.Invisible;
+                else
+                {
+                    _dialogHelper.ShowError(this, "Username or password is incorrect.");
+                }
             }
             catch (Exception ex)
             {

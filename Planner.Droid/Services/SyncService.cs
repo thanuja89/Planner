@@ -15,7 +15,7 @@ namespace Planner.Droid.Services
         private readonly SyncHelper _syncHelper;
         private readonly ScheduledTaskDataHelper _dataHelper;
 
-        private static object _initLock = new object();
+        private static readonly object _initLock = new object();
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         public SyncService()

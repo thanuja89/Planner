@@ -49,12 +49,6 @@
 		<RelativeLayout
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent">
-			<CheckBox
-				android:text="Remember Me"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/signIn_RememberMeCheckBox"
-				android:layout_alignParentLeft="true" />
 			<TextView
 				android:text="Sign Up"
 				android:textAppearance="?android:attr/textAppearanceSmall"
