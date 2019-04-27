@@ -9,6 +9,7 @@ using Planner.Droid.Helpers;
 using Planner.Dto;
 using Planner.Mobile.Core.Helpers;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using Utilities = Planner.Mobile.Core.Utilities;
 
@@ -119,6 +120,8 @@ namespace Planner.Droid.Activities
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
+                _dialogHelper.ShowError(this, ex);
             }
         }
 
@@ -126,18 +129,27 @@ namespace Planner.Droid.Activities
         {
             try
             {
-                await _authHelper.ConfirmEmailAsync(new ConfirmationRequestDto
+                var res = await _authHelper.ConfirmEmailAsync(new ConfirmationRequestDto
                 {
                     Code = s,
                     UserId = userId
                 });
 
-                _dialogHelper.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
-                        , (o, ea) => StartActivity(typeof(SignInActivity)));
+                if (res.StatusCode == HttpStatusCode.OK)
+                {
+                    _dialogHelper.ShowSuccessDialog(this, "Signing Up was successful. Please Sign In"
+                                    , (o, ea) => StartActivity(typeof(SignInActivity))); 
+                }
+                else if(res.StatusCode == HttpStatusCode.BadRequest)
+                    _dialogHelper.ShowError(this, "The code entered is incorrect.");
+                else
+                    _dialogHelper.ShowError(this);
             }
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
+                _dialogHelper.ShowError(this, ex);
             }
         }
 
