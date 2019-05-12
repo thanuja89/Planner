@@ -5,14 +5,17 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Util;
+using Android.Views;
+using Android.Widget;
 using Planner.Droid.Controls;
-using Planner.Droid.Helpers;
 using Planner.Droid.Services;
+using Planner.Mobile.Core;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using V7 = Android.Support.V7.Widget;
 
 namespace Planner.Droid.Activities
 {
@@ -24,6 +27,9 @@ namespace Planner.Droid.Activities
         private List<ScheduledTask> _tasks;
         private TaskViewAdapter _adapter;
         private FloatingActionButton createButton;
+        private V7.Toolbar toolbar;
+        private View toolbarLayout;
+        private Button signoutButton;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
         private readonly ScheduledTaskWebHelper _taskWebHelper;
 
@@ -40,10 +46,24 @@ namespace Planner.Droid.Activities
 
             SetContentView(Resource.Layout.activity_tasks);
 
+            PrepareToolbar();
+
             FindViews();
             HandleEvents();
 
             await PrepareRecyclerViewAsync();
+        }
+
+        private void PrepareToolbar()
+        {
+            toolbar = FindViewById<V7.Toolbar>(Resource.Id.toolbar);
+            SetSupportActionBar(toolbar);
+
+            toolbarLayout = LayoutInflater.Inflate(Resource.Layout.main_action_bar, null);
+
+            signoutButton = toolbarLayout.FindViewById<Button>(Resource.Id.mainActionBar_SignoutButton);
+
+            toolbar.AddView(toolbarLayout);
         }
 
         private async Task PrepareRecyclerViewAsync()
@@ -54,7 +74,7 @@ namespace Planner.Droid.Activities
                 recyclerView.SetLayoutManager(_layoutManager);
                 recyclerView.HasFixedSize = true;
 
-                _tasks = await _taskDataHelper.GetAsync(Utilities.GetUserId());
+                _tasks = await _taskDataHelper.GetAsync(Helpers.Utilities.GetUserId());
 
                 _adapter = new TaskViewAdapter(_tasks);
                 _adapter.ItemDeleteClick += Adapter_ItemDeleteClick;
@@ -102,11 +122,33 @@ namespace Planner.Droid.Activities
         private void HandleEvents()
         {
             createButton.Click += CreateButton_Click;
+            signoutButton.Click += SignoutButton_Click;
+        }
+
+        private void SignoutButton_Click(object sender, EventArgs e)
+        {
+            RemoveUserInfo();
+
+            StartActivity(typeof(SignInActivity));
         }
 
         private void CreateButton_Click(object sender, System.EventArgs e)
         {
             StartActivity(typeof(CreateTaskActivity));
+        }
+
+        private void RemoveUserInfo()
+        {
+            var pref = Application.Context
+                .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
+
+            var editor = pref.Edit();
+
+            editor.Remove(PreferenceItemKeys.TOKEN);
+            editor.Remove(PreferenceItemKeys.USER_ID);
+            editor.Remove(PreferenceItemKeys.USERNAME);
+
+            editor.Apply();
         }
     }
 }
