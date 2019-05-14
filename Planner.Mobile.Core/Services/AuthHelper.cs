@@ -38,7 +38,7 @@ namespace Planner.Mobile.Core.Helpers
             return _httpService.PostAsync($"Auth/SendPasswordResetEmail/{userId}");
         }
 
-        public Task<HttpResponseMessage> ResetPassword(ResetPasswordRequestDto requestDto)
+        public Task<HttpResponseMessage> ResetPasswordAsync(ResetPasswordRequestDto requestDto)
         {
             return _httpService.PostAsync("Auth/ResetPassword", requestDto);
         }
