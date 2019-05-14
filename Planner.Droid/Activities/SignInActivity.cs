@@ -5,11 +5,15 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Planner.Droid.Extensions;
+using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
 using Planner.Dto;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Helpers;
 using System;
+using System.Net;
+using System.Threading.Tasks;
+using CoreHelper = Planner.Mobile.Core;
 
 namespace Planner.Droid.Activities
 {
@@ -23,7 +27,7 @@ namespace Planner.Droid.Activities
         private EditText passwordEditText;
         private Button signInButton;
         private TextView signUpTextView;
-
+        private TextView forgotPasswordTextView;
         private ProgressBar progressBar;
 
         public SignInActivity()
@@ -48,6 +52,7 @@ namespace Planner.Droid.Activities
             passwordEditText = FindViewById<EditText>(Resource.Id.signIn_PasswordEditText);
             signInButton = FindViewById<Button>(Resource.Id.signIn_SignInButton);
             signUpTextView = FindViewById<TextView>(Resource.Id.signIn_SignUpTextView);
+            forgotPasswordTextView = FindViewById<TextView>(Resource.Id.signIn_ForgotPasswordTextView);
             progressBar = FindViewById<ProgressBar>(Resource.Id.signIn_circularProgressbar);
         }
 
@@ -55,6 +60,50 @@ namespace Planner.Droid.Activities
         {
             signInButton.Click += SignInButton_Click;
             signUpTextView.Click += SignUpTextView_Click;
+            forgotPasswordTextView.Click += ForgotPasswordTextView_Click;
+        }
+
+        private void ForgotPasswordTextView_Click(object sender, EventArgs e)
+        {
+            PasswordResetEmailInputDialogFragment frag = PasswordResetEmailInputDialogFragment.NewInstance(s =>
+            {
+                _ = SendPasswordResetEmailAsync(s);
+            });
+
+            frag.Show(FragmentManager, ConfirmationCodeInputDialogFragment.TAG);
+        }
+
+        private async Task SendPasswordResetEmailAsync(string s)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(s) || !CoreHelper.Utilities.IsValidEmail(s))
+                    return;
+
+                var res = await _authHelper.SendPasswordResetEmailAsync(new SendPasswordResetEmailDto() { Email = s });
+
+                if (res.StatusCode == HttpStatusCode.OK)
+                {
+                    _dialogHelper.ShowSuccessDialog(this, "Email Sent."
+                          , (o, ea) => 
+                          {
+                              var intent = new Intent(this, typeof(ResetPasswordActivity));
+                              intent.PutExtra("Email", s);
+
+                              StartActivity(intent);
+                          });
+                }
+                else if (res.StatusCode == HttpStatusCode.BadRequest)
+                    _dialogHelper.ShowError(this, "The email entered is incorrect.");
+                else
+                    _dialogHelper.ShowError(this);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
+                _dialogHelper.ShowError(this, ex);
+            }
         }
 
         private void SignUpTextView_Click(object sender, EventArgs e)

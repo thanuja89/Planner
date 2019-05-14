@@ -10,6 +10,7 @@ using Planner.Dto;
 using Planner.Mobile.Core.Helpers;
 using System;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Utilities = Planner.Mobile.Core.Utilities;
 
@@ -129,6 +130,18 @@ namespace Planner.Droid.Activities
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(s))
+                {
+                    _dialogHelper.ShowError(this, "The code cannot be empty.");
+                    return;
+                }
+
+                if(!Regex.IsMatch(s, "[0-9]{4,}"))
+                {
+                    _dialogHelper.ShowError(this, "The code entered is incorrect.");
+                    return;
+                }
+
                 var res = await _authHelper.ConfirmEmailAsync(new ConfirmationRequestDto
                 {
                     Code = s,
