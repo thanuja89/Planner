@@ -170,12 +170,71 @@ namespace Planner.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Threw exception while confirming emai for user: {@ex}", ex);
+                _logger.LogError("Threw exception while resending confirmation email for user: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
         }
 
-# if DEBUG
+        [HttpPost("{action}/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendPasswordResetEmail(string id)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(id);
+
+                if (user == null)
+                    return BadRequest();
+
+                await SendPasswordResetEmaiAsync(user);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Threw exception while sending password reset code for user: {@ex}", ex);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpPost("{action}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto dto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = await _userManager.FindByIdAsync(dto.UserId);
+
+                    if (user == null)
+                        return BadRequest();
+
+                    var result = await _userManager.ResetPasswordAsync(user, dto.Code, dto.Password);
+
+                    if (result.Succeeded)
+                    {
+                        return Ok();
+                    }
+                }
+
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Threw exception while resetting password for user: {@ex}", ex);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        private async Task SendPasswordResetEmaiAsync(ApplicationUser user)
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            await _emailSender.SendEmailAsync(user.Email, "Password Reset Code", $"Your Password Reset Code is {token}");
+        }
+
+#if DEBUG
         [AllowAnonymous]
         [HttpGet("{action}")]
         public IActionResult Test()
