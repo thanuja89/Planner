@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -50,6 +48,7 @@ namespace Planner.Api
                 opt.User.RequireUniqueEmail = true;
 
                 opt.Tokens.EmailConfirmationTokenProvider = "NumericTokenProvider";
+                opt.Tokens.PasswordResetTokenProvider = "NumericTokenProvider";
             })
                 .AddEntityFrameworkStores<PlannerDbContext>()
                 .AddTokenProvider<NumericTokenProvider>("NumericTokenProvider");
@@ -96,11 +95,11 @@ namespace Planner.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             app.UseGlobalExceptionHandler();
 
-            if (env.IsDevelopment())
+            if (_env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -112,7 +111,7 @@ namespace Planner.Api
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.RollingFile(Path.Combine(env.ContentRootPath, "Logs\\Logs-{Date}.txt"))
+                .WriteTo.RollingFile(Path.Combine(_env.ContentRootPath, "Logs\\Logs-{Date}.txt"))
                 .CreateLogger();
 
             loggerFactory.AddSerilog();
