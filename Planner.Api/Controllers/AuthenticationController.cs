@@ -175,13 +175,16 @@ namespace Planner.Api.Controllers
             }
         }
 
-        [HttpPost("{action}/{id}")]
+        [HttpPost("{action}")]
         [AllowAnonymous]
-        public async Task<IActionResult> SendPasswordResetEmail(string id)
+        public async Task<IActionResult> SendPasswordResetEmail([FromBody] SendPasswordResetEmailDto dto)
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(id);
+                if(!ModelState.IsValid)
+                    return BadRequest();
+
+                var user = await _userManager.FindByEmailAsync(dto.Email);
 
                 if (user == null)
                     return BadRequest();
@@ -205,7 +208,7 @@ namespace Planner.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var user = await _userManager.FindByIdAsync(dto.UserId);
+                    var user = await _userManager.FindByEmailAsync(dto.Email);
 
                     if (user == null)
                         return BadRequest();

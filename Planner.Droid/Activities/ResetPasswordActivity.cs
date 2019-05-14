@@ -9,6 +9,7 @@ using Planner.Dto;
 using Planner.Mobile.Core.Helpers;
 using System;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Planner.Droid.Activities
 {
@@ -19,6 +20,7 @@ namespace Planner.Droid.Activities
         private EditText confirmPasswordEditText;
         private EditText codeEditText;
         private Button resetButton;
+        private string _email;
         private readonly AuthHelper _authHelper;
         private readonly DialogHelper _dialogHelper;
 
@@ -31,6 +33,8 @@ namespace Planner.Droid.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            _email = Intent.GetStringExtra("Email");
 
             SetContentView(Resource.Layout.activity_reset_password);
 
@@ -55,7 +59,7 @@ namespace Planner.Droid.Activities
                 {
                     Code = codeEditText.Text,
                     Password = passwordEditText.Text,
-                    UserId = Utilities.GetUserId()
+                    Email = _email
                 };
 
                 var res = await _authHelper.ResetPasswordAsync(dto);
@@ -96,6 +100,12 @@ namespace Planner.Droid.Activities
                 return false;
             }
 
+            if (!Regex.IsMatch(codeEditText.Text, "[0-9]{4,}"))
+            {
+                codeEditText.Error = "Code entered is incorrect";
+                return false;
+            }
+
             if (passwordEditText.IsEmpty())
             {
                 passwordEditText.Error = "Password can not be empty.";
@@ -120,7 +130,7 @@ namespace Planner.Droid.Activities
             {
                 confirmPasswordEditText.Error = "Password and Confirm Password must match.";
                 return false;
-            }
+            }            
 
             return true;
         }

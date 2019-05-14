@@ -49,6 +49,18 @@
 		<RelativeLayout
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent">
+            <TextView
+                android:text="Forgot Password"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/signIn_ForgotPasswordTextView"
+                android:layout_gravity="right"
+                android:layout_alignParentRight="false"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="5dp"
+                android:textColor="#ff2196f3"
+                android:layout_alignParentLeft="true" />
 			<TextView
 				android:text="Sign Up"
 				android:textAppearance="?android:attr/textAppearanceSmall"
