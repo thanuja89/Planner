@@ -27,6 +27,7 @@ namespace Planner.Droid.Activities
         private List<ScheduledTask> _tasks;
         private TaskViewAdapter _adapter;
         private FloatingActionButton createButton;
+        private TextView emptyTextView;
         private V7.Toolbar toolbar;
         private View toolbarLayout;
         private Button signoutButton;
@@ -81,6 +82,8 @@ namespace Planner.Droid.Activities
                 _adapter.ItemClick += Adapter_ItemClick;
 
                 recyclerView.SetAdapter(_adapter);
+
+                ToggleEmptyView();
             }
             catch (Exception ex)
             {
@@ -100,6 +103,10 @@ namespace Planner.Droid.Activities
         {
             try
             {
+
+
+                ToggleEmptyView();
+
                 await Task.Yield();
 
                 await _taskDataHelper.MarkAsDeletedAsync(e.Id);
@@ -117,6 +124,7 @@ namespace Planner.Droid.Activities
         private void FindViews()
         {
             createButton = FindViewById<FloatingActionButton>(Resource.Id.tasksView_CreateButton);
+            emptyTextView = FindViewById<TextView>(Resource.Id.tasksView_EmptyText);
         }
 
         private void HandleEvents()
@@ -149,6 +157,20 @@ namespace Planner.Droid.Activities
             editor.Remove(PreferenceItemKeys.USERNAME);
 
             editor.Apply();
+        }
+
+        private void ToggleEmptyView()
+        {
+            if (_tasks == null || _tasks.Count == 0)
+            {
+                recyclerView.Visibility = ViewStates.Gone;
+                emptyTextView.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                recyclerView.Visibility = ViewStates.Visible;
+                emptyTextView.Visibility = ViewStates.Gone;
+            }
         }
     }
 }
