@@ -90,9 +90,12 @@ namespace Planner.Droid.Controls
 
         void OnDeleteClick(int position)
         {
-            ItemDeleteClick?.Invoke(this, _tasks[position]);
+            var task = _tasks[position];
 
-            _tasks.Remove(_tasks[position]);
+             _tasks.Remove(_tasks[position]);
+
+            ItemDeleteClick?.Invoke(this, task);
+
             NotifyItemRemoved(position);
         }
     }
