@@ -4543,6 +4543,9 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f09001b
 			public const int CardView_Light = 2131296283;
 			
+			// aapt resource value: 0x7f09019e
+			public const int LinkButtonStyle = 2131296670;
+			
 			// aapt resource value: 0x7f090002
 			public const int MessengerButton = 2131296258;
 			

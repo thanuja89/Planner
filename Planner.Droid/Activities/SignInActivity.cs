@@ -26,8 +26,8 @@ namespace Planner.Droid.Activities
         private EditText usernameEditText;
         private EditText passwordEditText;
         private Button signInButton;
-        private TextView signUpTextView;
-        private TextView forgotPasswordTextView;
+        private Button signUpButton;
+        private Button forgotPasswordButton;
         private ProgressBar progressBar;
 
         public SignInActivity()
@@ -51,16 +51,16 @@ namespace Planner.Droid.Activities
             usernameEditText = FindViewById<EditText>(Resource.Id.signIn_UsernameEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.signIn_PasswordEditText);
             signInButton = FindViewById<Button>(Resource.Id.signIn_SignInButton);
-            signUpTextView = FindViewById<TextView>(Resource.Id.signIn_SignUpTextView);
-            forgotPasswordTextView = FindViewById<TextView>(Resource.Id.signIn_ForgotPasswordTextView);
+            signUpButton = FindViewById<Button>(Resource.Id.signIn_SignUpTextView);
+            forgotPasswordButton = FindViewById<Button>(Resource.Id.signIn_ForgotPasswordTextView);
             progressBar = FindViewById<ProgressBar>(Resource.Id.signIn_circularProgressbar);
         }
 
         private void HandleEvents()
         {
             signInButton.Click += SignInButton_Click;
-            signUpTextView.Click += SignUpTextView_Click;
-            forgotPasswordTextView.Click += ForgotPasswordTextView_Click;
+            signUpButton.Click += SignUpTextView_Click;
+            forgotPasswordButton.Click += ForgotPasswordTextView_Click;
         }
 
         private void ForgotPasswordTextView_Click(object sender, EventArgs e)
@@ -120,7 +120,7 @@ namespace Planner.Droid.Activities
 
                 var dto = new TokenRequestDto()
                 {
-                    Username = usernameEditText.Text,
+                    Username = usernameEditText.Text.Trim(),
                     Password = passwordEditText.Text
                 };
 

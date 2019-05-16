@@ -5,6 +5,7 @@
     android:layout_width="match_parent">
     <Button
         android:id="@+id/mainActionBar_SignoutButton"
+        style="@style/LinkButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
