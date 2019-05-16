@@ -11,7 +11,7 @@ using System;
 namespace Planner.Droid.Activities
 {
     //[Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
-    [Activity(Label = "MainActivity")]
+    [Activity(Label = "MainActivity", NoHistory = true)]
     public class MainActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -21,8 +21,6 @@ namespace Planner.Droid.Activities
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironment_UnhandledExceptionRaiser; ;
 
             base.OnCreate(savedInstanceState);
-            // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.activity_main);
 
             try
             {

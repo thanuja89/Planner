@@ -68,8 +68,8 @@ namespace Planner.Droid.Activities
 
                 var dto = new CreateAccountDto()
                 {
-                    Username = usernameEditText.Text,
-                    Email = emailEditText.Text,
+                    Username = usernameEditText.Text.Trim(),
+                    Email = emailEditText.Text.Trim(),
                     Password = passwordEditText.Text
                 };
 
