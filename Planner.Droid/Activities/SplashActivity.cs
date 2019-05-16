@@ -13,7 +13,7 @@ using Android.Widget;
 
 namespace Planner.Droid.Activities
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, NoHistory = true)]
     //[Activity(Label = "SplashActivity")]
     public class SplashActivity : Activity
     {
@@ -30,7 +30,10 @@ namespace Planner.Droid.Activities
         {
             base.OnWindowFocusChanged(hasFocus);
 
-            StartAnimation();
+            if (hasFocus)
+            {
+                StartAnimation(); 
+            }
         }
 
         private async void StartAnimation()
