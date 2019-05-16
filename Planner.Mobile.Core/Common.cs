@@ -4,7 +4,7 @@
     {
         // 
         //public const string BASE_URI = "http://10.0.2.2:58709/api/";
-        public const string BASE_URI = "http://1076a3a1.ngrok.io/api/";
+        public const string BASE_URI = "http://33f2cd4b.ngrok.io/api/";
     }
 
     public class PreferenceKeys
