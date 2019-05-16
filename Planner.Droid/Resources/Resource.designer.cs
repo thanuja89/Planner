@@ -1256,44 +1256,44 @@ namespace Planner.Droid
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f080062
-			public const int abc_background_cache_hint_selector_material_dark = 2131230818;
-			
 			// aapt resource value: 0x7f080063
-			public const int abc_background_cache_hint_selector_material_light = 2131230819;
+			public const int abc_background_cache_hint_selector_material_dark = 2131230819;
 			
 			// aapt resource value: 0x7f080064
-			public const int abc_btn_colored_borderless_text_material = 2131230820;
+			public const int abc_background_cache_hint_selector_material_light = 2131230820;
 			
 			// aapt resource value: 0x7f080065
-			public const int abc_btn_colored_text_material = 2131230821;
+			public const int abc_btn_colored_borderless_text_material = 2131230821;
 			
 			// aapt resource value: 0x7f080066
-			public const int abc_color_highlight_material = 2131230822;
+			public const int abc_btn_colored_text_material = 2131230822;
 			
 			// aapt resource value: 0x7f080067
-			public const int abc_hint_foreground_material_dark = 2131230823;
+			public const int abc_color_highlight_material = 2131230823;
 			
 			// aapt resource value: 0x7f080068
-			public const int abc_hint_foreground_material_light = 2131230824;
+			public const int abc_hint_foreground_material_dark = 2131230824;
+			
+			// aapt resource value: 0x7f080069
+			public const int abc_hint_foreground_material_light = 2131230825;
 			
 			// aapt resource value: 0x7f080017
 			public const int abc_input_method_navigation_guard = 2131230743;
 			
-			// aapt resource value: 0x7f080069
-			public const int abc_primary_text_disable_only_material_dark = 2131230825;
-			
 			// aapt resource value: 0x7f08006a
-			public const int abc_primary_text_disable_only_material_light = 2131230826;
+			public const int abc_primary_text_disable_only_material_dark = 2131230826;
 			
 			// aapt resource value: 0x7f08006b
-			public const int abc_primary_text_material_dark = 2131230827;
+			public const int abc_primary_text_disable_only_material_light = 2131230827;
 			
 			// aapt resource value: 0x7f08006c
-			public const int abc_primary_text_material_light = 2131230828;
+			public const int abc_primary_text_material_dark = 2131230828;
 			
 			// aapt resource value: 0x7f08006d
-			public const int abc_search_url_text = 2131230829;
+			public const int abc_primary_text_material_light = 2131230829;
+			
+			// aapt resource value: 0x7f08006e
+			public const int abc_search_url_text = 2131230830;
 			
 			// aapt resource value: 0x7f080018
 			public const int abc_search_url_text_normal = 2131230744;
@@ -1304,29 +1304,29 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f08001a
 			public const int abc_search_url_text_selected = 2131230746;
 			
-			// aapt resource value: 0x7f08006e
-			public const int abc_secondary_text_material_dark = 2131230830;
-			
 			// aapt resource value: 0x7f08006f
-			public const int abc_secondary_text_material_light = 2131230831;
+			public const int abc_secondary_text_material_dark = 2131230831;
 			
 			// aapt resource value: 0x7f080070
-			public const int abc_tint_btn_checkable = 2131230832;
+			public const int abc_secondary_text_material_light = 2131230832;
 			
 			// aapt resource value: 0x7f080071
-			public const int abc_tint_default = 2131230833;
+			public const int abc_tint_btn_checkable = 2131230833;
 			
 			// aapt resource value: 0x7f080072
-			public const int abc_tint_edittext = 2131230834;
+			public const int abc_tint_default = 2131230834;
 			
 			// aapt resource value: 0x7f080073
-			public const int abc_tint_seek_thumb = 2131230835;
+			public const int abc_tint_edittext = 2131230835;
 			
 			// aapt resource value: 0x7f080074
-			public const int abc_tint_spinner = 2131230836;
+			public const int abc_tint_seek_thumb = 2131230836;
 			
 			// aapt resource value: 0x7f080075
-			public const int abc_tint_switch_track = 2131230837;
+			public const int abc_tint_spinner = 2131230837;
+			
+			// aapt resource value: 0x7f080076
+			public const int abc_tint_switch_track = 2131230838;
 			
 			// aapt resource value: 0x7f08001b
 			public const int accent_material_dark = 2131230747;
@@ -1430,8 +1430,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f080001
 			public const int com_facebook_button_send_background_color_pressed = 2131230721;
 			
-			// aapt resource value: 0x7f080076
-			public const int com_facebook_button_text_color = 2131230838;
+			// aapt resource value: 0x7f080077
+			public const int com_facebook_button_text_color = 2131230839;
 			
 			// aapt resource value: 0x7f08000e
 			public const int com_facebook_device_auth_text = 2131230734;
@@ -1448,8 +1448,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f080002
 			public const int com_facebook_messenger_blue = 2131230722;
 			
-			// aapt resource value: 0x7f080077
-			public const int com_facebook_send_button_text_color = 2131230839;
+			// aapt resource value: 0x7f080078
+			public const int com_facebook_send_button_text_color = 2131230840;
 			
 			// aapt resource value: 0x7f080012
 			public const int com_smart_login_code = 2131230738;
@@ -1457,8 +1457,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f080053
 			public const int design_bottom_navigation_shadow_color = 2131230803;
 			
-			// aapt resource value: 0x7f080078
-			public const int design_error = 2131230840;
+			// aapt resource value: 0x7f080079
+			public const int design_error = 2131230841;
 			
 			// aapt resource value: 0x7f080054
 			public const int design_fab_shadow_end_color = 2131230804;
@@ -1484,8 +1484,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f08005b
 			public const int design_snackbar_background_color = 2131230811;
 			
-			// aapt resource value: 0x7f080079
-			public const int design_tint_password_toggle = 2131230841;
+			// aapt resource value: 0x7f08007a
+			public const int design_tint_password_toggle = 2131230842;
 			
 			// aapt resource value: 0x7f080029
 			public const int dim_foreground_disabled_material_dark = 2131230761;
@@ -1513,6 +1513,9 @@ namespace Planner.Droid
 			
 			// aapt resource value: 0x7f080031
 			public const int highlighted_text_material_light = 2131230769;
+			
+			// aapt resource value: 0x7f080062
+			public const int ic_launcher_background = 2131230818;
 			
 			// aapt resource value: 0x7f080032
 			public const int material_blue_grey_800 = 2131230770;
@@ -1607,11 +1610,11 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f08004d
 			public const int switch_thumb_disabled_material_light = 2131230797;
 			
-			// aapt resource value: 0x7f08007a
-			public const int switch_thumb_material_dark = 2131230842;
-			
 			// aapt resource value: 0x7f08007b
-			public const int switch_thumb_material_light = 2131230843;
+			public const int switch_thumb_material_dark = 2131230843;
+			
+			// aapt resource value: 0x7f08007c
+			public const int switch_thumb_material_light = 2131230844;
 			
 			// aapt resource value: 0x7f08004e
 			public const int switch_thumb_normal_material_dark = 2131230798;
@@ -2428,26 +2431,26 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f02009c
-			public const int avd_hide_password_1 = 2130837660;
+			// aapt resource value: 0x7f02009f
+			public const int avd_hide_password_1 = 2130837663;
 			
-			// aapt resource value: 0x7f02009d
-			public const int avd_hide_password_2 = 2130837661;
+			// aapt resource value: 0x7f0200a0
+			public const int avd_hide_password_2 = 2130837664;
 			
-			// aapt resource value: 0x7f02009e
-			public const int avd_hide_password_3 = 2130837662;
+			// aapt resource value: 0x7f0200a1
+			public const int avd_hide_password_3 = 2130837665;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f02009f
-			public const int avd_show_password_1 = 2130837663;
+			// aapt resource value: 0x7f0200a2
+			public const int avd_show_password_1 = 2130837666;
 			
-			// aapt resource value: 0x7f0200a0
-			public const int avd_show_password_2 = 2130837664;
+			// aapt resource value: 0x7f0200a3
+			public const int avd_show_password_2 = 2130837667;
 			
-			// aapt resource value: 0x7f0200a1
-			public const int avd_show_password_3 = 2130837665;
+			// aapt resource value: 0x7f0200a4
+			public const int avd_show_password_3 = 2130837668;
 			
 			// aapt resource value: 0x7f020055
 			public const int baseline_add_alarm_24 = 2130837589;
@@ -2591,76 +2594,88 @@ namespace Planner.Droid
 			public const int ic_launcher = 2130837635;
 			
 			// aapt resource value: 0x7f020084
-			public const int messenger_bubble_large_blue = 2130837636;
+			public const int ic_launcher_background = 2130837636;
 			
 			// aapt resource value: 0x7f020085
-			public const int messenger_bubble_large_white = 2130837637;
+			public const int ic_launcher_foreground = 2130837637;
+			
+			// aapt resource value: 0x7f0200a5
+			public const int ic_launcher_foreground_1 = 2130837669;
 			
 			// aapt resource value: 0x7f020086
-			public const int messenger_bubble_small_blue = 2130837638;
+			public const int messenger_bubble_large_blue = 2130837638;
 			
 			// aapt resource value: 0x7f020087
-			public const int messenger_bubble_small_white = 2130837639;
+			public const int messenger_bubble_large_white = 2130837639;
 			
 			// aapt resource value: 0x7f020088
-			public const int messenger_button_blue_bg_round = 2130837640;
+			public const int messenger_bubble_small_blue = 2130837640;
 			
 			// aapt resource value: 0x7f020089
-			public const int messenger_button_blue_bg_selector = 2130837641;
+			public const int messenger_bubble_small_white = 2130837641;
 			
 			// aapt resource value: 0x7f02008a
-			public const int messenger_button_send_round_shadow = 2130837642;
+			public const int messenger_button_blue_bg_round = 2130837642;
 			
 			// aapt resource value: 0x7f02008b
-			public const int messenger_button_white_bg_round = 2130837643;
+			public const int messenger_button_blue_bg_selector = 2130837643;
 			
 			// aapt resource value: 0x7f02008c
-			public const int messenger_button_white_bg_selector = 2130837644;
+			public const int messenger_button_send_round_shadow = 2130837644;
 			
 			// aapt resource value: 0x7f02008d
-			public const int navigation_empty_icon = 2130837645;
+			public const int messenger_button_white_bg_round = 2130837645;
 			
 			// aapt resource value: 0x7f02008e
-			public const int notification_action_background = 2130837646;
+			public const int messenger_button_white_bg_selector = 2130837646;
 			
 			// aapt resource value: 0x7f02008f
-			public const int notification_bg = 2130837647;
+			public const int navigation_empty_icon = 2130837647;
 			
 			// aapt resource value: 0x7f020090
-			public const int notification_bg_low = 2130837648;
+			public const int notification_action_background = 2130837648;
 			
 			// aapt resource value: 0x7f020091
-			public const int notification_bg_low_normal = 2130837649;
+			public const int notification_bg = 2130837649;
 			
 			// aapt resource value: 0x7f020092
-			public const int notification_bg_low_pressed = 2130837650;
+			public const int notification_bg_low = 2130837650;
 			
 			// aapt resource value: 0x7f020093
-			public const int notification_bg_normal = 2130837651;
+			public const int notification_bg_low_normal = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int notification_bg_normal_pressed = 2130837652;
+			public const int notification_bg_low_pressed = 2130837652;
 			
 			// aapt resource value: 0x7f020095
-			public const int notification_icon_background = 2130837653;
-			
-			// aapt resource value: 0x7f02009a
-			public const int notification_template_icon_bg = 2130837658;
-			
-			// aapt resource value: 0x7f02009b
-			public const int notification_template_icon_low_bg = 2130837659;
+			public const int notification_bg_normal = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int notification_tile_bg = 2130837654;
+			public const int notification_bg_normal_pressed = 2130837654;
 			
 			// aapt resource value: 0x7f020097
-			public const int notify_panel_notification_icon_bg = 2130837655;
+			public const int notification_icon_background = 2130837655;
+			
+			// aapt resource value: 0x7f02009d
+			public const int notification_template_icon_bg = 2130837661;
+			
+			// aapt resource value: 0x7f02009e
+			public const int notification_template_icon_low_bg = 2130837662;
 			
 			// aapt resource value: 0x7f020098
-			public const int tooltip_frame_dark = 2130837656;
+			public const int notification_tile_bg = 2130837656;
 			
 			// aapt resource value: 0x7f020099
-			public const int tooltip_frame_light = 2130837657;
+			public const int notify_panel_notification_icon_bg = 2130837657;
+			
+			// aapt resource value: 0x7f02009a
+			public const int splash = 2130837658;
+			
+			// aapt resource value: 0x7f02009b
+			public const int tooltip_frame_dark = 2130837659;
+			
+			// aapt resource value: 0x7f02009c
+			public const int tooltip_frame_light = 2130837660;
 			
 			static Drawable()
 			{
@@ -3793,6 +3808,12 @@ namespace Planner.Droid
 			
 			// aapt resource value: 0x7f030008
 			public const int ic_launcher = 2130903048;
+			
+			// aapt resource value: 0x7f030009
+			public const int ic_launcher_foreground = 2130903049;
+			
+			// aapt resource value: 0x7f03000a
+			public const int ic_launcher_round = 2130903050;
 			
 			static Mipmap()
 			{
@@ -5283,7 +5304,10 @@ namespace Planner.Droid
 			public const int authenticator = 2131165184;
 			
 			// aapt resource value: 0x7f070001
-			public const int sync_adapter = 2131165185;
+			public const int colors = 2131165185;
+			
+			// aapt resource value: 0x7f070002
+			public const int sync_adapter = 2131165186;
 			
 			static Xml()
 			{
