@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 
 namespace Planner.Droid.Util
 {
@@ -38,10 +37,7 @@ namespace Planner.Droid.Util
 
         public override string ToString()
         {
-            int hr = Hour > 12 ? (24 - Hour) : Hour;
-            string amPm = Hour > 12 ? "PM" : "AM";
-
-            return $"{hr}:{Minute} {amPm}";
+            return new TimeSpan(Hour, Minute, 0).ToString("hh\\:mm");
         }
     }
 }
