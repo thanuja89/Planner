@@ -1,4 +1,5 @@
-﻿using Android.Support.V7.Widget;
+﻿using Android.Graphics;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using Planner.Mobile.Core.Data;
@@ -13,6 +14,7 @@ namespace Planner.Droid.Controls
         public TextView Description { get; private set; }
         public TextView Start { get; private set; }
         public TextView Repeat { get; private set; }
+        public ImageView Importance { get; private set; }
 
         // Get references to the views defined in the CardView layout.
         public TaskViewHolder(View itemView, Action<int> listener, Action<int> deleteListener)
@@ -22,6 +24,7 @@ namespace Planner.Droid.Controls
             Title = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_TitleTextView);
             Start = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_StartTextView);
             Repeat = itemView.FindViewById<TextView>(Resource.Id.taskRecyclerView_RepeatTextView);
+            Importance = itemView.FindViewById<ImageView>(Resource.Id.taskRecyclerView_ImportanceImageView);
 
             var deleteButton = itemView.FindViewById<ImageButton>(Resource.Id.taskRecyclerView_DeleteButton);
 
@@ -74,6 +77,25 @@ namespace Planner.Droid.Controls
             vh.Title.Text = _tasks[position].Title;
             vh.Start.Text = _tasks[position].Start == DateTime.MinValue ? "N/A" : _tasks[position].Start.ToLongDateString();
             vh.Repeat.Text = _tasks[position].Repeat.ToString();
+
+            var drawable = vh.Importance.Drawable;
+
+            Color color = default;
+
+            switch (_tasks[position].Importance)
+            {
+                case Importance.Low:
+                    color = Color.Green;
+                    break;
+                case Importance.Medium:
+                    color = Color.Yellow;
+                    break;
+                case Importance.High:
+                    color = Color.Red;
+                    break;
+            }
+
+            drawable.SetColorFilter(color, PorterDuff.Mode.Src);
         }
 
         // Return the number of photos available in the photo album:
