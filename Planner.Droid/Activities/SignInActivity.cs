@@ -38,9 +38,9 @@ namespace Planner.Droid.Activities
         private Button signUpButton;
         private Button forgotPasswordButton;
         private RelativeLayout layout;
-        private ProgressBar progressBar;
         private GoogleApiClient _googleApiClient;
         private SignInButton googleSignInButton;
+        private ProgressBarHelper _progressBarHelper;
 
         public SignInActivity()
         {
@@ -57,6 +57,8 @@ namespace Planner.Droid.Activities
 
             FindViews();
             HandleEvents();
+
+            _progressBarHelper = new ProgressBarHelper(this, Window, layout);
         }
 
         protected async override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -72,6 +74,7 @@ namespace Planner.Droid.Activities
 
         private void FindViews()
         {
+            layout = FindViewById<RelativeLayout>(Resource.Id.signIn_RelativeLayout);
             usernameEditText = FindViewById<EditText>(Resource.Id.signIn_UsernameEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.signIn_PasswordEditText);
             signInButton = FindViewById<Button>(Resource.Id.signIn_SignInButton);
@@ -85,35 +88,6 @@ namespace Planner.Droid.Activities
             signUpButton.Click += SignUpTextView_Click;
             forgotPasswordButton.Click += ForgotPasswordTextView_Click;
             googleSignInButton.Click += GoogleSignInButton_Click;
-        }
-
-        public void ShowProgressDialog()
-        {
-            if (progressBar == null)
-            {
-                layout = FindViewById<RelativeLayout>(Resource.Id.signIn_RelativeLayout);
-
-                progressBar = new ProgressBar(this)
-                {
-                    Indeterminate = true
-                };
-                RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(100, 100);
-                param.AddRule(LayoutRules.CenterInParent);
-                layout.AddView(progressBar, param);
-            }
-
-            progressBar.Visibility = ViewStates.Visible;
-            Window.SetFlags(WindowManagerFlags.NotTouchable, WindowManagerFlags.NotTouchable);
-        }
-
-        public void HideProgressDialog()
-        {
-            if (progressBar != null && progressBar.IsShown)
-            {
-                progressBar.Visibility = ViewStates.Gone;
-            }
-
-            Window.ClearFlags(WindowManagerFlags.NotTouchable);
         }
 
         private void ForgotPasswordTextView_Click(object sender, EventArgs e)
@@ -133,7 +107,11 @@ namespace Planner.Droid.Activities
                 if (string.IsNullOrWhiteSpace(s) || !CoreHelper.Utilities.IsValidEmail(s))
                     return;
 
+                _progressBarHelper.Show();
+
                 var res = await _authHelper.SendPasswordResetEmailAsync(new SendPasswordResetEmailDto() { Email = s });
+
+                _progressBarHelper.Hide();
 
                 if (res.StatusCode == HttpStatusCode.OK)
                 {
@@ -155,6 +133,7 @@ namespace Planner.Droid.Activities
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
 
+                _progressBarHelper.Hide();
                 _dialogHelper.ShowError(this, ex);
             }
         }
@@ -183,11 +162,9 @@ namespace Planner.Droid.Activities
                     Password = passwordEditText.Text
                 };
 
-                progressBar.Visibility = ViewStates.Visible;
+                _progressBarHelper.Show();
 
                 var tokenDto = await _authHelper.SignInAsync(dto);
-
-                progressBar.Visibility = ViewStates.Invisible;
 
                 if (tokenDto != null && tokenDto.Token != null)
                 {
@@ -200,12 +177,14 @@ namespace Planner.Droid.Activities
                 {
                     _dialogHelper.ShowError(this, "Username or password is incorrect.");
                 }
+
+                _progressBarHelper.Hide();
             }
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
 
-                progressBar.Visibility = ViewStates.Invisible;
+                _progressBarHelper.Hide();
                 _dialogHelper.ShowError(this, ex);
             }
         }
@@ -244,18 +223,18 @@ namespace Planner.Droid.Activities
             {
                 if (result.IsSuccess && result.SignInAccount?.Email != null)
                 {
-                    ShowProgressDialog();
+                    _progressBarHelper.Show();
 
                     var tokenDto = await _authHelper.ExternalSignInAsync(new ExternalSignInDto
                     {
                         Email = result.SignInAccount.Email
                     });
 
-                    SaveUserInfo(tokenDto);
-
-                    HideProgressDialog();
+                    SaveUserInfo(tokenDto);                    
 
                     StartActivity(typeof(TasksActivity));
+
+                    _progressBarHelper.Hide();
                 }
                 else
                 {
@@ -265,6 +244,8 @@ namespace Planner.Droid.Activities
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
+                _progressBarHelper.Hide();
                 _dialogHelper.ShowError(this, ex);
             }
         }

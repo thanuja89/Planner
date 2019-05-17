@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
     <RelativeLayout
+        android:id="@+id/createTask_Layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         style="@style/PrimaryLayoutStyle">
-
         <LinearLayout
             android:orientation="vertical"
             android:layout_centerInParent="true"
