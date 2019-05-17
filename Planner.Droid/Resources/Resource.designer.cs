@@ -3395,26 +3395,26 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d003d
 			public const int showTitle = 2131558461;
 			
-			// aapt resource value: 0x7f0d00b4
-			public const int signIn_ForgotPasswordTextView = 2131558580;
-			
-			// aapt resource value: 0x7f0d00b6
-			public const int signIn_GoogleSignInButton = 2131558582;
-			
-			// aapt resource value: 0x7f0d00b2
-			public const int signIn_PasswordEditText = 2131558578;
-			
-			// aapt resource value: 0x7f0d00b3
-			public const int signIn_SignInButton = 2131558579;
-			
 			// aapt resource value: 0x7f0d00b5
-			public const int signIn_SignUpTextView = 2131558581;
-			
-			// aapt resource value: 0x7f0d00b1
-			public const int signIn_UsernameEditText = 2131558577;
+			public const int signIn_ForgotPasswordTextView = 2131558581;
 			
 			// aapt resource value: 0x7f0d00b7
-			public const int signIn_circularProgressbar = 2131558583;
+			public const int signIn_GoogleSignInButton = 2131558583;
+			
+			// aapt resource value: 0x7f0d00b3
+			public const int signIn_PasswordEditText = 2131558579;
+			
+			// aapt resource value: 0x7f0d00b1
+			public const int signIn_RelativeLayout = 2131558577;
+			
+			// aapt resource value: 0x7f0d00b4
+			public const int signIn_SignInButton = 2131558580;
+			
+			// aapt resource value: 0x7f0d00b6
+			public const int signIn_SignUpTextView = 2131558582;
+			
+			// aapt resource value: 0x7f0d00b2
+			public const int signIn_UsernameEditText = 2131558578;
 			
 			// aapt resource value: 0x7f0d00bb
 			public const int signUp_ConfirmPasswordEditText = 2131558587;
