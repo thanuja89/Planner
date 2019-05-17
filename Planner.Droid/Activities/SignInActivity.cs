@@ -4,6 +4,7 @@ using Android.Gms.Auth.Api;
 using Android.Gms.Auth.Api.SignIn;
 using Android.Gms.Common;
 using Android.Gms.Common.Apis;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Util;
@@ -36,6 +37,7 @@ namespace Planner.Droid.Activities
         private Button signInButton;
         private Button signUpButton;
         private Button forgotPasswordButton;
+        private RelativeLayout layout;
         private ProgressBar progressBar;
         private GoogleApiClient _googleApiClient;
         private SignInButton googleSignInButton;
@@ -51,7 +53,6 @@ namespace Planner.Droid.Activities
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.activity_sign_in);
-
             PrepareGoogleSignIn();
 
             FindViews();
@@ -76,7 +77,6 @@ namespace Planner.Droid.Activities
             signInButton = FindViewById<Button>(Resource.Id.signIn_SignInButton);
             signUpButton = FindViewById<Button>(Resource.Id.signIn_SignUpTextView);
             forgotPasswordButton = FindViewById<Button>(Resource.Id.signIn_ForgotPasswordTextView);
-            progressBar = FindViewById<ProgressBar>(Resource.Id.signIn_circularProgressbar);
         }
 
         private void HandleEvents()
@@ -85,6 +85,35 @@ namespace Planner.Droid.Activities
             signUpButton.Click += SignUpTextView_Click;
             forgotPasswordButton.Click += ForgotPasswordTextView_Click;
             googleSignInButton.Click += GoogleSignInButton_Click;
+        }
+
+        public void ShowProgressDialog()
+        {
+            if (progressBar == null)
+            {
+                layout = FindViewById<RelativeLayout>(Resource.Id.signIn_RelativeLayout);
+
+                progressBar = new ProgressBar(this)
+                {
+                    Indeterminate = true
+                };
+                RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(100, 100);
+                param.AddRule(LayoutRules.CenterInParent);
+                layout.AddView(progressBar, param);
+            }
+
+            progressBar.Visibility = ViewStates.Visible;
+            Window.SetFlags(WindowManagerFlags.NotTouchable, WindowManagerFlags.NotTouchable);
+        }
+
+        public void HideProgressDialog()
+        {
+            if (progressBar != null && progressBar.IsShown)
+            {
+                progressBar.Visibility = ViewStates.Gone;
+            }
+
+            Window.ClearFlags(WindowManagerFlags.NotTouchable);
         }
 
         private void ForgotPasswordTextView_Click(object sender, EventArgs e)
@@ -136,7 +165,7 @@ namespace Planner.Droid.Activities
         }
 
         private void GoogleSignInButton_Click(object sender, EventArgs e)
-        {
+        {            
             var signInIntent = Auth.GoogleSignInApi.GetSignInIntent(_googleApiClient);
             StartActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
         }
@@ -215,12 +244,16 @@ namespace Planner.Droid.Activities
             {
                 if (result.IsSuccess && result.SignInAccount?.Email != null)
                 {
+                    ShowProgressDialog();
+
                     var tokenDto = await _authHelper.ExternalSignInAsync(new ExternalSignInDto
                     {
                         Email = result.SignInAccount.Email
                     });
 
                     SaveUserInfo(tokenDto);
+
+                    HideProgressDialog();
 
                     StartActivity(typeof(TasksActivity));
                 }

@@ -93,7 +93,9 @@
     <Compile Include="Util\TimeChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <GoogleServicesJson Include="credentials.json" />
+    <GoogleServicesJson Include="client_secret_456963078672-h2o3jhk9etnv8k614d4j4t6e4lihqsc6.apps.googleusercontent.com.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </GoogleServicesJson>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml">
       <SubType>Designer</SubType>
