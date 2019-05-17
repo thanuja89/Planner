@@ -18,6 +18,11 @@ namespace Planner.Mobile.Core.Helpers
             return _httpService.PostForResultAsync<TokenDto>("Auth/CreateToken", loginDto);
         }
 
+        public Task<TokenDto> ExternalSignInAsync(ExternalSignInDto loginDto)
+        {
+            return _httpService.PostForResultAsync<TokenDto>("Auth/ExternalSignIn", loginDto);
+        }
+
         public Task<SignUpResultDTO> SignUpAsync(CreateAccountDto accountDto)
         {
             return _httpService.PostForResultAsync<SignUpResultDTO>("Auth/CreateAccount", accountDto, true);

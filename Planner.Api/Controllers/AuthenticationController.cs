@@ -117,10 +117,60 @@ namespace Planner.Api.Controllers
             {
                 _logger.LogError("Threw exception while creating User: {@ex}", ex);
 
-                return StatusCode((int) HttpStatusCode.InternalServerError, SignUpResultDTO.Failed(SignUpErrorType.ServerError));
+                return StatusCode((int)HttpStatusCode.InternalServerError, SignUpResultDTO.Failed(SignUpErrorType.ServerError));
             }
 
             return BadRequest(SignUpResultDTO.Failed(SignUpErrorType.Other));
+        }
+
+        [AllowAnonymous]
+        [HttpPost("{action}")]
+        public async Task<IActionResult> ExternalSignIn([FromBody]ExternalSignInDto register)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest();
+
+                ApplicationUser user;
+
+                user = await _userManager.FindByEmailAsync(register.Email);
+
+                if (user == null)
+                {
+                    user = new ApplicationUser()
+                    {
+                        UserName = register.Email,
+                        Email = register.Email,
+                        EmailConfirmed = true
+                    };
+
+                    var result = await _userManager.CreateAsync(user, GetRandomString());
+
+                    if (!result.Succeeded)
+                        return BadRequest();
+                }
+                else
+                {
+                    if (!await _signInManager.CanSignInAsync(user))
+                        return BadRequest();
+                }
+
+                var tokenString = BuildToken(user);
+                return Ok(new TokenDto()
+                {
+                    Token = tokenString,
+                    ApplicationUserId = user.Id,
+                    Username = user.UserName
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Threw exception while Signing In External User: {@ex}", ex);
+
+                return new StatusCodeResult(500);
+            }
         }
 
         [HttpPost("{action}")]
@@ -140,7 +190,7 @@ namespace Planner.Api.Controllers
 
                     if (result.Succeeded)
                     {
-                        return Ok(); 
+                        return Ok();
                     }
                 }
 
@@ -181,7 +231,7 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                if(!ModelState.IsValid)
+                if (!ModelState.IsValid)
                     return BadRequest();
 
                 var user = await _userManager.FindByEmailAsync(dto.Email);
@@ -293,6 +343,20 @@ namespace Planner.Api.Controllers
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
             await _emailSender.SendEmailAsync(user.Email, "Email Confirmation Code", $"Your Confirmation Code is {token}");
+        }
+
+        private string GetRandomString()
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[8];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            return new string(stringChars);
         }
 
         #endregion
