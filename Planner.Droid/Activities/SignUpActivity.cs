@@ -1,5 +1,11 @@
 ﻿using Android.App;
+using Android.Content;
+using Android.Gms.Auth.Api;
+using Android.Gms.Auth.Api.SignIn;
+using Android.Gms.Common;
+using Android.Gms.Common.Apis;
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -17,8 +23,10 @@ using Utilities = Planner.Mobile.Core.Utilities;
 namespace Planner.Droid.Activities
 {
     [Activity(Label = "SignUpActivity")]
-    public class SignUpActivity : Activity
+    public class SignUpActivity : AppCompatActivity, GoogleApiClient.IOnConnectionFailedListener
     {
+        const int RC_SIGN_IN = 9001;
+
         private readonly AuthHelper _authHelper;
         private readonly DialogHelper _dialogHelper;
         private EditText usernameEditText;
@@ -27,6 +35,7 @@ namespace Planner.Droid.Activities
         private EditText confirmPasswordEditText;
         private Button signUpButton;
         private ProgressBar progressBar;
+        private GoogleApiClient _googleApiClient;
 
         public SignUpActivity()
         {
@@ -42,6 +51,8 @@ namespace Planner.Droid.Activities
 
             FindViews();
             HandleEvents();
+
+            PrepareGoogleSignIn();
         }
 
         private void FindViews()
@@ -57,6 +68,24 @@ namespace Planner.Droid.Activities
         private void HandleEvents()
         {
             signUpButton.Click += SignUpButton_Click;
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == RC_SIGN_IN)
+            {
+                var result = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
+                //HandleSignInResult(result);
+            }
+        }
+
+
+        private void SignIn()
+        {
+            var signInIntent = Auth.GoogleSignInApi.GetSignInIntent(_googleApiClient);
+            StartActivityForResult(signInIntent, RC_SIGN_IN);
         }
 
         private async void SignUpButton_Click(object sender, EventArgs e)
@@ -96,6 +125,28 @@ namespace Planner.Droid.Activities
             {
                 progressBar.Visibility = ViewStates.Invisible;
             }
+        }
+
+        private void PrepareGoogleSignIn()
+        {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
+                    .RequestEmail()
+                    .Build();
+
+            _googleApiClient = new GoogleApiClient.Builder(this)
+                    .EnableAutoManage(this, this)
+                    .AddApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .Build();
+
+            var signInButton = FindViewById<SignInButton>(Resource.Id.signUp_GoogleSignUpButton);
+            signInButton.SetSize(SignInButton.SizeStandard);
+
+            signInButton.Click += SignInButton_Click;
+        }
+
+        private void SignInButton_Click(object sender, EventArgs e)
+        {
+            SignIn();
         }
 
         private void ShowConfirmationCodeDialog(string userId)
@@ -249,6 +300,11 @@ namespace Planner.Droid.Activities
                     Toast.MakeText(BaseContext, "Some of the information you entered is incorrect", ToastLength.Short);
                     break;
             }
+        }
+
+        public void OnConnectionFailed(ConnectionResult result)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

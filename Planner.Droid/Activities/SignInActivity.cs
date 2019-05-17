@@ -1,12 +1,18 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Gms.Auth.Api;
+using Android.Gms.Auth.Api.SignIn;
+using Android.Gms.Common;
+using Android.Gms.Common.Apis;
 using Android.OS;
+using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
+using Planner.Droid.Services;
 using Planner.Dto;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Helpers;
@@ -18,8 +24,10 @@ using CoreHelper = Planner.Mobile.Core;
 namespace Planner.Droid.Activities
 {
     [Activity(Label = "Sign In")]
-    public class SignInActivity : Activity
+    public class SignInActivity : AppCompatActivity
     {
+        const int RC_GOOGLE_SIGN_IN = 9001;
+
         private readonly AuthHelper _authHelper;
         private readonly DialogHelper _dialogHelper;
 
@@ -29,6 +37,8 @@ namespace Planner.Droid.Activities
         private Button signUpButton;
         private Button forgotPasswordButton;
         private ProgressBar progressBar;
+        private GoogleApiClient _googleApiClient;
+        private SignInButton googleSignInButton;
 
         public SignInActivity()
         {
@@ -42,8 +52,21 @@ namespace Planner.Droid.Activities
 
             SetContentView(Resource.Layout.activity_sign_in);
 
+            PrepareGoogleSignIn();
+
             FindViews();
             HandleEvents();
+        }
+
+        protected async override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == RC_GOOGLE_SIGN_IN)
+            {
+                var result = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
+                await HandleSignInResult(result);
+            }
         }
 
         private void FindViews()
@@ -61,6 +84,7 @@ namespace Planner.Droid.Activities
             signInButton.Click += SignInButton_Click;
             signUpButton.Click += SignUpTextView_Click;
             forgotPasswordButton.Click += ForgotPasswordTextView_Click;
+            googleSignInButton.Click += GoogleSignInButton_Click;
         }
 
         private void ForgotPasswordTextView_Click(object sender, EventArgs e)
@@ -109,6 +133,12 @@ namespace Planner.Droid.Activities
         private void SignUpTextView_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(SignUpActivity));
+        }
+
+        private void GoogleSignInButton_Click(object sender, EventArgs e)
+        {
+            var signInIntent = Auth.GoogleSignInApi.GetSignInIntent(_googleApiClient);
+            StartActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
         }
 
         private async void SignInButton_Click(object sender, EventArgs e)
@@ -163,6 +193,48 @@ namespace Planner.Droid.Activities
             editor.PutString(PreferenceItemKeys.USERNAME, dto.Username);
 
             editor.Apply();
+        }
+
+        private void PrepareGoogleSignIn()
+        {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn)
+                    .RequestEmail()
+                    .Build();
+
+            _googleApiClient = new GoogleApiClient.Builder(this)
+                    .EnableAutoManage(this, new GoogleConnectionFailedCallback() { Activity = this })
+                    .AddApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .Build();
+
+            googleSignInButton = FindViewById<SignInButton>(Resource.Id.signIn_GoogleSignInButton);
+            googleSignInButton.SetSize(SignInButton.SizeStandard);
+        }
+
+        private async Task HandleSignInResult(GoogleSignInResult result)
+        {
+            try
+            {
+                if (result.IsSuccess && result.SignInAccount?.Email != null)
+                {
+                    var tokenDto = await _authHelper.ExternalSignInAsync(new ExternalSignInDto
+                    {
+                        Email = result.SignInAccount.Email
+                    });
+
+                    SaveUserInfo(tokenDto);
+
+                    StartActivity(typeof(TasksActivity));
+                }
+                else
+                {
+                    _dialogHelper.ShowError(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+                _dialogHelper.ShowError(this, ex);
+            }
         }
 
         private bool ValidateInputs()
