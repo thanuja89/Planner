@@ -2825,8 +2825,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d004f
 			public const int SYM = 2131558479;
 			
-			// aapt resource value: 0x7f0d00f5
-			public const int action0 = 2131558645;
+			// aapt resource value: 0x7f0d00f6
+			public const int action0 = 2131558646;
 			
 			// aapt resource value: 0x7f0d008e
 			public const int action_bar = 2131558542;
@@ -2849,17 +2849,17 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d006c
 			public const int action_bar_title = 2131558508;
 			
-			// aapt resource value: 0x7f0d00f2
-			public const int action_container = 2131558642;
+			// aapt resource value: 0x7f0d00f3
+			public const int action_container = 2131558643;
 			
 			// aapt resource value: 0x7f0d008f
 			public const int action_context_bar = 2131558543;
 			
-			// aapt resource value: 0x7f0d00f9
-			public const int action_divider = 2131558649;
+			// aapt resource value: 0x7f0d00fa
+			public const int action_divider = 2131558650;
 			
-			// aapt resource value: 0x7f0d00f3
-			public const int action_image = 2131558643;
+			// aapt resource value: 0x7f0d00f4
+			public const int action_image = 2131558644;
 			
 			// aapt resource value: 0x7f0d0003
 			public const int action_menu_divider = 2131558403;
@@ -2876,11 +2876,11 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d006e
 			public const int action_mode_close_button = 2131558510;
 			
-			// aapt resource value: 0x7f0d00f4
-			public const int action_text = 2131558644;
+			// aapt resource value: 0x7f0d00f5
+			public const int action_text = 2131558645;
 			
-			// aapt resource value: 0x7f0d0102
-			public const int actions = 2131558658;
+			// aapt resource value: 0x7f0d0103
+			public const int actions = 2131558659;
 			
 			// aapt resource value: 0x7f0d006f
 			public const int activity_chooser_view_content = 2131558511;
@@ -2930,11 +2930,11 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0075
 			public const int buttonPanel = 2131558517;
 			
-			// aapt resource value: 0x7f0d00f6
-			public const int cancel_action = 2131558646;
+			// aapt resource value: 0x7f0d00f7
+			public const int cancel_action = 2131558647;
 			
-			// aapt resource value: 0x7f0d00c7
-			public const int cancel_button = 2131558599;
+			// aapt resource value: 0x7f0d00c8
+			public const int cancel_button = 2131558600;
 			
 			// aapt resource value: 0x7f0d0034
 			public const int center = 2131558452;
@@ -2948,8 +2948,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0085
 			public const int checkbox = 2131558533;
 			
-			// aapt resource value: 0x7f0d00fe
-			public const int chronometer = 2131558654;
+			// aapt resource value: 0x7f0d00ff
+			public const int chronometer = 2131558655;
 			
 			// aapt resource value: 0x7f0d0060
 			public const int clip_horizontal = 2131558496;
@@ -2960,95 +2960,98 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0051
 			public const int collapseActionView = 2131558481;
 			
-			// aapt resource value: 0x7f0d00cb
-			public const int com_facebook_body_frame = 2131558603;
-			
-			// aapt resource value: 0x7f0d00cd
-			public const int com_facebook_button_xout = 2131558605;
-			
-			// aapt resource value: 0x7f0d00c6
-			public const int com_facebook_device_auth_instructions = 2131558598;
-			
-			// aapt resource value: 0x7f0d00c3
-			public const int com_facebook_fragment_container = 2131558595;
-			
-			// aapt resource value: 0x7f0d00c8
-			public const int com_facebook_login_fragment_progress_bar = 2131558600;
-			
-			// aapt resource value: 0x7f0d00c9
-			public const int com_facebook_smart_instructions_0 = 2131558601;
-			
-			// aapt resource value: 0x7f0d00ca
-			public const int com_facebook_smart_instructions_or = 2131558602;
-			
-			// aapt resource value: 0x7f0d00cf
-			public const int com_facebook_tooltip_bubble_view_bottom_pointer = 2131558607;
+			// aapt resource value: 0x7f0d00cc
+			public const int com_facebook_body_frame = 2131558604;
 			
 			// aapt resource value: 0x7f0d00ce
-			public const int com_facebook_tooltip_bubble_view_text_body = 2131558606;
+			public const int com_facebook_button_xout = 2131558606;
 			
-			// aapt resource value: 0x7f0d00cc
-			public const int com_facebook_tooltip_bubble_view_top_pointer = 2131558604;
+			// aapt resource value: 0x7f0d00c7
+			public const int com_facebook_device_auth_instructions = 2131558599;
 			
 			// aapt resource value: 0x7f0d00c4
-			public const int confirmation_code = 2131558596;
+			public const int com_facebook_fragment_container = 2131558596;
 			
-			// aapt resource value: 0x7f0d00d2
-			public const int container = 2131558610;
+			// aapt resource value: 0x7f0d00c9
+			public const int com_facebook_login_fragment_progress_bar = 2131558601;
+			
+			// aapt resource value: 0x7f0d00ca
+			public const int com_facebook_smart_instructions_0 = 2131558602;
+			
+			// aapt resource value: 0x7f0d00cb
+			public const int com_facebook_smart_instructions_or = 2131558603;
+			
+			// aapt resource value: 0x7f0d00d0
+			public const int com_facebook_tooltip_bubble_view_bottom_pointer = 2131558608;
+			
+			// aapt resource value: 0x7f0d00cf
+			public const int com_facebook_tooltip_bubble_view_text_body = 2131558607;
+			
+			// aapt resource value: 0x7f0d00cd
+			public const int com_facebook_tooltip_bubble_view_top_pointer = 2131558605;
+			
+			// aapt resource value: 0x7f0d00c5
+			public const int confirmation_code = 2131558597;
+			
+			// aapt resource value: 0x7f0d00d3
+			public const int container = 2131558611;
 			
 			// aapt resource value: 0x7f0d0078
 			public const int contentPanel = 2131558520;
 			
-			// aapt resource value: 0x7f0d00d3
-			public const int coordinator = 2131558611;
-			
-			// aapt resource value: 0x7f0d00aa
-			public const int createTask_AlarmCheckBox = 2131558570;
-			
-			// aapt resource value: 0x7f0d00a5
-			public const int createTask_EndDateRow = 2131558565;
-			
-			// aapt resource value: 0x7f0d00a6
-			public const int createTask_EndDateTextView = 2131558566;
-			
-			// aapt resource value: 0x7f0d00a7
-			public const int createTask_EndTimeTextView = 2131558567;
-			
-			// aapt resource value: 0x7f0d009e
-			public const int createTask_ImportanceRadioGroup = 2131558558;
-			
-			// aapt resource value: 0x7f0d00a1
-			public const int createTask_ImportanceRadio_High = 2131558561;
-			
-			// aapt resource value: 0x7f0d009f
-			public const int createTask_ImportanceRadio_Low = 2131558559;
-			
-			// aapt resource value: 0x7f0d00a0
-			public const int createTask_ImportanceRadio_Medium = 2131558560;
+			// aapt resource value: 0x7f0d00d4
+			public const int coordinator = 2131558612;
 			
 			// aapt resource value: 0x7f0d00ab
-			public const int createTask_NoteEditText = 2131558571;
+			public const int createTask_AlarmCheckBox = 2131558571;
+			
+			// aapt resource value: 0x7f0d00a6
+			public const int createTask_EndDateRow = 2131558566;
+			
+			// aapt resource value: 0x7f0d00a7
+			public const int createTask_EndDateTextView = 2131558567;
 			
 			// aapt resource value: 0x7f0d00a8
-			public const int createTask_RepeatLayout = 2131558568;
+			public const int createTask_EndTimeTextView = 2131558568;
 			
-			// aapt resource value: 0x7f0d00a9
-			public const int createTask_RepeatSelectedTextView = 2131558569;
-			
-			// aapt resource value: 0x7f0d00ac
-			public const int createTask_SaveButton = 2131558572;
+			// aapt resource value: 0x7f0d009f
+			public const int createTask_ImportanceRadioGroup = 2131558559;
 			
 			// aapt resource value: 0x7f0d00a2
-			public const int createTask_StartDateRow = 2131558562;
+			public const int createTask_ImportanceRadio_High = 2131558562;
 			
-			// aapt resource value: 0x7f0d00a3
-			public const int createTask_StartDateTextView = 2131558563;
+			// aapt resource value: 0x7f0d00a0
+			public const int createTask_ImportanceRadio_Low = 2131558560;
 			
-			// aapt resource value: 0x7f0d00a4
-			public const int createTask_StartTimeTextView = 2131558564;
+			// aapt resource value: 0x7f0d00a1
+			public const int createTask_ImportanceRadio_Medium = 2131558561;
 			
 			// aapt resource value: 0x7f0d009d
-			public const int createTask_TitleEditText = 2131558557;
+			public const int createTask_Layout = 2131558557;
+			
+			// aapt resource value: 0x7f0d00ac
+			public const int createTask_NoteEditText = 2131558572;
+			
+			// aapt resource value: 0x7f0d00a9
+			public const int createTask_RepeatLayout = 2131558569;
+			
+			// aapt resource value: 0x7f0d00aa
+			public const int createTask_RepeatSelectedTextView = 2131558570;
+			
+			// aapt resource value: 0x7f0d00ad
+			public const int createTask_SaveButton = 2131558573;
+			
+			// aapt resource value: 0x7f0d00a3
+			public const int createTask_StartDateRow = 2131558563;
+			
+			// aapt resource value: 0x7f0d00a4
+			public const int createTask_StartDateTextView = 2131558564;
+			
+			// aapt resource value: 0x7f0d00a5
+			public const int createTask_StartTimeTextView = 2131558565;
+			
+			// aapt resource value: 0x7f0d009e
+			public const int createTask_TitleEditText = 2131558558;
 			
 			// aapt resource value: 0x7f0d007f
 			public const int custom = 2131558527;
@@ -3059,17 +3062,17 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0024
 			public const int dark = 2131558436;
 			
-			// aapt resource value: 0x7f0d00e5
-			public const int dateTimePickerView_CancelButton = 2131558629;
-			
-			// aapt resource value: 0x7f0d00e3
-			public const int dateTimePickerView_DatePicker = 2131558627;
-			
 			// aapt resource value: 0x7f0d00e6
-			public const int dateTimePickerView_OkButton = 2131558630;
+			public const int dateTimePickerView_CancelButton = 2131558630;
 			
 			// aapt resource value: 0x7f0d00e4
-			public const int dateTimePickerView_TimePicker = 2131558628;
+			public const int dateTimePickerView_DatePicker = 2131558628;
+			
+			// aapt resource value: 0x7f0d00e7
+			public const int dateTimePickerView_OkButton = 2131558631;
+			
+			// aapt resource value: 0x7f0d00e5
+			public const int dateTimePickerView_TimePicker = 2131558629;
 			
 			// aapt resource value: 0x7f0d008c
 			public const int decor_content_parent = 2131558540;
@@ -3077,20 +3080,20 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0072
 			public const int default_activity_button = 2131558514;
 			
-			// aapt resource value: 0x7f0d00d5
-			public const int design_bottom_sheet = 2131558613;
+			// aapt resource value: 0x7f0d00d6
+			public const int design_bottom_sheet = 2131558614;
+			
+			// aapt resource value: 0x7f0d00dd
+			public const int design_menu_item_action_area = 2131558621;
 			
 			// aapt resource value: 0x7f0d00dc
-			public const int design_menu_item_action_area = 2131558620;
+			public const int design_menu_item_action_area_stub = 2131558620;
 			
 			// aapt resource value: 0x7f0d00db
-			public const int design_menu_item_action_area_stub = 2131558619;
+			public const int design_menu_item_text = 2131558619;
 			
 			// aapt resource value: 0x7f0d00da
-			public const int design_menu_item_text = 2131558618;
-			
-			// aapt resource value: 0x7f0d00d9
-			public const int design_navigation_view = 2131558617;
+			public const int design_navigation_view = 2131558618;
 			
 			// aapt resource value: 0x7f0d0039
 			public const int disableHome = 2131558457;
@@ -3101,23 +3104,23 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0090
 			public const int edit_query = 2131558544;
 			
-			// aapt resource value: 0x7f0d00ea
-			public const int emailInputDialog_CancelButton = 2131558634;
-			
-			// aapt resource value: 0x7f0d00e8
-			public const int emailInputDialog_EmailInputEditText = 2131558632;
-			
-			// aapt resource value: 0x7f0d00e7
-			public const int emailInputDialog_EmailInputTextLayout = 2131558631;
+			// aapt resource value: 0x7f0d00eb
+			public const int emailInputDialog_CancelButton = 2131558635;
 			
 			// aapt resource value: 0x7f0d00e9
-			public const int emailInputDialog_OkButton = 2131558633;
+			public const int emailInputDialog_EmailInputEditText = 2131558633;
+			
+			// aapt resource value: 0x7f0d00e8
+			public const int emailInputDialog_EmailInputTextLayout = 2131558632;
+			
+			// aapt resource value: 0x7f0d00ea
+			public const int emailInputDialog_OkButton = 2131558634;
 			
 			// aapt resource value: 0x7f0d0048
 			public const int end = 2131558472;
 			
-			// aapt resource value: 0x7f0d0104
-			public const int end_padder = 2131558660;
+			// aapt resource value: 0x7f0d0105
+			public const int end_padder = 2131558661;
 			
 			// aapt resource value: 0x7f0d0055
 			public const int enterAlways = 2131558485;
@@ -3161,8 +3164,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0074
 			public const int icon = 2131558516;
 			
-			// aapt resource value: 0x7f0d0103
-			public const int icon_group = 2131558659;
+			// aapt resource value: 0x7f0d0104
+			public const int icon_group = 2131558660;
 			
 			// aapt resource value: 0x7f0d0020
 			public const int icon_only = 2131558432;
@@ -3173,26 +3176,26 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0071
 			public const int image = 2131558513;
 			
-			// aapt resource value: 0x7f0d00ff
-			public const int info = 2131558655;
+			// aapt resource value: 0x7f0d0100
+			public const int info = 2131558656;
 			
 			// aapt resource value: 0x7f0d0032
 			public const int inline = 2131558450;
 			
-			// aapt resource value: 0x7f0d00e1
-			public const int inputDialog_CancelButton = 2131558625;
-			
-			// aapt resource value: 0x7f0d00df
-			public const int inputDialog_InputEditText = 2131558623;
-			
-			// aapt resource value: 0x7f0d00de
-			public const int inputDialog_InputTextLayout = 2131558622;
+			// aapt resource value: 0x7f0d00e2
+			public const int inputDialog_CancelButton = 2131558626;
 			
 			// aapt resource value: 0x7f0d00e0
-			public const int inputDialog_OkButton = 2131558624;
+			public const int inputDialog_InputEditText = 2131558624;
 			
-			// aapt resource value: 0x7f0d00e2
-			public const int inputDialog_ResendTextView = 2131558626;
+			// aapt resource value: 0x7f0d00df
+			public const int inputDialog_InputTextLayout = 2131558623;
+			
+			// aapt resource value: 0x7f0d00e1
+			public const int inputDialog_OkButton = 2131558625;
+			
+			// aapt resource value: 0x7f0d00e3
+			public const int inputDialog_ResendTextView = 2131558627;
 			
 			// aapt resource value: 0x7f0d006b
 			public const int italic = 2131558507;
@@ -3203,8 +3206,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0029
 			public const int large = 2131558441;
 			
-			// aapt resource value: 0x7f0d00d1
-			public const int largeLabel = 2131558609;
+			// aapt resource value: 0x7f0d00d2
+			public const int largeLabel = 2131558610;
 			
 			// aapt resource value: 0x7f0d0035
 			public const int left = 2131558453;
@@ -3224,20 +3227,20 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0073
 			public const int list_item = 2131558515;
 			
-			// aapt resource value: 0x7f0d00f0
-			public const int mainActionBar_SignoutButton = 2131558640;
-			
-			// aapt resource value: 0x7f0d0107
-			public const int masked = 2131558663;
-			
-			// aapt resource value: 0x7f0d00f8
-			public const int media_actions = 2131558648;
-			
-			// aapt resource value: 0x7f0d0105
-			public const int message = 2131558661;
-			
 			// aapt resource value: 0x7f0d00f1
-			public const int messenger_send_button = 2131558641;
+			public const int mainActionBar_SignoutButton = 2131558641;
+			
+			// aapt resource value: 0x7f0d0108
+			public const int masked = 2131558664;
+			
+			// aapt resource value: 0x7f0d00f9
+			public const int media_actions = 2131558649;
+			
+			// aapt resource value: 0x7f0d0106
+			public const int message = 2131558662;
+			
+			// aapt resource value: 0x7f0d00f2
+			public const int messenger_send_button = 2131558642;
 			
 			// aapt resource value: 0x7f0d0049
 			public const int middle = 2131558473;
@@ -3248,8 +3251,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0040
 			public const int multiply = 2131558464;
 			
-			// aapt resource value: 0x7f0d00d8
-			public const int navigation_header_container = 2131558616;
+			// aapt resource value: 0x7f0d00d9
+			public const int navigation_header_container = 2131558617;
 			
 			// aapt resource value: 0x7f0d0053
 			public const int never = 2131558483;
@@ -3263,14 +3266,14 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d002a
 			public const int normal = 2131558442;
 			
-			// aapt resource value: 0x7f0d0101
-			public const int notification_background = 2131558657;
+			// aapt resource value: 0x7f0d0102
+			public const int notification_background = 2131558658;
+			
+			// aapt resource value: 0x7f0d00fc
+			public const int notification_main_column = 2131558652;
 			
 			// aapt resource value: 0x7f0d00fb
-			public const int notification_main_column = 2131558651;
-			
-			// aapt resource value: 0x7f0d00fa
-			public const int notification_main_column_container = 2131558650;
+			public const int notification_main_column_container = 2131558651;
 			
 			// aapt resource value: 0x7f0d002c
 			public const int open_graph = 2131558444;
@@ -3290,8 +3293,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d005f
 			public const int pin = 2131558495;
 			
-			// aapt resource value: 0x7f0d00c5
-			public const int progress_bar = 2131558597;
+			// aapt resource value: 0x7f0d00c6
+			public const int progress_bar = 2131558598;
 			
 			// aapt resource value: 0x7f0d0006
 			public const int progress_circular = 2131558406;
@@ -3302,26 +3305,26 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0087
 			public const int radio = 2131558535;
 			
+			// aapt resource value: 0x7f0d00b0
+			public const int resetPassword_CodeEditText = 2131558576;
+			
 			// aapt resource value: 0x7f0d00af
-			public const int resetPassword_CodeEditText = 2131558575;
+			public const int resetPassword_ConfirmPasswordEditText = 2131558575;
 			
 			// aapt resource value: 0x7f0d00ae
-			public const int resetPassword_ConfirmPasswordEditText = 2131558574;
+			public const int resetPassword_PasswordEditText = 2131558574;
 			
-			// aapt resource value: 0x7f0d00ad
-			public const int resetPassword_PasswordEditText = 2131558573;
-			
-			// aapt resource value: 0x7f0d00b0
-			public const int resetPassword_ResetButton = 2131558576;
+			// aapt resource value: 0x7f0d00b1
+			public const int resetPassword_ResetButton = 2131558577;
 			
 			// aapt resource value: 0x7f0d0036
 			public const int right = 2131558454;
 			
-			// aapt resource value: 0x7f0d0100
-			public const int right_icon = 2131558656;
+			// aapt resource value: 0x7f0d0101
+			public const int right_icon = 2131558657;
 			
-			// aapt resource value: 0x7f0d00fc
-			public const int right_side = 2131558652;
+			// aapt resource value: 0x7f0d00fd
+			public const int right_side = 2131558653;
 			
 			// aapt resource value: 0x7f0d000c
 			public const int save_image_matrix = 2131558412;
@@ -3395,56 +3398,56 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d003d
 			public const int showTitle = 2131558461;
 			
-			// aapt resource value: 0x7f0d00b5
-			public const int signIn_ForgotPasswordTextView = 2131558581;
-			
-			// aapt resource value: 0x7f0d00b7
-			public const int signIn_GoogleSignInButton = 2131558583;
-			
-			// aapt resource value: 0x7f0d00b3
-			public const int signIn_PasswordEditText = 2131558579;
-			
-			// aapt resource value: 0x7f0d00b1
-			public const int signIn_RelativeLayout = 2131558577;
-			
-			// aapt resource value: 0x7f0d00b4
-			public const int signIn_SignInButton = 2131558580;
-			
 			// aapt resource value: 0x7f0d00b6
-			public const int signIn_SignUpTextView = 2131558582;
-			
-			// aapt resource value: 0x7f0d00b2
-			public const int signIn_UsernameEditText = 2131558578;
-			
-			// aapt resource value: 0x7f0d00bb
-			public const int signUp_ConfirmPasswordEditText = 2131558587;
-			
-			// aapt resource value: 0x7f0d00b9
-			public const int signUp_EmailEditText = 2131558585;
-			
-			// aapt resource value: 0x7f0d00ba
-			public const int signUp_PasswordEditText = 2131558586;
-			
-			// aapt resource value: 0x7f0d00bc
-			public const int signUp_SignUpButton = 2131558588;
+			public const int signIn_ForgotPasswordTextView = 2131558582;
 			
 			// aapt resource value: 0x7f0d00b8
-			public const int signUp_UsernameEditText = 2131558584;
+			public const int signIn_GoogleSignInButton = 2131558584;
+			
+			// aapt resource value: 0x7f0d00b4
+			public const int signIn_PasswordEditText = 2131558580;
+			
+			// aapt resource value: 0x7f0d00b2
+			public const int signIn_RelativeLayout = 2131558578;
+			
+			// aapt resource value: 0x7f0d00b5
+			public const int signIn_SignInButton = 2131558581;
+			
+			// aapt resource value: 0x7f0d00b7
+			public const int signIn_SignUpTextView = 2131558583;
+			
+			// aapt resource value: 0x7f0d00b3
+			public const int signIn_UsernameEditText = 2131558579;
+			
+			// aapt resource value: 0x7f0d00bc
+			public const int signUp_ConfirmPasswordEditText = 2131558588;
+			
+			// aapt resource value: 0x7f0d00ba
+			public const int signUp_EmailEditText = 2131558586;
+			
+			// aapt resource value: 0x7f0d00bb
+			public const int signUp_PasswordEditText = 2131558587;
 			
 			// aapt resource value: 0x7f0d00bd
-			public const int signUp_circularProgressbar = 2131558589;
+			public const int signUp_SignUpButton = 2131558589;
+			
+			// aapt resource value: 0x7f0d00b9
+			public const int signUp_UsernameEditText = 2131558585;
+			
+			// aapt resource value: 0x7f0d00be
+			public const int signUp_circularProgressbar = 2131558590;
 			
 			// aapt resource value: 0x7f0d002b
 			public const int small = 2131558443;
 			
-			// aapt resource value: 0x7f0d00d0
-			public const int smallLabel = 2131558608;
+			// aapt resource value: 0x7f0d00d1
+			public const int smallLabel = 2131558609;
+			
+			// aapt resource value: 0x7f0d00d8
+			public const int snackbar_action = 2131558616;
 			
 			// aapt resource value: 0x7f0d00d7
-			public const int snackbar_action = 2131558615;
-			
-			// aapt resource value: 0x7f0d00d6
-			public const int snackbar_text = 2131558614;
+			public const int snackbar_text = 2131558615;
 			
 			// aapt resource value: 0x7f0d0059
 			public const int snap = 2131558489;
@@ -3452,8 +3455,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0076
 			public const int spacer = 2131558518;
 			
-			// aapt resource value: 0x7f0d00be
-			public const int splash_ImageView = 2131558590;
+			// aapt resource value: 0x7f0d00bf
+			public const int splash_ImageView = 2131558591;
 			
 			// aapt resource value: 0x7f0d0008
 			public const int split_action_bar = 2131558408;
@@ -3473,8 +3476,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d005d
 			public const int start = 2131558493;
 			
-			// aapt resource value: 0x7f0d00f7
-			public const int status_bar_latest_event_content = 2131558647;
+			// aapt resource value: 0x7f0d00f8
+			public const int status_bar_latest_event_content = 2131558648;
 			
 			// aapt resource value: 0x7f0d0088
 			public const int submenuarrow = 2131558536;
@@ -3488,29 +3491,29 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0019
 			public const int tag_transition_group = 2131558425;
 			
+			// aapt resource value: 0x7f0d00f0
+			public const int taskRecyclerView_DeleteButton = 2131558640;
+			
 			// aapt resource value: 0x7f0d00ef
-			public const int taskRecyclerView_DeleteButton = 2131558639;
+			public const int taskRecyclerView_ImportanceImageView = 2131558639;
 			
 			// aapt resource value: 0x7f0d00ee
-			public const int taskRecyclerView_ImportanceImageView = 2131558638;
+			public const int taskRecyclerView_RepeatTextView = 2131558638;
 			
 			// aapt resource value: 0x7f0d00ed
-			public const int taskRecyclerView_RepeatTextView = 2131558637;
+			public const int taskRecyclerView_StartTextView = 2131558637;
 			
 			// aapt resource value: 0x7f0d00ec
-			public const int taskRecyclerView_StartTextView = 2131558636;
+			public const int taskRecyclerView_TitleTextView = 2131558636;
 			
-			// aapt resource value: 0x7f0d00eb
-			public const int taskRecyclerView_TitleTextView = 2131558635;
+			// aapt resource value: 0x7f0d00c3
+			public const int tasksView_CreateButton = 2131558595;
 			
 			// aapt resource value: 0x7f0d00c2
-			public const int tasksView_CreateButton = 2131558594;
+			public const int tasksView_EmptyText = 2131558594;
 			
 			// aapt resource value: 0x7f0d00c1
-			public const int tasksView_EmptyText = 2131558593;
-			
-			// aapt resource value: 0x7f0d00c0
-			public const int tasksView_RecyclerView = 2131558592;
+			public const int tasksView_RecyclerView = 2131558593;
 			
 			// aapt resource value: 0x7f0d001a
 			public const int text = 2131558426;
@@ -3524,8 +3527,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d007b
 			public const int textSpacerNoTitle = 2131558523;
 			
-			// aapt resource value: 0x7f0d00dd
-			public const int text_input_password_toggle = 2131558621;
+			// aapt resource value: 0x7f0d00de
+			public const int text_input_password_toggle = 2131558622;
 			
 			// aapt resource value: 0x7f0d0014
 			public const int textinput_counter = 2131558420;
@@ -3533,8 +3536,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0015
 			public const int textinput_error = 2131558421;
 			
-			// aapt resource value: 0x7f0d00fd
-			public const int time = 2131558653;
+			// aapt resource value: 0x7f0d00fe
+			public const int time = 2131558654;
 			
 			// aapt resource value: 0x7f0d001c
 			public const int title = 2131558428;
@@ -3545,8 +3548,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0081
 			public const int title_template = 2131558529;
 			
-			// aapt resource value: 0x7f0d00bf
-			public const int toolbar = 2131558591;
+			// aapt resource value: 0x7f0d00c0
+			public const int toolbar = 2131558592;
 			
 			// aapt resource value: 0x7f0d0033
 			public const int top = 2131558451;
@@ -3554,8 +3557,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0080
 			public const int topPanel = 2131558528;
 			
-			// aapt resource value: 0x7f0d00d4
-			public const int touch_outside = 2131558612;
+			// aapt resource value: 0x7f0d00d5
+			public const int touch_outside = 2131558613;
 			
 			// aapt resource value: 0x7f0d000f
 			public const int transition_current_scene = 2131558415;
@@ -3587,8 +3590,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d0016
 			public const int view_offset_helper = 2131558422;
 			
-			// aapt resource value: 0x7f0d0106
-			public const int visible = 2131558662;
+			// aapt resource value: 0x7f0d0107
+			public const int visible = 2131558663;
 			
 			// aapt resource value: 0x7f0d0022
 			public const int wide = 2131558434;

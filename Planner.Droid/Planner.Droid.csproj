@@ -61,7 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\EditTaskActivity.cs" />
-    <Compile Include="Activities\GoogleSignInActivity.cs" />
     <Compile Include="Activities\ResetPasswordActivity.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <Compile Include="Controls\TaskRecyclerView.cs" />
@@ -76,6 +75,7 @@
     <Compile Include="Fragments\DateTimePickerFragment.cs" />
     <Compile Include="Fragments\TimePickerFragment.cs" />
     <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Helpers\ProgressBarHelper.cs" />
     <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Jobs\SyncJobService.cs" />
     <Compile Include="Callbacks\GoogleConnectionFailedCallback.cs" />

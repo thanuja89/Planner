@@ -13,13 +13,13 @@ using Planner.Droid.Util;
 using Planner.Mobile.Core.Data;
 using Planner.Mobile.Core.Helpers;
 using System;
-using System.Threading.Tasks;
 
 namespace Planner.Droid.Activities
 {
     [Activity(Label = "CreateTaskActivity")]
     public class CreateTaskActivity : AppCompatActivity
     {
+        private RelativeLayout layout;
         private EditText titleEditText;
         private EditText noteEditText;
         private TextView startDateTextView;
@@ -41,8 +41,9 @@ namespace Planner.Droid.Activities
         private readonly string[] _items;
 
         private int _selectedRepeatIndex = 0;
+        private ProgressBarHelper _progressBarHelper;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
-        private readonly ScheduledTaskWebHelper _taskWebHelper;
+        private readonly DialogHelper _dialogHelper;
 
         public Mobile.Core.Data.Importance SelectedImportance
         {
@@ -68,8 +69,7 @@ namespace Planner.Droid.Activities
         public CreateTaskActivity()
         {
             _taskDataHelper = new ScheduledTaskDataHelper();
-            _taskWebHelper = new ScheduledTaskWebHelper();
-
+            _dialogHelper = new DialogHelper();
             _items = Enum.GetNames(typeof(Frequency));
         }
 
@@ -82,10 +82,13 @@ namespace Planner.Droid.Activities
             FindViews();
 
             HandleEvents();
+
+            _progressBarHelper = new ProgressBarHelper(this, Window, layout);
         }
 
         public void FindViews()
         {
+            layout = FindViewById<RelativeLayout>(Resource.Id.createTask_Layout);
             titleEditText = FindViewById<EditText>(Resource.Id.createTask_TitleEditText);
             noteEditText = FindViewById<EditText>(Resource.Id.createTask_NoteEditText);
             startDateTextView = FindViewById<TextView>(Resource.Id.createTask_StartDateTextView);
@@ -175,6 +178,8 @@ namespace Planner.Droid.Activities
                 if (!ValidateInputs())
                     return;
 
+                _progressBarHelper.Show();
+
                 var task = new ScheduledTask()
                 {
                     Id = Guid.NewGuid(),
@@ -194,15 +199,20 @@ namespace Planner.Droid.Activities
                 if (task.Start > DateTime.Now)
                 {
                     SetAlarm(task.Start, task);
-                }
+                }              
 
                 _ = SyncService.Instance.SyncAsync(this); // warning suppressed on purpose
 
                 StartActivity(typeof(TasksActivity));
+
+                _progressBarHelper.Hide();
             }
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
+                _progressBarHelper.Hide();
+                _dialogHelper.ShowError(this, ex);
             }
         }
 
