@@ -78,12 +78,12 @@
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent">
             <com.google.android.gms.common.SignInButton
-                    android:id="@+id/signIn_GoogleSignInButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="false"
-			    	android:layout_alignParentLeft="true"
-                    android:visibility="visible" />
+                android:id="@+id/signIn_GoogleSignInButton"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="false"
+			    android:layout_alignParentLeft="true"
+                android:visibility="visible" />
 		</RelativeLayout>
 	</LinearLayout>
 	<ProgressBar 
