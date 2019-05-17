@@ -13,7 +13,6 @@ using Planner.Droid.Callbacks;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
-using Planner.Droid.Services;
 using Planner.Dto;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Helpers;
