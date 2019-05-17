@@ -9,6 +9,7 @@ using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Planner.Droid.Callbacks;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
@@ -207,7 +208,6 @@ namespace Planner.Droid.Activities
                     .Build();
 
             googleSignInButton = FindViewById<SignInButton>(Resource.Id.signIn_GoogleSignInButton);
-            googleSignInButton.SetSize(SignInButton.SizeStandard);
         }
 
         private async Task HandleSignInResult(GoogleSignInResult result)
