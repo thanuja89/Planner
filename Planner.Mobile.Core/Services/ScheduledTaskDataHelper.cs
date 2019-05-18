@@ -114,5 +114,14 @@ namespace Planner.Mobile.Core.Helpers
                                        FROM ScheduledTask
                                        WHERE Id = ?", id);
         }
+
+        public Task DeleteTasksAfterTicksAsync(long ticks)
+        {
+            return PlannerDatabase.Instance
+                .ExecuteCommandAsync(@"DELETE 
+                                       FROM ScheduledTask
+                                       WHERE IsDeleted = 1
+                                            AND ClientUpdatedOnTicks < ?", ticks);
+        }
     }
 }

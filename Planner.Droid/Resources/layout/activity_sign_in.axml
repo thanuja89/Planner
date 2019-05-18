@@ -1,90 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/signIn_RelativeLayout"
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	style="@style/PrimaryLayoutStyle">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/PrimaryLayoutStyle">
 
-	<LinearLayout
-		android:orientation="vertical"
-		android:layout_centerInParent="true"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content" >
-		
-		<android.support.design.widget.TextInputLayout
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-			<EditText
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:minWidth="25px"
-				android:minHeight="25px"
-				android:id="@+id/signIn_UsernameEditText"
-				android:hint="Username"
-				android:layout_gravity="center" />
-		</android.support.design.widget.TextInputLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-		<android.support.design.widget.TextInputLayout
-			android:minWidth="25px"
-			android:minHeight="25px"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-			<EditText
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:minWidth="25px"
-				android:minHeight="25px"
-				android:id="@+id/signIn_PasswordEditText"
-				android:hint="Password"
-				android:inputType="textPassword" />
-		</android.support.design.widget.TextInputLayout>
-
-		<Button
-			android:text="Sign In"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:id="@+id/signIn_SignInButton" />
-		<RelativeLayout
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent">
-            <Button
-                style="@style/LinkButtonStyle"
-                android:text="Forgot Password"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/signIn_ForgotPasswordTextView"
-                android:layout_gravity="right"
-                android:layout_alignParentRight="false"
-                android:layout_centerInParent="true"
-                android:paddingHorizontal="15dp"
-                android:textColor="#ff2196f3"
-                android:layout_alignParentLeft="true" />
-			<Button
-                style="@style/LinkButtonStyle"
-				android:text="Sign Up"
-				android:textAppearance="?android:attr/textAppearanceSmall"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/signIn_SignUpTextView"
-				android:layout_gravity="right"
-				android:layout_alignParentRight="true"
-				android:layout_centerInParent="true"
-				android:textColor="#ff2196f3" />
-		</RelativeLayout>
-        <RelativeLayout
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent">
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/signIn_GoogleSignInButton"
-                android:layout_width="110dp"
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:id="@+id/signIn_UsernameEditText"
+                android:hint="Username"
+                android:layout_gravity="center" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="false"
-			    android:layout_alignParentLeft="true"
-                android:visibility="visible" />
-		</RelativeLayout>
-	</LinearLayout>
+                android:minWidth="25px"
+                android:minHeight="25px"
+                android:id="@+id/signIn_PasswordEditText"
+                android:hint="Password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:text="Sign In"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/signIn_SignInButton" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/signIn_GoogleSignInButton"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:visibility="visible" />
+    
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <Button
+            style="@style/LinkButtonStyle"
+            android:text="Forgot Password"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signIn_ForgotPasswordTextView"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="false"
+            android:layout_centerInParent="true"
+            android:paddingHorizontal="15dp"
+            android:textColor="#ff2196f3"
+            android:layout_alignParentLeft="true" />
+        <Button
+            style="@style/LinkButtonStyle"
+            android:text="Sign Up"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signIn_SignUpTextView"
+            android:layout_gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:textColor="#ff2196f3" />
+    </RelativeLayout>
+
+</LinearLayout>
 </RelativeLayout>

@@ -57,11 +57,11 @@ namespace Planner.Droid.Services
 
                 if (lockTaken)
                 {
-                    var lastSynced = Utilities.GetLongFromPreferences(context, "LastSyncedOn");
+                    var lastSyncedTicks = Utilities.GetLongFromPreferences(context, "LastSyncedOn");
 
-                    var newTasksFromServer = await _syncHelper.PullAsync(lastSynced);
+                    var newTasksFromServer = await _syncHelper.PullAsync(lastSyncedTicks);
 
-                    var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(Utilities.GetUserId(), lastSynced);
+                    var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(Utilities.GetUserId(), lastSyncedTicks);
 
                     if (newTasksInClient != null && newTasksInClient.Count > 0)
                     {
