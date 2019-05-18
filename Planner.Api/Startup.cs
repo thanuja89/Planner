@@ -88,8 +88,11 @@ namespace Planner.Api
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.Configure<EmailSenderOptions>(Configuration.GetSection("Mail"));
-            services.AddScoped<IEmailSender, SMTPEmailSender>();
+            //services.Configure<SMTPEmailSenderOptions>(Configuration.GetSection("Mail"));
+            //services.AddScoped<IEmailSender, SMTPEmailSender>();
+
+            services.Configure<SendGridEmailSenderOptions>(Configuration.GetSection("SendGridMail"));
+            services.AddScoped<IEmailSender, SendGridEmailSender>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

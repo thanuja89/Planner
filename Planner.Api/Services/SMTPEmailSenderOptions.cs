@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Planner.Api.Services
 {
-    public class EmailSenderOptions
+    public class SMTPEmailSenderOptions
     {
         public string Host { get; set; }
         public int Port { get; set; }

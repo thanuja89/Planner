@@ -7,9 +7,9 @@ namespace Planner.Api.Services
 {
     public class SMTPEmailSender : IEmailSender
     {
-        private readonly EmailSenderOptions _options;
+        private readonly SMTPEmailSenderOptions _options;
 
-        public SMTPEmailSender(IOptions<EmailSenderOptions> optionsAccessor)
+        public SMTPEmailSender(IOptions<SMTPEmailSenderOptions> optionsAccessor)
         {
             _options = optionsAccessor.Value;
         }
