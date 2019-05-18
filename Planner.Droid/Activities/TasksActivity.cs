@@ -8,6 +8,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Planner.Droid.Controls;
+using Planner.Droid.Helpers;
 using Planner.Droid.Services;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Data;
@@ -26,18 +27,22 @@ namespace Planner.Droid.Activities
         private readonly RecyclerView.LayoutManager _layoutManager;
         private List<ScheduledTask> _tasks;
         private TaskViewAdapter _adapter;
+        private RelativeLayout layout;
         private FloatingActionButton createButton;
         private TextView emptyTextView;
         private V7.Toolbar toolbar;
         private View toolbarLayout;
         private Button signoutButton;
+        private ProgressBarHelper _progressBarHelper;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
         private readonly ScheduledTaskWebHelper _taskWebHelper;
+        private readonly DialogHelper _dialogHelper;
 
         public TasksActivity()
         {
             _taskDataHelper = new ScheduledTaskDataHelper();
             _taskWebHelper = new ScheduledTaskWebHelper();
+            _dialogHelper = new DialogHelper();
             _layoutManager = new LinearLayoutManager(this);
         }
 
@@ -53,6 +58,8 @@ namespace Planner.Droid.Activities
             HandleEvents();
 
             await PrepareRecyclerViewAsync();
+
+            _progressBarHelper = new ProgressBarHelper(this, Window, layout);
         }
 
         private void PrepareToolbar()
@@ -71,7 +78,7 @@ namespace Planner.Droid.Activities
         {
             try
             {
-                recyclerView = FindViewById<RecyclerView>(Resource.Id.tasksView_RecyclerView);
+                recyclerView = FindViewById<RecyclerView>(Resource.Id.tasks_RecyclerView);
                 recyclerView.SetLayoutManager(_layoutManager);
                 recyclerView.HasFixedSize = true;
 
@@ -103,7 +110,7 @@ namespace Planner.Droid.Activities
         {
             try
             {
-
+                _progressBarHelper.Show();
 
                 ToggleEmptyView();
 
@@ -111,19 +118,35 @@ namespace Planner.Droid.Activities
 
                 await _taskDataHelper.MarkAsDeletedAsync(e.Id);
 
-                _ = SyncService.Instance.SyncAsync(this); // warning suppressed on purpose
+                _ = SyncService.Instance.SyncAsync(this)
+                    .ContinueWith(async t => 
+                    {
+                        try
+                        {
+                            await _taskDataHelper.DeleteAsync(e.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+                        }
+                    }
+                    , TaskContinuationOptions.OnlyOnRanToCompletion); // warning suppressed on purpose
 
-                await _taskDataHelper.DeleteAsync(e.Id);
+                _progressBarHelper.Hide();
             }
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
+                _progressBarHelper.Hide();
+                _dialogHelper.ShowError(this, ex);
             }
         }
 
         private void FindViews()
         {
-            createButton = FindViewById<FloatingActionButton>(Resource.Id.tasksView_CreateButton);
+            layout = FindViewById<RelativeLayout>(Resource.Id.tasks_Layout);
+            createButton = FindViewById<FloatingActionButton>(Resource.Id.tasks_CreateButton);
             emptyTextView = FindViewById<TextView>(Resource.Id.tasksView_EmptyText);
         }
 

@@ -16,11 +16,13 @@ namespace Planner.Droid.Activities
     [Activity(Label = "ResetPasswordActivity")]
     public class ResetPasswordActivity : AppCompatActivity
     {
+        private RelativeLayout layout;
         private EditText passwordEditText;
         private EditText confirmPasswordEditText;
         private EditText codeEditText;
         private Button resetButton;
         private string _email;
+        private ProgressBarHelper _progressBarHelper;
         private readonly AuthHelper _authHelper;
         private readonly DialogHelper _dialogHelper;
 
@@ -41,6 +43,8 @@ namespace Planner.Droid.Activities
             FindViews();
 
             HandleEvents();
+
+            _progressBarHelper = new ProgressBarHelper(this, Window, layout);
         }
 
         private void HandleEvents()
@@ -55,6 +59,8 @@ namespace Planner.Droid.Activities
                 if (!ValidateInputs())
                     return;
 
+                _progressBarHelper.Show();
+
                 var dto = new ResetPasswordRequestDto()
                 {
                     Code = codeEditText.Text,
@@ -63,6 +69,8 @@ namespace Planner.Droid.Activities
                 };
 
                 var res = await _authHelper.ResetPasswordAsync(dto);
+
+                _progressBarHelper.Hide();
 
                 if (res.StatusCode == HttpStatusCode.OK)
                 {
@@ -78,12 +86,14 @@ namespace Planner.Droid.Activities
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
 
+                _progressBarHelper.Hide();
                 _dialogHelper.ShowError(this, ex);
             }
         }
 
         private void FindViews()
         {
+            layout = FindViewById<RelativeLayout>(Resource.Id.resetPassword_Layout);
             passwordEditText = FindViewById<EditText>(Resource.Id.resetPassword_PasswordEditText);
             confirmPasswordEditText = FindViewById<EditText>(Resource.Id.resetPassword_ConfirmPasswordEditText);
             codeEditText = FindViewById<EditText>(Resource.Id.resetPassword_CodeEditText);
