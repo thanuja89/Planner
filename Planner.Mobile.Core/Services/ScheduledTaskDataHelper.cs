@@ -41,7 +41,7 @@ namespace Planner.Mobile.Core.Helpers
             return PlannerDatabase.Instance
                 .QueryAll<ScheduledTask>(@"
                     SELECT * FROM ScheduledTask 
-                    WHERE ApplicationUserId = 3 AND (Title LIKE ?1
+                    WHERE ApplicationUserId = ?3 AND (Title LIKE ?1
                         OR Note LIKE ?1)
                     ORDER BY Start
                     LIMIT ?2"
@@ -53,7 +53,7 @@ namespace Planner.Mobile.Core.Helpers
             return PlannerDatabase.Instance
                 .QueryAll<ScheduledTask>(@"
                     SELECT * FROM ScheduledTask 
-                    WHERE ApplicationUserId = 3 AND (Start BETWEEN ?1 AND ?2) 
+                    WHERE ApplicationUserId = ?3 AND (Start BETWEEN ?1 AND ?2) 
                         OR (End BETWEEN ?1 AND ?2) 
                         OR (Start < ?1 AND End > ?2)"
                     , startDate.Ticks, endDate.Ticks, userId);

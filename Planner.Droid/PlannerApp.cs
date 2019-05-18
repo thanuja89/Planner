@@ -17,9 +17,9 @@ namespace Planner.Droid
 #endif
     public class PlannerApp : Application
     {
-//#if !DEBUG
+#if !DEBUG
         private SyncNetworkCallback _networkCallback;
-//#endif
+#endif
         public PlannerApp(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }

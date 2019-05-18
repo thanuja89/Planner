@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/tasks_toolbar"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:minHeight="?attr/actionBarSize"
@@ -15,10 +15,15 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:layout_alignParentTop="true" />
+    <android.support.v7.widget.SearchView
+        android:id="@+id/tasks_SearchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tasks_toolbar" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/toolbar">      
+        android:layout_below="@+id/tasks_SearchView">      
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

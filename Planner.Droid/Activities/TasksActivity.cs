@@ -23,6 +23,7 @@ namespace Planner.Droid.Activities
     [Activity(Label = "TasksActivity")]
     public class TasksActivity : AppCompatActivity
     {
+        private string _userId;
         private RecyclerView recyclerView;
         private readonly RecyclerView.LayoutManager _layoutManager;
         private List<ScheduledTask> _tasks;
@@ -30,18 +31,17 @@ namespace Planner.Droid.Activities
         private RelativeLayout layout;
         private FloatingActionButton createButton;
         private TextView emptyTextView;
+        private V7.SearchView searchView;
         private V7.Toolbar toolbar;
         private View toolbarLayout;
         private Button signoutButton;
         private ProgressBarHelper _progressBarHelper;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
-        private readonly ScheduledTaskWebHelper _taskWebHelper;
         private readonly DialogHelper _dialogHelper;
 
         public TasksActivity()
         {
             _taskDataHelper = new ScheduledTaskDataHelper();
-            _taskWebHelper = new ScheduledTaskWebHelper();
             _dialogHelper = new DialogHelper();
             _layoutManager = new LinearLayoutManager(this);
         }
@@ -64,7 +64,7 @@ namespace Planner.Droid.Activities
 
         private void PrepareToolbar()
         {
-            toolbar = FindViewById<V7.Toolbar>(Resource.Id.toolbar);
+            toolbar = FindViewById<V7.Toolbar>(Resource.Id.tasks_toolbar);
             SetSupportActionBar(toolbar);
 
             toolbarLayout = LayoutInflater.Inflate(Resource.Layout.main_action_bar, null);
@@ -78,11 +78,13 @@ namespace Planner.Droid.Activities
         {
             try
             {
+                _userId = Helpers.Utilities.GetUserId();
+
                 recyclerView = FindViewById<RecyclerView>(Resource.Id.tasks_RecyclerView);
                 recyclerView.SetLayoutManager(_layoutManager);
                 recyclerView.HasFixedSize = true;
 
-                _tasks = await _taskDataHelper.GetAsync(Helpers.Utilities.GetUserId());
+                _tasks = await _taskDataHelper.GetAsync(_userId);
 
                 _adapter = new TaskViewAdapter(_tasks);
                 _adapter.ItemDeleteClick += Adapter_ItemDeleteClick;
@@ -148,12 +150,25 @@ namespace Planner.Droid.Activities
             layout = FindViewById<RelativeLayout>(Resource.Id.tasks_Layout);
             createButton = FindViewById<FloatingActionButton>(Resource.Id.tasks_CreateButton);
             emptyTextView = FindViewById<TextView>(Resource.Id.tasksView_EmptyText);
+            searchView = FindViewById<V7.SearchView>(Resource.Id.tasks_SearchView);
         }
 
         private void HandleEvents()
         {
             createButton.Click += CreateButton_Click;
             signoutButton.Click += SignoutButton_Click;
+            searchView.QueryTextChange += SearchView_QueryTextChange;
+        }
+
+        private async void SearchView_QueryTextChange(object sender, V7.SearchView.QueryTextChangeEventArgs e)
+        {
+            var filteredItems = await _taskDataHelper.SearchAsync(_userId, e.NewText);
+
+            _tasks.Clear();
+
+            _tasks.AddRange(filteredItems);
+
+            _adapter.NotifyDataSetChanged();
         }
 
         private void SignoutButton_Click(object sender, EventArgs e)
