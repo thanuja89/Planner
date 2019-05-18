@@ -23,13 +23,13 @@ namespace Planner.Droid.Activities
     {
         private readonly AuthHelper _authHelper;
         private readonly DialogHelper _dialogHelper;
+        private RelativeLayout layout;
         private EditText usernameEditText;
         private EditText emailEditText;
         private EditText passwordEditText;
         private EditText confirmPasswordEditText;
         private Button signUpButton;
-        private ProgressBar progressBar;
-        private GoogleApiClient _googleApiClient;
+        private ProgressBarHelper _progressBarHelper;
 
         public SignUpActivity()
         {
@@ -45,16 +45,18 @@ namespace Planner.Droid.Activities
 
             FindViews();
             HandleEvents();
+
+            _progressBarHelper = new ProgressBarHelper(this, Window, layout);
         }
 
         private void FindViews()
         {
+            layout = FindViewById<RelativeLayout>(Resource.Id.signUp_Layout);
             usernameEditText = FindViewById<EditText>(Resource.Id.signUp_UsernameEditText);
             emailEditText = FindViewById<EditText>(Resource.Id.signUp_EmailEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.signUp_PasswordEditText);
             confirmPasswordEditText = FindViewById<EditText>(Resource.Id.signUp_ConfirmPasswordEditText);
             signUpButton = FindViewById<Button>(Resource.Id.signUp_SignUpButton);
-            progressBar = FindViewById<ProgressBar>(Resource.Id.signUp_circularProgressbar);
         }
 
         private void HandleEvents()
@@ -76,9 +78,11 @@ namespace Planner.Droid.Activities
                     Password = passwordEditText.Text
                 };
 
-                progressBar.Visibility = ViewStates.Visible;
+                _progressBarHelper.Show();
 
                 var result = await _authHelper.SignUpAsync(dto);
+
+                _progressBarHelper.Hide();
 
                 if (result.Succeeded)
                 {
@@ -93,11 +97,8 @@ namespace Planner.Droid.Activities
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
 
+                _progressBarHelper.Hide();
                 _dialogHelper.ShowError(this, ex);
-            }
-            finally
-            {
-                progressBar.Visibility = ViewStates.Invisible;
             }
         }
 
@@ -119,11 +120,17 @@ namespace Planner.Droid.Activities
         {
             try
             {
+                _progressBarHelper.Show();
+
                 await _authHelper.ResendConfirmationEmailAsync(userId);
+
+                _progressBarHelper.Hide();
             }
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
+                _progressBarHelper.Hide();
 
                 _dialogHelper.ShowError(this, ex);
             }
@@ -145,11 +152,15 @@ namespace Planner.Droid.Activities
                     return;
                 }
 
+                _progressBarHelper.Show();
+
                 var res = await _authHelper.ConfirmEmailAsync(new ConfirmationRequestDto
                 {
                     Code = s,
                     UserId = userId
                 });
+
+                _progressBarHelper.Hide();
 
                 if (res.StatusCode == HttpStatusCode.OK)
                 {
@@ -164,6 +175,8 @@ namespace Planner.Droid.Activities
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+
+                _progressBarHelper.Hide();
 
                 _dialogHelper.ShowError(this, ex);
             }

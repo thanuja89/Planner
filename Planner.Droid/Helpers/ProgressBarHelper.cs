@@ -6,9 +6,9 @@ namespace Planner.Droid.Helpers
 {
     public class ProgressBarHelper
     {
-        public Window _window { get; set; }
-        public Context _context { get; set; }
-        public RelativeLayout _relativeLayout { get; set; }
+        private readonly Window _window;
+        private readonly Context _context;
+        private readonly RelativeLayout _relativeLayout;
         private ProgressBar _progressBar;
 
         public ProgressBarHelper(Context context, Window window, RelativeLayout relativeLayout)
