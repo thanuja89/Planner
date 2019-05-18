@@ -3401,11 +3401,11 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d003d
 			public const int showTitle = 2131558461;
 			
-			// aapt resource value: 0x7f0d00b7
-			public const int signIn_ForgotPasswordTextView = 2131558583;
+			// aapt resource value: 0x7f0d00b8
+			public const int signIn_ForgotPasswordTextView = 2131558584;
 			
-			// aapt resource value: 0x7f0d00b9
-			public const int signIn_GoogleSignInButton = 2131558585;
+			// aapt resource value: 0x7f0d00b7
+			public const int signIn_GoogleSignInButton = 2131558583;
 			
 			// aapt resource value: 0x7f0d00b5
 			public const int signIn_PasswordEditText = 2131558581;
@@ -3416,8 +3416,8 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f0d00b6
 			public const int signIn_SignInButton = 2131558582;
 			
-			// aapt resource value: 0x7f0d00b8
-			public const int signIn_SignUpTextView = 2131558584;
+			// aapt resource value: 0x7f0d00b9
+			public const int signIn_SignUpTextView = 2131558585;
 			
 			// aapt resource value: 0x7f0d00b4
 			public const int signIn_UsernameEditText = 2131558580;

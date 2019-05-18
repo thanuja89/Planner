@@ -77,6 +77,7 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Helpers\ProgressBarHelper.cs" />
     <Compile Include="Helpers\Utilities.cs" />
+    <Compile Include="Jobs\CleanDbJobService.cs" />
     <Compile Include="Jobs\SyncJobService.cs" />
     <Compile Include="Callbacks\GoogleConnectionFailedCallback.cs" />
     <Compile Include="Callbacks\GoogleSignInResultCallback.cs" />

@@ -7,6 +7,7 @@ using Android.Gms.Common.Apis;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Util;
+using Android.Views;
 using Android.Widget;
 using Planner.Droid.Callbacks;
 using Planner.Droid.Extensions;
@@ -213,6 +214,17 @@ namespace Planner.Droid.Activities
                     .Build();
 
             googleSignInButton = FindViewById<SignInButton>(Resource.Id.signIn_GoogleSignInButton);
+
+            for (int i = 0; i < googleSignInButton.ChildCount; i++)
+            {
+                View v = googleSignInButton.GetChildAt(i);
+
+                if (v is TextView tv)
+                {
+                    tv.SetPadding(0, 0, 20, 0);
+                    return;
+                }
+            }
         }
 
         private async Task HandleSignInResult(GoogleSignInResult result)

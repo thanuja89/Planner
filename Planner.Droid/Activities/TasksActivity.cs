@@ -116,8 +116,6 @@ namespace Planner.Droid.Activities
 
                 ToggleEmptyView();
 
-                await Task.Yield();
-
                 await _taskDataHelper.MarkAsDeletedAsync(e.Id);
 
                 _ = SyncService.Instance.SyncAsync(this)
@@ -158,17 +156,17 @@ namespace Planner.Droid.Activities
             createButton.Click += CreateButton_Click;
             signoutButton.Click += SignoutButton_Click;
             searchView.QueryTextChange += SearchView_QueryTextChange;
+            searchView.QueryTextSubmit += SearchView_QueryTextSubmit;
+        }
+
+        private async void SearchView_QueryTextSubmit(object sender, V7.SearchView.QueryTextSubmitEventArgs e)
+        {
+            await FilterTasksAsync(e.Query);
         }
 
         private async void SearchView_QueryTextChange(object sender, V7.SearchView.QueryTextChangeEventArgs e)
         {
-            var filteredItems = await _taskDataHelper.SearchAsync(_userId, e.NewText);
-
-            _tasks.Clear();
-
-            _tasks.AddRange(filteredItems);
-
-            _adapter.NotifyDataSetChanged();
+            await FilterTasksAsync(e.NewText);
         }
 
         private void SignoutButton_Click(object sender, EventArgs e)
@@ -181,6 +179,25 @@ namespace Planner.Droid.Activities
         private void CreateButton_Click(object sender, System.EventArgs e)
         {
             StartActivity(typeof(CreateTaskActivity));
+        }
+
+        private async Task FilterTasksAsync(string keyword)
+        {
+            try
+            {
+                var filteredTasks = await _taskDataHelper.SearchAsync(_userId, keyword);
+
+                _tasks.Clear();
+
+                _tasks.AddRange(filteredTasks);
+
+                _adapter.NotifyDataSetChanged();
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+                _dialogHelper.ShowError(this, ex);
+            }
         }
 
         private void RemoveUserInfo()

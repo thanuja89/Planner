@@ -8,9 +8,9 @@ namespace Planner.Mobile.Core.Services
 {
     public class SyncHelper
     {
-        public Task<IEnumerable<GetScheduledTaskDTO>> PullAsync(long lastSynced)
+        public Task<IEnumerable<GetScheduledTaskDTO>> PullAsync(long lastSyncedTicks)
         {
-            return HttpHelper.Instance.GetAsync<IEnumerable<GetScheduledTaskDTO>>($"Syncronization?lastSynced={lastSynced}");
+            return HttpHelper.Instance.GetAsync<IEnumerable<GetScheduledTaskDTO>>($"Syncronization?lastSynced={lastSyncedTicks}");
 
         }
 
