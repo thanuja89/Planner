@@ -290,11 +290,12 @@ namespace Planner.Api.Controllers
 #if DEBUG
         [AllowAnonymous]
         [HttpGet("{action}")]
-        public IActionResult Test()
+        public async Task<IActionResult> Test()
         {
             try
             {
-                throw null;
+                await _emailSender.SendEmailAsync("thanujadilhan@gmail.com", "Test", "This is a test email.");
+                return Ok();
             }
             catch (Exception ex)
             {
