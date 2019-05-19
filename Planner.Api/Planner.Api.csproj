@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Planner.Dto\Planner.Dto.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Logs\" />
+  </ItemGroup>
+
 </Project>
