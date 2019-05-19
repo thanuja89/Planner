@@ -12,6 +12,8 @@ namespace Planner.Droid.Services
 {
     public class SyncService
     {
+        public event EventHandler NewTasksAvailable;
+
         private readonly SyncHelper _syncHelper;
         private readonly ScheduledTaskDataHelper _dataHelper;
 
@@ -71,6 +73,7 @@ namespace Planner.Droid.Services
                     if (newTasksFromServer != null && newTasksFromServer.Any())
                     {
                         await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer);
+                        NewTasksAvailable?.Invoke(this, new EventArgs());
                     }
 
                     Utilities.SaveLongToPreferences(context, "LastSyncedOn", DateTime.UtcNow.Ticks);

@@ -36,6 +36,7 @@ namespace Planner.Droid.Activities
         private View toolbarLayout;
         private Button signoutButton;
         private ProgressBarHelper _progressBarHelper;
+        private string _queryText;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
         private readonly DialogHelper _dialogHelper;
 
@@ -166,6 +167,8 @@ namespace Planner.Droid.Activities
 
         private async void SearchView_QueryTextChange(object sender, V7.SearchView.QueryTextChangeEventArgs e)
         {
+            _queryText = e.NewText;
+
             await FilterTasksAsync(e.NewText);
         }
 
@@ -226,6 +229,26 @@ namespace Planner.Droid.Activities
                 recyclerView.Visibility = ViewStates.Visible;
                 emptyTextView.Visibility = ViewStates.Gone;
             }
+        }
+
+        protected override void OnPause()
+        {
+            SyncService.Instance.NewTasksAvailable -= Sync_NewTasksAvailable;
+            base.OnPause();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            SyncService.Instance.NewTasksAvailable += Sync_NewTasksAvailable;
+        }
+
+        private void Sync_NewTasksAvailable(object sender, EventArgs e)
+        {
+            RunOnUiThread(async () =>
+            {
+                await FilterTasksAsync(_queryText);
+            });
         }
     }
 }

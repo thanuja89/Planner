@@ -45,29 +45,40 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
-                {
-                    var user = await AuthenticateAsync(login);
+                if (!ModelState.IsValid)
+                    return BadRequest(TokenCreationResultDto.Failed(TokenCreationErrorType.InvalidUsernameOrPassword));
 
-                    if (user != null)
+                var user = await _userManager.FindByNameAsync(login.Username);
+
+                if (user != null)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(user, login.Password, false, false);
+
+                    if (result.Succeeded)
                     {
                         var tokenString = BuildToken(user);
-                        return Ok(new TokenDto()
+                        return Ok(TokenCreationResultDto.Success(new TokenDto()
                         {
-                            Token = tokenString,
+                            Value = tokenString,
                             ApplicationUserId = user.Id,
                             Username = user.UserName
-                        });
+                        }));
+                    }
+
+                    if (!user.EmailConfirmed)
+                    {
+                        return BadRequest(TokenCreationResultDto.Failed(TokenCreationErrorType.EmailNotConfirmed, user.Id));
                     }
                 }
+
+                return BadRequest(TokenCreationResultDto.Failed(TokenCreationErrorType.InvalidUsernameOrPassword));
+
             }
             catch (Exception ex)
             {
                 _logger.LogError("Threw exception while creating Token: {@ex}", ex);
-                return new StatusCodeResult(500);
+                return StatusCode((int)HttpStatusCode.InternalServerError, TokenCreationResultDto.Failed(TokenCreationErrorType.ServerError));
             }
-
-            return BadRequest();
         }
 
         [AllowAnonymous]
@@ -90,7 +101,7 @@ namespace Planner.Api.Controllers
                     {
                         await SendConfirmationEmaiAsync(appUser);
 
-                        return Ok(SignUpResultDTO.Success(appUser.Id));
+                        return Ok(AccountCreationResultDto.Success(appUser.Id));
                     }
 
                     var user = await _userManager.FindByNameAsync(register.Username);
@@ -101,26 +112,26 @@ namespace Planner.Api.Controllers
                         {
                             await SendConfirmationEmaiAsync(appUser);
 
-                            return Ok(SignUpResultDTO.Success(user.Id));
+                            return Ok(AccountCreationResultDto.Success(user.Id));
                         }
                         else
                         {
-                            return BadRequest(SignUpResultDTO.Failed(SignUpErrorType.UsernameExists));
+                            return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.UsernameExists));
                         }
                     }
 
                     if ((await _userManager.FindByEmailAsync(register.Email)) != null)
-                        return BadRequest(SignUpResultDTO.Failed(SignUpErrorType.EmailExists));
+                        return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.EmailExists));
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError("Threw exception while creating User: {@ex}", ex);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, SignUpResultDTO.Failed(SignUpErrorType.ServerError));
+                return StatusCode((int)HttpStatusCode.InternalServerError, AccountCreationResultDto.Failed(AccountCreationErrorType.ServerError));
             }
 
-            return BadRequest(SignUpResultDTO.Failed(SignUpErrorType.Other));
+            return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.Other));
         }
 
         [AllowAnonymous]
@@ -159,7 +170,7 @@ namespace Planner.Api.Controllers
                 var tokenString = BuildToken(user);
                 return Ok(new TokenDto()
                 {
-                    Token = tokenString,
+                    Value = tokenString,
                     ApplicationUserId = user.Id,
                     Username = user.UserName
                 });
@@ -325,18 +336,6 @@ namespace Planner.Api.Controllers
               signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private async Task<ApplicationUser> AuthenticateAsync(TokenRequestDto login)
-        {
-            var result = await _signInManager.PasswordSignInAsync(login.Username, login.Password, false, false);
-
-            if (result.Succeeded)
-            {
-                return await _userManager.FindByNameAsync(login.Username);
-            }
-
-            return null;
         }
 
         private async Task SendConfirmationEmaiAsync(ApplicationUser user)

@@ -18,12 +18,20 @@
         Yearly
     }
 
-    public enum SignUpErrorType
+    public enum AccountCreationErrorType
     {
         None,
         UsernameExists,
         EmailExists,
         ServerError,
         Other
+    }
+
+    public enum TokenCreationErrorType
+    {
+        None,
+        InvalidUsernameOrPassword,
+        EmailNotConfirmed,
+        ServerError
     }
 }
