@@ -46,6 +46,7 @@ namespace Planner.Api
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
                 opt.User.RequireUniqueEmail = true;
+                opt.SignIn.RequireConfirmedEmail = true;
 
                 opt.Tokens.EmailConfirmationTokenProvider = "NumericTokenProvider";
                 opt.Tokens.PasswordResetTokenProvider = "NumericTokenProvider";
@@ -88,8 +89,13 @@ namespace Planner.Api
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+#if DEBUG
+            services.Configure<SMTPEmailSenderOptions>(Configuration.GetSection("Mail"));
+            services.AddScoped<IEmailSender, SMTPEmailSender>();
+#else
             services.Configure<SendGridEmailSenderOptions>(Configuration.GetSection("SendGridMail"));
             services.AddScoped<IEmailSender, SendGridEmailSender>();
+#endif
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

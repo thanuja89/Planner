@@ -7,9 +7,9 @@ namespace Planner.Droid.Helpers
 {
     public class DialogHelper
     {
-        public void ShowError(Context context, string message)
+        public void ShowError(Context context, string message, EventHandler<DialogClickEventArgs> positiveCallback = null)
         {
-            ShowDialog(context, "Error", message);
+            ShowDialog(context, "Error", message, positiveCallback);
         }
 
         public void ShowError(Context context, Exception ex)
@@ -31,6 +31,11 @@ namespace Planner.Droid.Helpers
             ShowError(context, "Something went wrong. Try again later.");
         }
 
+        public void ShowError(Context context, EventHandler<DialogClickEventArgs> positiveCallback)
+        {
+            ShowError(context, "Something went wrong. Try again later.");
+        }
+
         public void ShowSuccessDialog(Context context, string message)
         {
             ShowDialog(context, "Success", message);
@@ -41,7 +46,10 @@ namespace Planner.Droid.Helpers
             ShowDialog(context, "Success", message, positiveCallback);
         }
 
-        private void ShowDialog(Context context, string title, string message, EventHandler<DialogClickEventArgs> positiveCallback = null)
+        private void ShowDialog(Context context
+            , string title
+            , string message
+            , EventHandler<DialogClickEventArgs> positiveCallback = null)
         {
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(context);

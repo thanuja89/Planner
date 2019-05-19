@@ -95,7 +95,7 @@ namespace Planner.Api.Tests
 
             // Assert
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(okResult.Value);
+            var dto = Assert.IsAssignableFrom<AccountCreationResultDto>(okResult.Value);
             Assert.True(dto.Succeeded);
         }
 
@@ -122,7 +122,7 @@ namespace Planner.Api.Tests
 
             // Assert
             var badRequestResult = Assert.IsAssignableFrom<BadRequestObjectResult>(result);
-            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(badRequestResult.Value);
+            var dto = Assert.IsAssignableFrom<AccountCreationResultDto>(badRequestResult.Value);
             Assert.False(dto.Succeeded);
         }
 
@@ -149,7 +149,7 @@ namespace Planner.Api.Tests
 
             // Assert
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(okResult.Value);
+            var dto = Assert.IsAssignableFrom<AccountCreationResultDto>(okResult.Value);
             Assert.True(dto.Succeeded);
         }
 
@@ -177,7 +177,7 @@ namespace Planner.Api.Tests
 
             // Assert
             var badRequestResult = Assert.IsAssignableFrom<BadRequestObjectResult>(result);
-            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(badRequestResult.Value);
+            var dto = Assert.IsAssignableFrom<AccountCreationResultDto>(badRequestResult.Value);
             Assert.False(dto.Succeeded);
         }
 
@@ -201,7 +201,7 @@ namespace Planner.Api.Tests
 
             Assert.Equal(internalErrorResult.StatusCode, (int?) HttpStatusCode.InternalServerError);
 
-            var dto = Assert.IsAssignableFrom<SignUpResultDTO>(internalErrorResult.Value);
+            var dto = Assert.IsAssignableFrom<AccountCreationResultDto>(internalErrorResult.Value);
 
             Assert.False(dto.Succeeded);
         }

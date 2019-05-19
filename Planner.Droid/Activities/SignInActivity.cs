@@ -115,7 +115,7 @@ namespace Planner.Droid.Activities
                 if (res.StatusCode == HttpStatusCode.OK)
                 {
                     _dialogHelper.ShowSuccessDialog(this, "Email Sent."
-                          , (o, ea) => 
+                          , (o, ea) =>
                           {
                               var intent = new Intent(this, typeof(ResetPasswordActivity));
                               intent.PutExtra("Email", s);
@@ -143,7 +143,7 @@ namespace Planner.Droid.Activities
         }
 
         private void GoogleSignInButton_Click(object sender, EventArgs e)
-        {            
+        {
             var signInIntent = Auth.GoogleSignInApi.GetSignInIntent(_googleApiClient);
             StartActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
         }
@@ -163,21 +163,32 @@ namespace Planner.Droid.Activities
 
                 _progressBarHelper.Show();
 
-                var tokenDto = await _authHelper.SignInAsync(dto);
-
-                if (tokenDto != null && tokenDto.Token != null)
-                {
-                    SaveUserInfo(tokenDto);
-                    HttpHelper.Init(tokenDto.Token);
-
-                    StartActivity(typeof(TasksActivity));
-                }
-                else
-                {
-                    _dialogHelper.ShowError(this, "Username or password is incorrect.");
-                }
+                var tokenCreationResultDto = await _authHelper.SignInAsync(dto);
 
                 _progressBarHelper.Hide();
+
+                if (tokenCreationResultDto != null)
+                {
+                    if (tokenCreationResultDto.Succeeded
+                        && tokenCreationResultDto.Token?.Value != null)
+                    {
+                        SaveUserInfo(tokenCreationResultDto.Token);
+                        HttpHelper.Init(tokenCreationResultDto.Token.Value);
+
+                        StartActivity(typeof(TasksActivity));
+                        return;
+                    }
+                    else if (tokenCreationResultDto.ErrorType == TokenCreationErrorType.EmailNotConfirmed)
+                    {
+                        _dialogHelper.ShowError(this, "Email address not confirmed. Please confirm your email"
+                            , (o, ev) => ShowConfirmationCodeInputDialog(tokenCreationResultDto.ValidationData));        
+
+                        return;
+                    }
+                }
+
+                _dialogHelper.ShowError(this, "Username or password is incorrect.");
+
             }
             catch (Exception ex)
             {
@@ -195,7 +206,7 @@ namespace Planner.Droid.Activities
 
             var editor = pref.Edit();
 
-            editor.PutString(PreferenceItemKeys.TOKEN, dto.Token);
+            editor.PutString(PreferenceItemKeys.TOKEN, dto.Value);
             editor.PutString(PreferenceItemKeys.USER_ID, dto.ApplicationUserId);
             editor.PutString(PreferenceItemKeys.USERNAME, dto.Username);
 
@@ -240,7 +251,7 @@ namespace Planner.Droid.Activities
                         Email = result.SignInAccount.Email
                     });
 
-                    SaveUserInfo(tokenDto);                    
+                    SaveUserInfo(tokenDto);
 
                     StartActivity(typeof(TasksActivity));
 
@@ -260,6 +271,11 @@ namespace Planner.Droid.Activities
             }
         }
 
+        private void ShowConfirmationCodeInputDialog(string userId)
+        {
+            var frag = ConfirmationCodeInputDialogFragment.NewInstance(userId);
+            frag.Show(FragmentManager, ConfirmationCodeInputDialogFragment.TAG);
+        }
         private bool ValidateInputs()
         {
             if (usernameEditText.IsEmpty())

@@ -13,9 +13,9 @@ namespace Planner.Mobile.Core.Helpers
             _httpService = new HttpHelper();
         }
 
-        public Task<TokenDto> SignInAsync(TokenRequestDto loginDto)
+        public Task<TokenCreationResultDto> SignInAsync(TokenRequestDto loginDto)
         {
-            return _httpService.PostForResultAsync<TokenDto>("Auth/CreateToken", loginDto);
+            return _httpService.PostForResultAsync<TokenCreationResultDto>("Auth/CreateToken", loginDto, true);
         }
 
         public Task<TokenDto> ExternalSignInAsync(ExternalSignInDto loginDto)
@@ -23,9 +23,9 @@ namespace Planner.Mobile.Core.Helpers
             return _httpService.PostForResultAsync<TokenDto>("Auth/ExternalSignIn", loginDto);
         }
 
-        public Task<SignUpResultDTO> SignUpAsync(CreateAccountDto accountDto)
+        public Task<AccountCreationResultDto> SignUpAsync(CreateAccountDto accountDto)
         {
-            return _httpService.PostForResultAsync<SignUpResultDTO>("Auth/CreateAccount", accountDto, true);
+            return _httpService.PostForResultAsync<AccountCreationResultDto>("Auth/CreateAccount", accountDto, true);
         }
 
         public Task<HttpResponseMessage> ConfirmEmailAsync(ConfirmationRequestDto requestDto)
