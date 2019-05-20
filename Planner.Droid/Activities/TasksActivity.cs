@@ -119,7 +119,7 @@ namespace Planner.Droid.Activities
 
                 await _taskDataHelper.MarkAsDeletedAsync(e.Id);
 
-                _ = SyncService.Instance.SyncAsync(this)
+                _ = SyncService.Instance.SyncAsync()
                     .ContinueWith(async t => 
                     {
                         try

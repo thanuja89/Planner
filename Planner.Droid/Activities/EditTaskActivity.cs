@@ -244,7 +244,7 @@ namespace Planner.Droid.Activities
                 if (_scheduledTask.Start != _oldStartDate)
                     UpdateAlarm();
 
-                _ = SyncService.Instance.SyncAsync(this); // warning suppressed on purpose
+                _ = SyncService.Instance.SyncAsync(); // warning suppressed on purpose
 
                 StartActivity(typeof(TasksActivity));
 

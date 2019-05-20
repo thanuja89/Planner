@@ -173,7 +173,6 @@ namespace Planner.Droid.Activities
                         && tokenCreationResultDto.Token?.Value != null)
                     {
                         SaveUserInfo(tokenCreationResultDto.Token);
-                        HttpHelper.Init(tokenCreationResultDto.Token.Value);
 
                         StartActivity(typeof(TasksActivity));
                         return;
@@ -211,6 +210,8 @@ namespace Planner.Droid.Activities
             editor.PutString(PreferenceItemKeys.USERNAME, dto.Username);
 
             editor.Apply();
+
+            HttpHelper.Init(dto.Value);
         }
 
         private void PrepareGoogleSignIn()
