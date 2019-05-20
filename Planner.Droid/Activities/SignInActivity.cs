@@ -180,7 +180,7 @@ namespace Planner.Droid.Activities
                     }
                     else if (tokenCreationResultDto.ErrorType == TokenCreationErrorType.EmailNotConfirmed)
                     {
-                        _dialogHelper.ShowError(this, "Email address not confirmed. Please confirm your email"
+                        _dialogHelper.ShowError(this, "Email address not confirmed. Please confirm your email."
                             , (o, ev) => ShowConfirmationCodeInputDialog(tokenCreationResultDto.ValidationData));        
 
                         return;

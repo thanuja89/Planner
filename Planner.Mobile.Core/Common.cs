@@ -2,9 +2,11 @@
 {
     public class CommonUrls
     {
-        // 
-        //public const string BASE_URI = "http://10.0.2.2:58709/api/";
-        public const string BASE_URI = "http://33f2cd4b.ngrok.io/api/";
+#if DEBUG
+        public const string BASE_URI = "http://2e75a4f5.ngrok.io/api/";
+#else
+        public const string BASE_URI = "https://myplannerapi.azurewebsites.net";
+#endif
     }
 
     public class PreferenceKeys
