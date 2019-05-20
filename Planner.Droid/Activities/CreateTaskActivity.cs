@@ -201,7 +201,7 @@ namespace Planner.Droid.Activities
                     SetAlarm(task.Start, task);
                 }              
 
-                _ = SyncService.Instance.SyncAsync(this); // warning suppressed on purpose
+                _ = SyncService.Instance.SyncAsync(); // warning suppressed on purpose
 
                 StartActivity(typeof(TasksActivity));
 

@@ -1,4 +1,4 @@
-﻿using Android.Content;
+﻿using Android.App;
 using Android.Util;
 using Planner.Droid.Helpers;
 using Planner.Mobile.Core.Helpers;
@@ -49,7 +49,7 @@ namespace Planner.Droid.Services
         }
 
 
-        public async Task SyncAsync(Context context)
+        public async Task SyncAsync()
         {
             bool lockTaken = false;
 
@@ -59,24 +59,31 @@ namespace Planner.Droid.Services
 
                 if (lockTaken)
                 {
-                    var lastSyncedTicks = Utilities.GetLongFromPreferences(context, "LastSyncedOn");
+                    string userId = Utilities.GetUserId(); 
+
+                    var lastSyncedTicks = Utilities.GetLongFromPreferences(Application.Context, $"{userId}_LastSyncedOn");
 
                     var newTasksFromServer = await _syncHelper.PullAsync(lastSyncedTicks);
 
-                    var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(Utilities.GetUserId(), lastSyncedTicks);
+                    var newTasksInClient = await _dataHelper.GetAllFromDateTimeAsync(userId, lastSyncedTicks);
 
                     if (newTasksInClient != null && newTasksInClient.Count > 0)
                     {
                         await _syncHelper.PushAsync(newTasksInClient);
                     }
 
+                    bool isNewTasksAvailableFromServer = false;
+
                     if (newTasksFromServer != null && newTasksFromServer.Any())
                     {
                         await _dataHelper.InsertOrUpdateAllAsync(newTasksFromServer);
-                        NewTasksAvailable?.Invoke(this, new EventArgs());
+                        isNewTasksAvailableFromServer = true;
                     }
 
-                    Utilities.SaveLongToPreferences(context, "LastSyncedOn", DateTime.UtcNow.Ticks);
+                    Utilities.SaveLongToPreferences(Application.Context, $"{userId}_LastSyncedOn", DateTime.UtcNow.Ticks);
+
+                    if(isNewTasksAvailableFromServer)
+                        NewTasksAvailable?.Invoke(this, new EventArgs());
                 }
             }
             catch (Exception ex)

@@ -59,10 +59,5 @@ namespace Planner.Droid.Activities
 
             return token;
         }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-        }
     }
 }

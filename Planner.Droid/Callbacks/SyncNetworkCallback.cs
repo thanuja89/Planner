@@ -20,7 +20,7 @@ namespace Planner.Droid.Callbacks
                 if (!HttpHelper.IsInitialized)
                     return;
 
-                Task.Run(() => SyncService.Instance.SyncAsync(Application.Context));
+                Task.Run(() => SyncService.Instance.SyncAsync());
             }
             catch (System.Exception ex)
             {

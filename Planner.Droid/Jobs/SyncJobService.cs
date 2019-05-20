@@ -15,7 +15,7 @@ namespace Planner.Droid.Jobs
             if (!HttpHelper.IsInitialized)
                 return true;
 
-            Task.Run(() => SyncService.Instance.SyncAsync(Application.Context));
+            Task.Run(() => SyncService.Instance.SyncAsync());
 
             return true;
         }
