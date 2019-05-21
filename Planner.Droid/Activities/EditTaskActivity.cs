@@ -37,8 +37,6 @@ namespace Planner.Droid.Activities
         private Time _startTime;
         private Time _endTime;
 
-        private DateTime _oldStartDate;
-
         private readonly string[] _items;
 
         private int _selectedRepeatIndex = 0;
@@ -147,7 +145,6 @@ namespace Planner.Droid.Activities
 
             _selectedRepeatIndex = (int)_scheduledTask.Repeat;
             repeatSelectedTextView.Text = _scheduledTask.Repeat.ToString();
-            _oldStartDate = _scheduledTask.Start;
         }
 
         private void HandleEvents()
@@ -181,7 +178,7 @@ namespace Planner.Droid.Activities
             {
                 _endDate = ev.Date;
                 endDateTextView.Text = ev.Date.ToString();
-            }, 
+            },
             _scheduledTask.End);
 
             frag.Show(FragmentManager, DatePickerFragment.TAG);
@@ -193,7 +190,7 @@ namespace Planner.Droid.Activities
             {
                 _startDate = ev.Date;
                 startDateTextView.Text = ev.Date.ToString();
-            }, 
+            },
             _scheduledTask.Start);
 
             frag.Show(FragmentManager, DatePickerFragment.TAG);
@@ -205,7 +202,7 @@ namespace Planner.Droid.Activities
             {
                 _endTime = ev.Time;
                 endTimeTextView.Text = ev.Time.ToString();
-            }, 
+            },
             _scheduledTask.End);
 
             frag.Show(FragmentManager, TimePickerFragment.TAG);
@@ -233,8 +230,10 @@ namespace Planner.Droid.Activities
                 _progressBarHelper.Show();
 
                 _scheduledTask.Title = titleEditText.Text;
-                _scheduledTask.Start = Utilities.ToDateTime(_startDate, _startTime);
-                _scheduledTask.End = Utilities.ToDateTime(_endDate, _endTime);
+                _scheduledTask.Start = _startDate == default || _startTime == default
+                        ? _scheduledTask.Start : Utilities.ToDateTime(_startDate, _startTime);
+                _scheduledTask.End = _endDate == default || _endTime == default
+                        ? _scheduledTask.End : Utilities.ToDateTime(_endDate, _endTime);
                 _scheduledTask.IsAlarm = alarmCheckBox.Checked;
                 _scheduledTask.Importance = SelectedImportance;
                 _scheduledTask.Note = noteEditText.Text;
@@ -243,8 +242,7 @@ namespace Planner.Droid.Activities
 
                 await _taskDataHelper.UpdateAsync(_scheduledTask);
 
-                if (_scheduledTask.Start != _oldStartDate)
-                    UpdateAlarm();
+                UpdateAlarm();
 
                 _ = SyncService.Instance.SyncAsync(); // warning suppressed on purpose
 

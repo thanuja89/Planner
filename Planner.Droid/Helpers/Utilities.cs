@@ -66,9 +66,6 @@ namespace Planner.Droid.Helpers
 
         public static DateTime ToDateTime(Date date, Time time)
         {
-            if (date == default || time == default)
-                return DateTime.MinValue;
-
             return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
         }
     }
