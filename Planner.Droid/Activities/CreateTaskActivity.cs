@@ -186,8 +186,10 @@ namespace Planner.Droid.Activities
                 {
                     Id = Guid.NewGuid(),
                     Title = titleEditText.Text,
-                    Start = Utilities.ToDateTime(_startDate, _startTime),
-                    End = Utilities.ToDateTime(_endDate, _endTime),
+                    Start = _startDate == default || _startTime == default 
+                        ? DateTime.MinValue : Utilities.ToDateTime(_startDate, _startTime),
+                    End = _endDate == default || _endTime == default 
+                        ? DateTime.MinValue : Utilities.ToDateTime(_endDate, _endTime),
                     IsAlarm = alarmCheckBox.Checked,
                     Importance = SelectedImportance,
                     Note = noteEditText.Text,
