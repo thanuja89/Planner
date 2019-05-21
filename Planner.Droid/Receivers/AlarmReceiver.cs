@@ -82,7 +82,7 @@ namespace Planner.Droid.Receivers
                 .SetContentTitle(task.Title)
                 .SetContentText(task.Note)
                 .SetColor(Resource.Color.colorPrimary)
-                .SetSmallIcon(Resource.Drawable.notify_panel_notification_icon_bg)
+                .SetSmallIcon(Resource.Drawable.ic_launcher)
                 .Build();
         }
 
