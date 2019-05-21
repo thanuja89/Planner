@@ -145,6 +145,12 @@ namespace Planner.Droid.Activities
 
             _selectedRepeatIndex = (int)_scheduledTask.Repeat;
             repeatSelectedTextView.Text = _scheduledTask.Repeat.ToString();
+
+            _startDate = new Date(_scheduledTask.Start.Year, _scheduledTask.Start.Month, _scheduledTask.Start.Day);
+            _endDate = new Date(_scheduledTask.End.Year, _scheduledTask.End.Month, _scheduledTask.End.Day);
+
+            _startTime = new Time(_scheduledTask.Start.Hour, _scheduledTask.Start.Minute);
+            _endTime = new Time(_scheduledTask.End.Hour, _scheduledTask.End.Minute);
         }
 
         private void HandleEvents()
