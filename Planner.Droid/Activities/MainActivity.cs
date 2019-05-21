@@ -4,6 +4,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Util;
+using Planner.Droid.Helpers;
+using Planner.Droid.Services;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Helpers;
 using System;
@@ -29,6 +31,9 @@ namespace Planner.Droid.Activities
                 if (token != null)
                 {
                     HttpHelper.Init(token);
+
+                    _ = SyncService.Instance.SyncAsync();
+
                     StartActivity(typeof(TasksActivity));
                 }
                 else

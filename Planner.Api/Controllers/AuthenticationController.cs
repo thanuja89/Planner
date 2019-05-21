@@ -87,42 +87,49 @@ namespace Planner.Api.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
+                    return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.Other));
+
+                var userForEmail = await _userManager.FindByEmailAsync(register.Email);
+
+                if (userForEmail != null)
                 {
-                    var appUser = new ApplicationUser()
+                    // An user exists for the email
+                    if (!userForEmail.EmailConfirmed)
                     {
-                        UserName = register.Username,
-                        Email = register.Email
-                    };
-
-                    var result = await _userManager.CreateAsync(appUser, register.Password);
-
-                    if (result.Succeeded)
-                    {
-                        await SendConfirmationEmaiAsync(appUser);
-
-                        return Ok(AccountCreationResultDto.Success(appUser.Id));
+                        // The existing user's email is not confirmed, so delete the user.
+                        await _userManager.DeleteAsync(userForEmail);
                     }
-
-                    var user = await _userManager.FindByNameAsync(register.Username);
-
-                    if (user != null)
+                    else
                     {
-                        if (user.Email == register.Email)
-                        {
-                            await SendConfirmationEmaiAsync(appUser);
-
-                            return Ok(AccountCreationResultDto.Success(user.Id));
-                        }
-                        else
-                        {
-                            return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.UsernameExists));
-                        }
-                    }
-
-                    if ((await _userManager.FindByEmailAsync(register.Email)) != null)
                         return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.EmailExists));
+                    }
                 }
+
+                var appUser = new ApplicationUser()
+                {
+                    UserName = register.Username,
+                    Email = register.Email
+                };
+
+                var result = await _userManager.CreateAsync(appUser, register.Password);
+
+                if (result.Succeeded)
+                {
+                    await SendConfirmationEmaiAsync(appUser);
+
+                    return Ok(AccountCreationResultDto.Success(appUser.Id));
+                }
+
+                var userForUsername = await _userManager.FindByNameAsync(register.Username);
+
+                if (userForUsername != null)
+                {
+                    //Username exists 
+                    return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.UsernameExists));
+                }
+
+                return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.Other));
             }
             catch (Exception ex)
             {
@@ -130,8 +137,6 @@ namespace Planner.Api.Controllers
 
                 return StatusCode((int)HttpStatusCode.InternalServerError, AccountCreationResultDto.Failed(AccountCreationErrorType.ServerError));
             }
-
-            return BadRequest(AccountCreationResultDto.Failed(AccountCreationErrorType.Other));
         }
 
         [AllowAnonymous]
@@ -149,14 +154,8 @@ namespace Planner.Api.Controllers
 
                 if (user == null)
                 {
-                    user = new ApplicationUser()
-                    {
-                        UserName = register.Email,
-                        Email = register.Email,
-                        EmailConfirmed = true
-                    };
-
-                    var result = await _userManager.CreateAsync(user, GetRandomString());
+                    var result = await _userManager.CreateAsync(ApplicationUser.NewExternalUser(register.Email)
+                        , GetRandomString());
 
                     if (!result.Succeeded)
                         return BadRequest();
@@ -164,7 +163,10 @@ namespace Planner.Api.Controllers
                 else
                 {
                     if (!await _signInManager.CanSignInAsync(user))
-                        return BadRequest();
+                    {
+                        await _userManager.DeleteAsync(user);
+                        await _userManager.CreateAsync(ApplicationUser.NewExternalUser(register.Email));
+                    }
                 }
 
                 var tokenString = BuildToken(user);

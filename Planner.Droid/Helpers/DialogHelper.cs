@@ -46,7 +46,7 @@ namespace Planner.Droid.Helpers
             ShowDialog(context, "Success", message, positiveCallback);
         }
 
-        private void ShowDialog(Context context
+        public void ShowDialog(Context context
             , string title
             , string message
             , EventHandler<DialogClickEventArgs> positiveCallback = null)
