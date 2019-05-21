@@ -39,11 +39,13 @@ namespace Planner.Droid.Activities
         private string _queryText;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
         private readonly DialogHelper _dialogHelper;
+        private readonly AlarmHelper _alarmHelper;
 
         public TasksActivity()
         {
             _taskDataHelper = new ScheduledTaskDataHelper();
             _dialogHelper = new DialogHelper();
+            _alarmHelper = new AlarmHelper();
             _layoutManager = new LinearLayoutManager(this);
         }
 
@@ -118,6 +120,8 @@ namespace Planner.Droid.Activities
                 ToggleEmptyView();
 
                 await _taskDataHelper.MarkAsDeletedAsync(e.Id);
+
+                _alarmHelper.CancelAlarm(e);
 
                 _ = SyncService.Instance.SyncAsync()
                     .ContinueWith(async t => 

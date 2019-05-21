@@ -10,11 +10,11 @@ namespace Planner.Droid.Fragments
     {
         public const string TAG = "X:DatePickerFragment";
 
-        private DateTime? _defaultDate;
+        private DateTime _defaultDate;
 
         Action<DateChangedEventArgs> _dateSelectedHandler;
 
-        public static DatePickerFragment NewInstance(Action<DateChangedEventArgs> onDateSelected, DateTime? defaultDate = null)
+        public static DatePickerFragment NewInstance(Action<DateChangedEventArgs> onDateSelected, DateTime defaultDate = default)
         {
             DatePickerFragment frag = new DatePickerFragment
             {
@@ -26,7 +26,7 @@ namespace Planner.Droid.Fragments
 
         public override Dialog OnCreateDialog(Bundle savedInstanceState)
         {
-            DateTime date = _defaultDate ?? DateTime.Now;
+            DateTime date = _defaultDate == default ? DateTime.Now : _defaultDate;
             DatePickerDialog dialog = 
                 new DatePickerDialog(Activity
                 , this

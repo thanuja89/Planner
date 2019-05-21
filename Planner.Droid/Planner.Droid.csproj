@@ -70,6 +70,7 @@
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Fragments\ConfirmationCodeInputDialogFragment.cs" />
     <Compile Include="Fragments\PasswordResetEmailInputDialogFragment.cs" />
+    <Compile Include="Helpers\AlarmHelper.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Fragments\DatePickerFragment.cs" />
     <Compile Include="Fragments\DateTimePickerFragment.cs" />
