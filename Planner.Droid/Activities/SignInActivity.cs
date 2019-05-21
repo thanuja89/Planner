@@ -40,6 +40,7 @@ namespace Planner.Droid.Activities
         private GoogleApiClient _googleApiClient;
         private SignInButton googleSignInButton;
         private ProgressBarHelper _progressBarHelper;
+        private PasswordResetEmailInputDialogFragment frag;
 
         public SignInActivity()
         {
@@ -91,7 +92,7 @@ namespace Planner.Droid.Activities
 
         private void ForgotPasswordTextView_Click(object sender, EventArgs e)
         {
-            PasswordResetEmailInputDialogFragment frag = PasswordResetEmailInputDialogFragment.NewInstance(s =>
+            frag = PasswordResetEmailInputDialogFragment.NewInstance(s =>
             {
                 _ = SendPasswordResetEmailAsync(s);
             });
@@ -104,16 +105,21 @@ namespace Planner.Droid.Activities
             try
             {
                 if (string.IsNullOrWhiteSpace(s) || !CoreHelper.Utilities.IsValidEmail(s))
+                {
+                    _dialogHelper.ShowError(this, "Email entered is not valid.");
                     return;
+                }
 
-                _progressBarHelper.Show();
+                frag.ShowProgressBar();
 
                 var res = await _authHelper.SendPasswordResetEmailAsync(new SendPasswordResetEmailDto() { Email = s });
 
-                _progressBarHelper.Hide();
+                frag.HideProgressBar();
 
-                if (res.StatusCode == HttpStatusCode.OK)
+                if (res.StatusCode == HttpStatusCode.OK || res.StatusCode == HttpStatusCode.BadRequest)
                 {
+                    frag.Dismiss();
+
                     _dialogHelper.ShowSuccessDialog(this, "Email Sent."
                           , (o, ea) =>
                           {
@@ -123,8 +129,6 @@ namespace Planner.Droid.Activities
                               StartActivity(intent);
                           });
                 }
-                else if (res.StatusCode == HttpStatusCode.BadRequest)
-                    _dialogHelper.ShowError(this, "The email entered is incorrect.");
                 else
                     _dialogHelper.ShowError(this);
             }
