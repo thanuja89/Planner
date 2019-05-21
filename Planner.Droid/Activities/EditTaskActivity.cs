@@ -47,6 +47,7 @@ namespace Planner.Droid.Activities
         private ProgressBarHelper _progressBarHelper;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
         private readonly DialogHelper _dialogHelper;
+        private readonly AlarmHelper _alarmHelper;
 
         public Mobile.Core.Data.Importance SelectedImportance
         {
@@ -89,6 +90,7 @@ namespace Planner.Droid.Activities
         {
             _taskDataHelper = new ScheduledTaskDataHelper();
             _dialogHelper = new DialogHelper();
+            _alarmHelper = new AlarmHelper();
             _items = Enum.GetNames(typeof(Frequency));
         }
 
@@ -264,11 +266,7 @@ namespace Planner.Droid.Activities
             if (_scheduledTask.Start <= DateTime.Now)
                 return;
 
-            var alarmManager = (AlarmManager)GetSystemService(AlarmService);
-
-            Utilities.CancelAlarm(ApplicationContext, alarmManager, _scheduledTask);
-
-            Utilities.SetAlarm(ApplicationContext, alarmManager, _scheduledTask);
+            _alarmHelper.UpdateAlarm(_scheduledTask);
         }
 
         private bool ValidateInputs()

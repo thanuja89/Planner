@@ -44,6 +44,7 @@ namespace Planner.Droid.Activities
         private ProgressBarHelper _progressBarHelper;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
         private readonly DialogHelper _dialogHelper;
+        private readonly AlarmHelper _alarmHelper;
 
         public Mobile.Core.Data.Importance SelectedImportance
         {
@@ -70,6 +71,7 @@ namespace Planner.Droid.Activities
         {
             _taskDataHelper = new ScheduledTaskDataHelper();
             _dialogHelper = new DialogHelper();
+            _alarmHelper = new AlarmHelper();
             _items = Enum.GetNames(typeof(Frequency));
         }
 
@@ -198,7 +200,7 @@ namespace Planner.Droid.Activities
 
                 if (task.Start > DateTime.Now)
                 {
-                    SetAlarm(task.Start, task);
+                    _alarmHelper.SetAlarm(task);
                 }              
 
                 _ = SyncService.Instance.SyncAsync(); // warning suppressed on purpose
@@ -214,24 +216,6 @@ namespace Planner.Droid.Activities
                 _progressBarHelper.Hide();
                 _dialogHelper.ShowError(this, ex);
             }
-        }
-
-        private void SetAlarm(DateTime time, ScheduledTask task)
-        {
-            Java.Util.Calendar calendar = Java.Util.Calendar.Instance;
-            calendar.TimeInMillis = Java.Lang.JavaSystem.CurrentTimeMillis();
-
-            calendar.Set(time.Year, time.Month - 1, time.Day, time.Hour, time.Minute, 0);
-
-            var alarmIntent = new Intent(this, typeof(AlarmReceiver));
-            alarmIntent.PutExtra(AlarmReceiver.Constants.TITLE_PARAM_NAME, task.Title);
-            alarmIntent.PutExtra(AlarmReceiver.Constants.MESSAGE_PARAM_NAME, task.Note);
-
-            var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
-
-            var alarmManager = (AlarmManager) GetSystemService(AlarmService);
-
-            alarmManager.Set(AlarmType.Rtc, calendar.TimeInMillis, pending);
         }
 
         private bool ValidateInputs()

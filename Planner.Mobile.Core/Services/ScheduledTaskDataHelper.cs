@@ -74,6 +74,13 @@ namespace Planner.Mobile.Core.Helpers
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
+        public Task<ScheduledTask> GetByClientSideIdAsync(int id)
+        {
+            return PlannerDatabase.Instance
+                .GetAll<ScheduledTask>()
+                .FirstOrDefaultAsync(t => t.ClientSideId == id);
+        }
+
         public Task InsertAsync(ScheduledTask task)
         {
             return PlannerDatabase.Instance
