@@ -105,11 +105,6 @@ namespace Planner.Domain.Repositories
                 },
                 new DataColumn()
                 {
-                    ColumnName = "IsAlarm",
-                    DataType = typeof(bool)
-                },
-                new DataColumn()
-                {
                     ColumnName = "IsDeleted",
                     DataType = typeof(bool)
                 }
