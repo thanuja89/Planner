@@ -22,6 +22,7 @@ namespace Planner.Mobile.Core.Helpers
             return PlannerDatabase.Instance
                 .GetAll<ScheduledTask>()
                 .Where(t => t.ApplicationUserId == userId && !t.IsDeleted)
+                .OrderByDescending(t => t.Start)
                 .Take(take)
                 .ToListAsync();
         }
@@ -43,7 +44,7 @@ namespace Planner.Mobile.Core.Helpers
                     SELECT * FROM ScheduledTask 
                     WHERE ApplicationUserId = ?3 AND (Title LIKE ?1
                         OR Note LIKE ?1)
-                    ORDER BY Start
+                    ORDER BY Start DESC
                     LIMIT ?2"
                     , $"%{ keyword }%", take, userId);
         }

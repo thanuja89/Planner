@@ -29,7 +29,7 @@ namespace Planner.Domain
 
             base.OnModelCreating(builder);
 
-            Seed();
+            //Seed();
         }
 
         private void Seed()
@@ -56,7 +56,6 @@ namespace Planner.Domain
                     		[Repeat] [nvarchar](max) NOT NULL,
                     		[Start] [datetime2](7) NOT NULL,
                     		[End] [datetime2](7) NOT NULL,
-                    		[IsAlarm] [bit] NOT NULL,
                     		[IsDeleted] [bit] NOT NULL
                     	)
                 COMMIT TRAN");
@@ -85,7 +84,6 @@ namespace Planner.Domain
                     			,[Repeat]
                     			,[Start]
                     			,[End]
-                    			,[IsAlarm]
                     			,[ApplicationUserId]
                     		)
                     		SELECT 
@@ -98,7 +96,6 @@ namespace Planner.Domain
                     			,T.[Repeat]
                     			,T.[Start]
                     			,T.[End]
-                    			,T.[IsAlarm]
                     			,@UserId
                     		
 							FROM @Tasks T
@@ -121,7 +118,6 @@ namespace Planner.Domain
                     				 ,[Repeat] = T.[Repeat]
                     				 ,[Start] = T.[Start]
                     				 ,[End] = T.[End]
-                    				 ,IsAlarm = T.IsAlarm
                     				 ,[UpdatedOnUtc] = GETUTCDATE()
 									 ,IsDeleted = T.IsDeleted
 							FROM ScheduledTasks S

@@ -15,7 +15,6 @@ namespace Planner.Mobile.Core.Data
         public Frequency Repeat { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public bool IsAlarm { get; set; }
         public long ClientUpdatedOnTicks { get; set; }
         public bool IsDeleted { get; set; }
         public string ApplicationUserId { get; set; }

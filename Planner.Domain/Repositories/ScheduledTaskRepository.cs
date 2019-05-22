@@ -125,7 +125,6 @@ namespace Planner.Domain.Repositories
                     , task.Repeat
                     , task.Start
                     , task.End
-                    , task.IsAlarm
                     , task.IsDeleted);
             }
 

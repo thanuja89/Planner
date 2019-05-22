@@ -25,7 +25,6 @@ namespace Planner.Droid.Activities
         private TextView endDateTextView;
         private TextView startTimeTextView;
         private TextView endTimeTextView;
-        private CheckBox alarmCheckBox;
         private RadioGroup importanceRadioGroup;
         private LinearLayout repeatLayout;
         private TextView repeatSelectedTextView;
@@ -120,7 +119,6 @@ namespace Planner.Droid.Activities
             endDateTextView = FindViewById<TextView>(Resource.Id.createTask_EndDateTextView);
             startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
             endTimeTextView = FindViewById<TextView>(Resource.Id.createTask_EndTimeTextView);
-            alarmCheckBox = FindViewById<CheckBox>(Resource.Id.createTask_AlarmCheckBox);
 
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
             repeatLayout = FindViewById<LinearLayout>(Resource.Id.createTask_RepeatLayout);
@@ -138,8 +136,6 @@ namespace Planner.Droid.Activities
 
             endDateTextView.Text = _scheduledTask.End == DateTime.MinValue ? "-" : _scheduledTask.End.ToShortDateString();
             endTimeTextView.Text = _scheduledTask.End == DateTime.MinValue ? "-" : _scheduledTask.End.ToShortTimeString();
-
-            alarmCheckBox.Checked = _scheduledTask.IsAlarm;
 
             SelectedImportance = _scheduledTask.Importance;
 
@@ -240,7 +236,6 @@ namespace Planner.Droid.Activities
                         ? _scheduledTask.Start : Utilities.ToDateTime(_startDate, _startTime);
                 _scheduledTask.End = _endDate == default || _endTime == default
                         ? _scheduledTask.End : Utilities.ToDateTime(_endDate, _endTime);
-                _scheduledTask.IsAlarm = alarmCheckBox.Checked;
                 _scheduledTask.Importance = SelectedImportance;
                 _scheduledTask.Note = noteEditText.Text;
                 _scheduledTask.Repeat = (Frequency)_selectedRepeatIndex;

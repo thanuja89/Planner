@@ -241,9 +241,11 @@ namespace Planner.Droid.Activities
             base.OnPause();
         }
 
-        protected override void OnResume()
+        protected override async void OnResume()
         {
             base.OnResume();
+
+            await FilterTasksAsync(string.Empty);
             SyncService.Instance.NewTasksAvailable += Sync_NewTasksAvailable;
         }
 

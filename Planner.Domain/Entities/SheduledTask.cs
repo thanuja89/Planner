@@ -15,7 +15,6 @@ namespace Planner.Domain.Entities
         public Frequency Repeat { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public bool IsAlarm { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime? UpdatedOnUtc { get; set; }
 
