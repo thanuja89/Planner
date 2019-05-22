@@ -34,6 +34,7 @@ namespace Planner.Droid.Activities
         private V7.SearchView searchView;
         private V7.Toolbar toolbar;
         private View toolbarLayout;
+        private TextView usernameTextView;
         private Button signoutButton;
         private ProgressBarHelper _progressBarHelper;
         private string _queryText;
@@ -71,6 +72,9 @@ namespace Planner.Droid.Activities
             SetSupportActionBar(toolbar);
 
             toolbarLayout = LayoutInflater.Inflate(Resource.Layout.main_action_bar, null);
+
+            usernameTextView = toolbarLayout.FindViewById<TextView>(Resource.Id.mainActionBar_UsernameTextView);
+            usernameTextView.Text = Helpers.Utilities.GetUsername();
 
             signoutButton = toolbarLayout.FindViewById<Button>(Resource.Id.mainActionBar_SignoutButton);
 
