@@ -112,7 +112,6 @@ namespace Planner.Mobile.Core.Data
                             End = item.End,
                             Importance = (Importance)item.Importance,
                             Repeat = (Frequency)item.Repeat,
-                            IsAlarm = item.IsAlarm,
                             ApplicationUserId = item.ApplicationUserId,
                             ClientSideId = itm?.ClientSideId ?? 0
                         });

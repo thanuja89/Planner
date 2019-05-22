@@ -15,8 +15,6 @@ namespace Planner.Dto
 
         [Required]
         public DateTime End { get; set; }
-
-        public bool IsAlarm { get; set; }
     }
 
     public class GetScheduledTaskDTO : ScheduledTaskDTO

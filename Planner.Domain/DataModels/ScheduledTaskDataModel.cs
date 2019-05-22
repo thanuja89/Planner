@@ -12,7 +12,6 @@ namespace Planner.Domain.DataModels
         public Frequency Repeat { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public bool IsAlarm { get; set; }
         public DateTime ClientUpdatedOn { get; set; }
         public bool IsDeleted { get; set; }
     }

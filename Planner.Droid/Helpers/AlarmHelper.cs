@@ -11,37 +11,24 @@ namespace Planner.Droid.Helpers
         public DateTime GetNextWeekDay(DateTime date) =>
             GetNextDay(date, d => d.DayOfWeek != DayOfWeek.Saturday && d.DayOfWeek != DayOfWeek.Sunday);
 
-        public DateTime GetNextNonWeekDay(DateTime date) => 
+        public DateTime GetNextNonWeekDay(DateTime date) =>
             GetNextDay(date, d => d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday);
 
         public DateTime GetDayInNextMonth(DateTime date) => date.AddMonths(1);
         public DateTime GetDayInNextYear(DateTime date) => date.AddYears(1);
+        public DateTime GetNextDay(DateTime date) => date.AddDays(1);
+        public DateTime GetDayInNextWeek(DateTime date) => date.AddDays(7);
 
         public void SetAlarm(ScheduledTask task)
         {
             var context = Application.Context;
             var alarmManager = (AlarmManager) context.GetSystemService(Context.AlarmService);
 
-            Java.Util.Calendar calendar = Java.Util.Calendar.Instance;
-            calendar.TimeInMillis = Java.Lang.JavaSystem.CurrentTimeMillis();
-
-            calendar.Set(task.Start.Year, task.Start.Month - 1, task.Start.Day, task.Start.Hour, task.Start.Minute, 0);
+            var time = GetTimeDifferenceInMilliseconds(task.Start);
 
             var pending = GetAlarmPendingIntent(context, task);
 
-            switch (task.Repeat)
-            {
-                case Frequency.EveryDay:
-                    alarmManager.SetRepeating(AlarmType.Rtc, calendar.TimeInMillis, 1000 * 60 * 60 * 24, pending);
-                    break;
-                case Frequency.Weekly:
-                    alarmManager.SetRepeating(AlarmType.Rtc, calendar.TimeInMillis, 1000 * 60 * 60 * 24 * 7, pending);
-                    break;
-                default:
-                    alarmManager.Set(AlarmType.Rtc, calendar.TimeInMillis, pending);
-                    //SetNextRepeatingAlarm(task);
-                    break;
-            }           
+            alarmManager.SetExact(AlarmType.Rtc, time, pending);                     
         }
 
         public void SetNextRepeatingAlarm(ScheduledTask task)
@@ -93,6 +80,12 @@ namespace Planner.Droid.Helpers
                     break;
                 case Frequency.Yearly:
                     nextDate = GetDayInNextYear(date);
+                    break;
+                case Frequency.EveryDay:
+                    nextDate = GetNextDay(date);
+                    break;
+                case Frequency.Weekly:
+                    nextDate = GetDayInNextWeek(date);
                     break;
             }
 

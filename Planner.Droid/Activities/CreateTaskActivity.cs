@@ -26,7 +26,6 @@ namespace Planner.Droid.Activities
         private TextView endDateTextView;
         private TextView startTimeTextView;
         private TextView endTimeTextView;
-        private CheckBox alarmCheckBox;
         private RadioGroup importanceRadioGroup;
         private LinearLayout repeatLayout;
         private TextView repeatSelectedTextView;
@@ -97,7 +96,6 @@ namespace Planner.Droid.Activities
             endDateTextView = FindViewById<TextView>(Resource.Id.createTask_EndDateTextView);
             startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
             endTimeTextView = FindViewById<TextView>(Resource.Id.createTask_EndTimeTextView);
-            alarmCheckBox = FindViewById<CheckBox>(Resource.Id.createTask_AlarmCheckBox);
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
             repeatLayout = FindViewById<LinearLayout>(Resource.Id.createTask_RepeatLayout);
             repeatSelectedTextView = FindViewById<TextView>(Resource.Id.createTask_RepeatSelectedTextView);
@@ -190,7 +188,6 @@ namespace Planner.Droid.Activities
                         ? DateTime.MinValue : Utilities.ToDateTime(_startDate, _startTime),
                     End = _endDate == default || _endTime == default 
                         ? DateTime.MinValue : Utilities.ToDateTime(_endDate, _endTime),
-                    IsAlarm = alarmCheckBox.Checked,
                     Importance = SelectedImportance,
                     Note = noteEditText.Text,
                     Repeat = (Frequency)_selectedRepeatIndex,
