@@ -38,6 +38,7 @@ namespace Planner.Droid.Activities
         private Button signoutButton;
         private ProgressBarHelper _progressBarHelper;
         private string _queryText;
+        private bool _isRefreshed;
         private readonly ScheduledTaskDataHelper _taskDataHelper;
         private readonly DialogHelper _dialogHelper;
         private readonly AlarmHelper _alarmHelper;
@@ -64,6 +65,8 @@ namespace Planner.Droid.Activities
             await PrepareRecyclerViewAsync();
 
             _progressBarHelper = new ProgressBarHelper(this, Window, layout);
+
+            _isRefreshed = true;
         }
 
         private void PrepareToolbar()
@@ -249,7 +252,13 @@ namespace Planner.Droid.Activities
         {
             base.OnResume();
 
-            await FilterTasksAsync(string.Empty);
+            if (!_isRefreshed)
+            {
+                await PrepareRecyclerViewAsync();
+            }
+
+            _isRefreshed = false;
+
             SyncService.Instance.NewTasksAvailable += Sync_NewTasksAvailable;
         }
 
