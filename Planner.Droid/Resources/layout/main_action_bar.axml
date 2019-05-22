@@ -2,14 +2,24 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:padding="7dp">
+    <TextView
+        android:id="@+id/mainActionBar_UsernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:layout_alignParentLeft="true"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:textSize="8sp" />
     <Button
         android:id="@+id/mainActionBar_SignoutButton"
-        style="@style/LinkButtonStyle"
+        android:background="@android:color/white"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
         android:text="Sign Out"
-        android:textSize="8sp" />
+        android:textSize="8sp"/>
 </RelativeLayout>
