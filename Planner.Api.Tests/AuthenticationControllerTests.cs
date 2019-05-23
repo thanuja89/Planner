@@ -496,6 +496,161 @@ namespace Planner.Api.Tests
 
         #endregion
 
+        #region SendPasswordResetEmail Method Tests
+
+        [Fact]
+        public async Task SendPasswordResetEmail_WhenCalledWithValidArgs_GeneratesTokenAndCallsEmailSenderWithToken()
+        {
+            // Arrange
+            SetUp();
+
+            string email = "aaaa@aaa.com";
+            string code = "0";
+
+            var dto = new SendPasswordResetEmailDto()
+            {
+                Email = email
+            };
+
+            _mockUserManager
+                .Setup(m => m.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(_user);
+
+            _mockUserManager
+                .Setup(m => m.GeneratePasswordResetTokenAsync(It.IsAny<ApplicationUser>()))
+                .ReturnsAsync(code);
+
+            // Act
+            var result = await _sut.SendPasswordResetEmail(dto);
+
+            // Assert
+            _mockUserManager.Verify(m => m.GeneratePasswordResetTokenAsync(_user));
+            _mockEmailSender.Verify(s => s.SendEmailAsync(It.IsAny<string>()
+                , It.IsAny<string>()
+                , It.Is<string>(m => m.Contains(code))));
+
+            Assert.IsAssignableFrom<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task SendPasswordResetEmail_WhenInvalidEmail_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            string email = "aaaa@aaa.com";
+            string code = "0";
+
+            var dto = new SendPasswordResetEmailDto()
+            {
+                Email = email
+            };
+
+            _mockUserManager
+                .Setup(m => m.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(null as ApplicationUser);
+
+            // Act
+            var result = await _sut.SendPasswordResetEmail(dto);
+
+            // Assert
+            _mockUserManager.Verify(m => m.GeneratePasswordResetTokenAsync(_user), Times.Never);
+            _mockEmailSender.Verify(s => s.SendEmailAsync(It.IsAny<string>()
+                , It.IsAny<string>()
+                , It.Is<string>(m => m.Contains(code))), Times.Never);
+
+            Assert.IsAssignableFrom<BadRequestResult>(result);
+        }
+
+        #endregion
+
+        #region ResetPassword Method Tests
+
+        [Fact]
+        public async Task ResetPassword_WhenCalledWithValidArgs_ReturnsOk()
+        {
+            // Arrange
+            SetUp();
+
+            string email = "aaaa@aaa.com";
+
+            var req = new ResetPasswordRequestDto()
+            {
+                Email = email,
+                Code = "0"
+            };
+
+            _mockUserManager
+                .Setup(m => m.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(_user);
+
+            _mockUserManager
+                .Setup(m => m.ResetPasswordAsync(It.IsAny<ApplicationUser>(), req.Code, It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success);
+
+            // Act
+            var result = await _sut.ResetPassword(req);
+
+            // Assert
+            Assert.IsAssignableFrom<OkResult>(result);
+        }
+
+        [Fact]
+        public async Task ResetPassword_WhenCalledWithInValidEmail_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            string email = "aaaa@aaa.com";
+
+            var req = new ResetPasswordRequestDto()
+            {
+                Email = email,
+                Code = "0"
+            };
+
+            _mockUserManager
+                .Setup(m => m.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(null as ApplicationUser);
+
+            // Act
+            var result = await _sut.ResetPassword(req);
+
+            // Assert
+            Assert.IsAssignableFrom<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public async Task ResetPassword_WhenCalledWithInValidCode_ReturnsBadRequest()
+        {
+            // Arrange
+            SetUp();
+
+            string email = "aaaa@aaa.com";
+
+            var req = new ResetPasswordRequestDto()
+            {
+                Email = email,
+                Code = "0"
+            };
+
+            _mockUserManager
+                .Setup(m => m.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(_user);
+
+            _mockUserManager
+                .Setup(m => m.ResetPasswordAsync(It.IsAny<ApplicationUser>(), req.Code, It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed());
+
+            // Act
+            var result = await _sut.ResetPassword(req);
+
+            // Assert
+            Assert.IsAssignableFrom<BadRequestResult>(result);
+        }
+
+        #endregion
+
         #region Private Methods
         private void SetUp()
         {
