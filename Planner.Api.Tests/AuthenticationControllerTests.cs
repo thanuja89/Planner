@@ -36,10 +36,10 @@ namespace Planner.Api.Tests
             // Arrange
             SetUp();
 
-            var login = new TokenRequestDto();
+            var login = new TokenRequestDto() { Username = "AAAAAA", Password = "AAAAAAA" };
 
             _mockSignInManager
-                .Setup(m => m.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Setup(m => m.PasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
             _mockUserManager.Setup(m => m.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(_user);
@@ -49,7 +49,11 @@ namespace Planner.Api.Tests
 
             // Assert
             var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-            Assert.IsAssignableFrom<TokenDto>(okResult.Value);
+            var cResult = Assert.IsAssignableFrom<TokenCreationResultDto>(okResult.Value);
+
+            Assert.NotNull(cResult);
+            Assert.NotNull(cResult.Token);
+            Assert.NotNull(cResult.Token.Value);
         }
 
         [Fact]
@@ -68,7 +72,7 @@ namespace Planner.Api.Tests
             var result = await _sut.CreateToken(login);
 
             // Assert
-            Assert.IsAssignableFrom<BadRequestResult>(result);
+            Assert.IsAssignableFrom<BadRequestObjectResult>(result);
         }
 
         #endregion
@@ -127,7 +131,7 @@ namespace Planner.Api.Tests
         }
 
         [Fact]
-        public async Task CreateAccount_WhenUsernameExistsForSameEmail_ReturnsOk()
+        public async Task CreateAccount_WhenUsernameExistsForSameEmail_ReturnsBadRequest()
         {
             // Arrange
             SetUp();
@@ -148,9 +152,9 @@ namespace Planner.Api.Tests
             var result = await _sut.CreateAccount(acc);
 
             // Assert
-            var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+            var okResult = Assert.IsAssignableFrom<BadRequestObjectResult>(result);
             var dto = Assert.IsAssignableFrom<AccountCreationResultDto>(okResult.Value);
-            Assert.True(dto.Succeeded);
+            Assert.False(dto.Succeeded);
         }
 
         [Fact]
