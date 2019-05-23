@@ -15,7 +15,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Planner.Api.Tests
+namespace Planner.Api.Tests.ControllerTests
 {
     public class AuthenticationControllerTests
     {
