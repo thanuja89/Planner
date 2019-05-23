@@ -14,7 +14,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Planner.Api.Tests
+namespace Planner.Api.Tests.ControllerTests
 {
     public class SyncronizationControllerTests
     {
