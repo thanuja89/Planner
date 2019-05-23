@@ -190,7 +190,7 @@ namespace Planner.Droid.Activities
             StartActivity(typeof(SignInActivity));
         }
 
-        private void CreateButton_Click(object sender, System.EventArgs e)
+        private void CreateButton_Click(object sender, EventArgs e)
         {
             StartActivity(typeof(CreateTaskActivity));
         }

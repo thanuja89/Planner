@@ -176,7 +176,6 @@ namespace Planner.Api.Controllers
                     ApplicationUserId = user.Id,
                     Username = user.UserName
                 });
-
             }
             catch (Exception ex)
             {
