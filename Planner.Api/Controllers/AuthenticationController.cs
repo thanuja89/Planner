@@ -154,8 +154,9 @@ namespace Planner.Api.Controllers
 
                 if (user == null)
                 {
-                    var result = await _userManager.CreateAsync(ApplicationUser.NewExternalUser(register.Email)
-                        , GetRandomString());
+                    user = ApplicationUser.NewExternalUser(register.Email);
+
+                    var result = await _userManager.CreateAsync(user, GetRandomString());
 
                     if (!result.Succeeded)
                         return BadRequest();
@@ -163,19 +164,17 @@ namespace Planner.Api.Controllers
                 else
                 {
                     if (!await _signInManager.CanSignInAsync(user))
-                    {
+                    {                      
                         await _userManager.DeleteAsync(user);
-                        await _userManager.CreateAsync(ApplicationUser.NewExternalUser(register.Email));
+
+                        var newUser = ApplicationUser.NewExternalUser(register.Email);
+                        await _userManager.CreateAsync(newUser, GetRandomString());
+
+                        return OkWithToken(newUser);
                     }
                 }
 
-                var tokenString = BuildToken(user);
-                return Ok(new TokenDto()
-                {
-                    Value = tokenString,
-                    ApplicationUserId = user.Id,
-                    Username = user.UserName
-                });
+                return OkWithToken(user);
             }
             catch (Exception ex)
             {
@@ -358,6 +357,17 @@ namespace Planner.Api.Controllers
             }
 
             return new string(stringChars);
+        }
+
+        private IActionResult OkWithToken(ApplicationUser user)
+        {
+            string token = BuildToken(user);
+            return Ok(new TokenDto()
+            {
+                Value = token,
+                ApplicationUserId = user.Id,
+                Username = user.UserName
+            });
         }
 
         #endregion

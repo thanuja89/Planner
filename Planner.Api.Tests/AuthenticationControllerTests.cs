@@ -236,33 +236,110 @@ namespace Planner.Api.Tests
 
         #endregion
 
-        #region CreateToken Method Tests
+        #region ExternalSignIn Method Tests
 
-        //[Fact]
-        //public async Task ExternalSignIn_WhenEmailNotExists_CallsCreateAndReturnsOkWithToken()
-        //{
-        //    // Arrange
-        //    SetUp();
+        [Fact]
+        public async Task ExternalSignIn_WhenEmailNotExists_CallsCreateAndReturnsOkWithToken()
+        {
+            // Arrange
+            SetUp();
 
-        //    var login = new ExternalSignInDto() { Email = "aaa@aaa.com" };
+            var login = new ExternalSignInDto() { Email = "aaa@aaa.com" };
 
-        //    _mockSignInManager
-        //        .Setup(m => m.PasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
-        //        .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
+            _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(null as ApplicationUser);
 
-        //    _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(null as ApplicationUser);
+            _mockSignInManager
+                .Setup(m => m.PasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
 
-        //    // Act
-        //    var result = await _sut.ExternalSignIn(login);
+            _mockUserManager.Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Callback<ApplicationUser, string>((u, s) => 
+                {
+                    u.Id = "AAAAAAAA";
+                    u.Email = "aaa@aaa.com";
+                    u.UserName = "aaaaaaaaa";
+                })
+                .ReturnsAsync(IdentityResult.Success);
 
-        //    // Assert
-        //    var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
-        //    var cResult = Assert.IsAssignableFrom<TokenCreationResultDto>(okResult.Value);
+            // Act
+            var result = await _sut.ExternalSignIn(login);
 
-        //    Assert.NotNull(cResult);
-        //    Assert.NotNull(cResult.Token);
-        //    Assert.NotNull(cResult.Token.Value);
-        //}
+            // Assert
+
+            _mockUserManager.Verify(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()));
+
+            var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+            var token = Assert.IsAssignableFrom<TokenDto>(okResult.Value);
+
+            Assert.NotNull(token);
+            Assert.NotNull(token.Value);
+        }
+
+        [Fact]
+        public async Task ExternalSignIn_WhenEmailExists_ReturnsOkWithToken()
+        {
+            // Arrange
+            SetUp();
+
+            var login = new ExternalSignInDto() { Email = "aaa@aaa.com" };
+
+            _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(_user);
+            _mockSignInManager.Setup(m => m.CanSignInAsync(It.IsAny<ApplicationUser>())).ReturnsAsync(true);
+
+            _mockUserManager.Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Callback<ApplicationUser, string>((u, s) =>
+                {
+                    u.Id = "AAAAAAAA";
+                })
+                .ReturnsAsync(IdentityResult.Success);
+
+            // Act
+            var result = await _sut.ExternalSignIn(login);
+
+            // Assert
+
+            _mockUserManager.Verify(m => m.DeleteAsync(It.IsAny<ApplicationUser>()), Times.Never);
+            _mockUserManager.Verify(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
+
+            var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+            var token = Assert.IsAssignableFrom<TokenDto>(okResult.Value);
+
+            Assert.NotNull(token);
+            Assert.NotNull(token.Value);
+        }
+
+        [Fact]
+        public async Task ExternalSignIn_WhenEmailExistsAndUserNotActive_CallsCreateDeleteAndReturnsOkWithToken()
+        {
+            // Arrange
+            SetUp();
+
+            var login = new ExternalSignInDto() { Email = "aaa@aaa.com" };
+
+            _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(_userWithNotConfirmedEmail);
+            _mockSignInManager.Setup(m => m.CanSignInAsync(It.IsAny<ApplicationUser>())).ReturnsAsync(false);
+
+            _mockUserManager.Setup(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
+                .Callback<ApplicationUser, string>((u, s) =>
+                {
+                    u.Id = "AAAAAAAA";
+                })
+                .ReturnsAsync(IdentityResult.Success);
+
+            // Act
+            var result = await _sut.ExternalSignIn(login);
+
+            // Assert
+
+            _mockUserManager.Verify(m => m.DeleteAsync(It.IsAny<ApplicationUser>()));
+            _mockUserManager.Verify(m => m.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()));
+
+            var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+            var token = Assert.IsAssignableFrom<TokenDto>(okResult.Value);
+
+            Assert.NotNull(token);
+            Assert.NotNull(token.Value);
+        }
 
         #endregion
 
