@@ -20,6 +20,7 @@ namespace Planner.Api.Tests
     public class AuthenticationControllerTests
     {
         private ApplicationUser _user;
+        private ApplicationUser _userWithNotConfirmedEmail;
         private Mock<ILogger<AuthenticationController>> _mockLogger;
         private Mock<IEmailSender> _mockEmailSender;
         private Mock<SignInManager<ApplicationUser>> _mockSignInManager;
@@ -65,7 +66,7 @@ namespace Planner.Api.Tests
             var login = new TokenRequestDto();
 
             _mockSignInManager
-                .Setup(m => m.PasswordSignInAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .Setup(m => m.PasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
 
             // Act
@@ -73,6 +74,29 @@ namespace Planner.Api.Tests
 
             // Assert
             Assert.IsAssignableFrom<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public async Task CreateToken_WhenEmailNotConfirmed_ReturnsBadRequestWithUserId()
+        {
+            // Arrange
+            SetUp();
+
+            var login = new TokenRequestDto();
+
+            _mockSignInManager
+                .Setup(m => m.PasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+                .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Failed);
+
+            _mockUserManager.Setup(m => m.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(_userWithNotConfirmedEmail);
+
+            // Act
+            var result = await _sut.CreateToken(login);
+
+            // Assert
+            var brResult = Assert.IsAssignableFrom<BadRequestObjectResult>(result);
+            var cResult = Assert.IsAssignableFrom<TokenCreationResultDto>(brResult.Value);
+            Assert.Equal(_userWithNotConfirmedEmail.Id, cResult.ValidationData);
         }
 
         #endregion
@@ -209,6 +233,36 @@ namespace Planner.Api.Tests
 
             Assert.False(dto.Succeeded);
         }
+
+        #endregion
+
+        #region CreateToken Method Tests
+
+        //[Fact]
+        //public async Task ExternalSignIn_WhenEmailNotExists_CallsCreateAndReturnsOkWithToken()
+        //{
+        //    // Arrange
+        //    SetUp();
+
+        //    var login = new ExternalSignInDto() { Email = "aaa@aaa.com" };
+
+        //    _mockSignInManager
+        //        .Setup(m => m.PasswordSignInAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>()))
+        //        .ReturnsAsync(Microsoft.AspNetCore.Identity.SignInResult.Success);
+
+        //    _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(null as ApplicationUser);
+
+        //    // Act
+        //    var result = await _sut.ExternalSignIn(login);
+
+        //    // Assert
+        //    var okResult = Assert.IsAssignableFrom<OkObjectResult>(result);
+        //    var cResult = Assert.IsAssignableFrom<TokenCreationResultDto>(okResult.Value);
+
+        //    Assert.NotNull(cResult);
+        //    Assert.NotNull(cResult.Token);
+        //    Assert.NotNull(cResult.Token.Value);
+        //}
 
         #endregion
 
@@ -372,7 +426,16 @@ namespace Planner.Api.Tests
             {
                 Id = "AAAAAAAAAA",
                 UserName = "BBBBBBBBBBB",
-                Email = "ddad@dawd.com"
+                Email = "ddad@dawd.com",
+                EmailConfirmed = true
+            };
+
+            _userWithNotConfirmedEmail = new ApplicationUser()
+            {
+                Id = "AAAAAAAAAA",
+                UserName = "BBBBBBBBBBB",
+                Email = "ddad@dawd.com",
+                EmailConfirmed = false
             };
 
             _mockLogger = new Mock<ILogger<AuthenticationController>>();

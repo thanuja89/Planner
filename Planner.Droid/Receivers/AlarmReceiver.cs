@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Media;
 using Android.Support.V4.App;
 using Android.Util;
 using Planner.Droid.Activities;
@@ -67,6 +68,11 @@ namespace Planner.Droid.Receivers
 
             channel.EnableVibration(true);
 
+            var alarmAttributes = new AudioAttributes.Builder()
+                    .SetContentType(AudioContentType.Sonification)
+                    .SetUsage(AudioUsageKind.Notification).Build();
+
+            channel.SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification), alarmAttributes);
             return channel;
         }
 
@@ -83,6 +89,7 @@ namespace Planner.Droid.Receivers
                 .SetContentText(task.Note)
                 .SetColor(Resource.Color.colorPrimary)
                 .SetSmallIcon(Resource.Drawable.ic_launcher)
+                .SetAutoCancel(true)
                 .Build();
         }
 

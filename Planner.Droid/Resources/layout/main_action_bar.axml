@@ -13,7 +13,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:layout_centerVertical="true"
-        android:textSize="8sp" />
+        android:textSize="12sp" />
     <Button
         android:id="@+id/mainActionBar_SignoutButton"
         android:background="@android:color/white"

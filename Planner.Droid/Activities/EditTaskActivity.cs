@@ -270,18 +270,28 @@ namespace Planner.Droid.Activities
 
         private bool ValidateInputs()
         {
-            if (!titleEditText.IsEmpty())
+            if (_startDate != default
+                && _startTime != default
+                && _endDate != default
+                && _endTime != default)
             {
-                return true;
+                var start = Utilities.ToDateTime(_startDate, _startTime);
+                var end = Utilities.ToDateTime(_endDate, _endTime);
+
+                if (start > end)
+                {
+                    _dialogHelper.ShowError(this, "Start Date cannot be after the End Date.");
+                    return false;
+                }
             }
 
-            if (!noteEditText.IsEmpty())
+            if (titleEditText.IsEmpty() && noteEditText.IsEmpty())
             {
-                noteEditText.Error = "Description can not be empty.";
-                return true;
+                noteEditText.Error = "Both Description and Title can not be empty.";
+                return false;
             }
 
-            return false;
+            return true;
         }
     }
 }
