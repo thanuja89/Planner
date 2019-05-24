@@ -261,5 +261,5 @@ __pycache__/
 *.pyc
 /Planner.Api/Migrations
 /Planner.Api/Logs/
-**/appsettings*.json
+*appsettings*
 *.pubxml
