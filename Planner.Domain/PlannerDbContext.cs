@@ -8,6 +8,7 @@ namespace Planner.Domain
     public class PlannerDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<ScheduledTask> SheduledTasks { get; set; }
+        public DbSet<Device> Devices { get; set; }
 
         public PlannerDbContext(DbContextOptions<PlannerDbContext> options) : base(options)
         {

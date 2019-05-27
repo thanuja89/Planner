@@ -97,6 +97,9 @@ namespace Planner.Api
             services.AddScoped<IEmailSender, SendGridEmailSender>();
 #endif
 
+            services.Configure<FirebaseNotificationServiceOptions>(Configuration.GetSection("FirebaseCM"));
+            services.AddScoped<INotificationService, FirebaseNotificationService>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

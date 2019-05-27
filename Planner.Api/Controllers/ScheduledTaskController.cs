@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Planner.Api.Extensions;
+using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
@@ -21,16 +22,19 @@ namespace Planner.Api.Controllers
         private readonly IScheduledTaskRepository _scheduledTaskRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly INotificationService _notificationService;
         private readonly ILogger<ScheduledTaskController> _logger;
 
         public ScheduledTaskController(IScheduledTaskRepository scheduledTaskRepo
             , IUnitOfWork unitOfWork
             , IMapper mapper
+            , INotificationService notificationService
             , ILogger<ScheduledTaskController> logger)
         {
             _scheduledTaskRepo = scheduledTaskRepo;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _notificationService = notificationService;
             _logger = logger;
         }
 
@@ -80,7 +84,7 @@ namespace Planner.Api.Controllers
                 {
                     var entity = _mapper.Map<ScheduledTask>(task);
 
-                    await CreateScheduledTaskAsync(entity);
+                    await CreateScheduledTaskAndNotifyAsync(entity);
 
                     var uri = Url.Link("TaskGet", new { entity.Id });
 
@@ -109,7 +113,7 @@ namespace Planner.Api.Controllers
                         var entity = _mapper.Map<ScheduledTask>(taskDto);
                         entity.ApplicationUserId = User.GetUserId();
 
-                        await CreateScheduledTaskAsync(entity);
+                        await CreateScheduledTaskAndNotifyAsync(entity);
 
                         return Ok(_mapper.Map<GetScheduledTaskDTO>(entity));
                     }
@@ -143,6 +147,8 @@ namespace Planner.Api.Controllers
 
                 await _unitOfWork.CompleteAsync();
 
+                _ = _notificationService.NotifyAsync(User.GetUserId());
+
                 return NoContent();
             }
             catch (Exception ex)
@@ -153,10 +159,12 @@ namespace Planner.Api.Controllers
             return BadRequest();
         }
 
-        private async Task CreateScheduledTaskAsync(ScheduledTask entity)
+        private async Task CreateScheduledTaskAndNotifyAsync(ScheduledTask entity)
         {
             await _scheduledTaskRepo.AddAsync(entity);
             await _unitOfWork.CompleteAsync();
+
+            _ = _notificationService.NotifyAsync(User.GetUserId());
         }
     }
 }

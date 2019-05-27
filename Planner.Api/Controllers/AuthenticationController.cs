@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Planner.Api.Extensions;
 using Planner.Api.Services;
 using Planner.Domain.Entities;
+using Planner.Domain.Repositories.Interfaces;
+using Planner.Domain.UnitOfWork;
 using Planner.Dto;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -25,18 +28,24 @@ namespace Planner.Api.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IRepository<Device> _deviceRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AuthenticationController(IConfiguration config
             , SignInManager<ApplicationUser> signInManager
             , UserManager<ApplicationUser> userManager
             , ILogger<AuthenticationController> logger
-            , IEmailSender emailSender)
+            , IEmailSender emailSender
+            , IRepository<Device> deviceRepo
+            , IUnitOfWork unitOfWork)
         {
             _config = config;
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _emailSender = emailSender;
+            _deviceRepo = deviceRepo;
+            _unitOfWork = unitOfWork;
         }
 
         [AllowAnonymous]
@@ -287,6 +296,40 @@ namespace Planner.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError("Threw exception while resetting password for user: {@ex}", ex);
+                return new StatusCodeResult(500);
+            }
+        }
+
+        [HttpPost("{action}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterDevice(string id)
+        {
+            try
+            {
+                string userId = User.GetUserId();
+
+                var dev = await _deviceRepo
+                    .FindAsync(d => d.ApplicationUserId == userId);
+
+                if (dev != null)
+                    return BadRequest();
+
+                var newDevice = new Device()
+                {
+                    ApplicationUserId = userId,
+                    RegistrationId = id,
+                    CreatedOnUtc = DateTime.UtcNow
+                };
+
+                await _deviceRepo.AddAsync(newDevice);
+
+                await _unitOfWork.CompleteAsync();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Threw exception while registering device for user: {@ex}", ex);
                 return new StatusCodeResult(500);
             }
         }

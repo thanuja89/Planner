@@ -9,6 +9,8 @@ using Moq;
 using Planner.Api.Controllers;
 using Planner.Api.Services;
 using Planner.Domain.Entities;
+using Planner.Domain.Repositories.Interfaces;
+using Planner.Domain.UnitOfWork;
 using Planner.Dto;
 using System;
 using System.Net;
@@ -23,6 +25,8 @@ namespace Planner.Api.Tests.ControllerTests
         private ApplicationUser _userWithNotConfirmedEmail;
         private Mock<ILogger<AuthenticationController>> _mockLogger;
         private Mock<IEmailSender> _mockEmailSender;
+        private Mock<IRepository<Device>> _mockDeviceRepo;
+        private Mock<IUnitOfWork> _mockLUOW;
         private Mock<SignInManager<ApplicationUser>> _mockSignInManager;
         private Mock<UserManager<ApplicationUser>> _mockUserManager;
         private Mock<IConfiguration> _mockConfiguration;
@@ -674,6 +678,8 @@ namespace Planner.Api.Tests.ControllerTests
             _mockConfiguration = new Mock<IConfiguration>();
             _mockLogger = new Mock<ILogger<AuthenticationController>>();
             _mockEmailSender = new Mock<IEmailSender>();
+            _mockDeviceRepo = new Mock<IRepository<Device>>();
+            _mockLUOW = new Mock<IUnitOfWork>();
 
             _mockUserManager = new Mock<UserManager<ApplicationUser>>(new Mock<IUserStore<ApplicationUser>>().Object,
                new Mock<IOptions<IdentityOptions>>().Object,
@@ -698,7 +704,9 @@ namespace Planner.Api.Tests.ControllerTests
                 , _mockSignInManager.Object
                 , _mockUserManager.Object
                 , _mockLogger.Object
-                , _mockEmailSender.Object);
+                , _mockEmailSender.Object
+                , _mockDeviceRepo.Object
+                , _mockLUOW.Object);
         }
         #endregion
     }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Planner.Api.Controllers;
+using Planner.Api.Services;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Domain.UnitOfWork;
@@ -22,6 +23,7 @@ namespace Planner.Api.Tests.ControllerTests
         private Mock<IScheduledTaskRepository> _mockRepo;
         private Mock<IMapper> _mockMapper;
         private Mock<ILogger<ScheduledTaskController>> _mockLogger;
+        private Mock<INotificationService> _mockNotificationService;
         private Mock<IUnitOfWork> _mockLUOW;
         private Mock<IUrlHelper> _urlHelper;
         private ScheduledTaskController _sut;
@@ -215,6 +217,7 @@ namespace Planner.Api.Tests.ControllerTests
             _mockRepo = new Mock<IScheduledTaskRepository>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILogger<ScheduledTaskController>>();
+            _mockNotificationService = new Mock<INotificationService>();
             _mockLUOW = new Mock<IUnitOfWork>();
 
             var claimsPrinc = new ClaimsPrincipal(new ClaimsIdentity(
@@ -223,7 +226,11 @@ namespace Planner.Api.Tests.ControllerTests
             _urlHelper = new Mock<IUrlHelper>();
             _urlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns("http://localhost/api/ScheduledTask/1");
 
-            _sut = new ScheduledTaskController(_mockRepo.Object, _mockLUOW.Object, _mockMapper.Object, _mockLogger.Object)
+            _sut = new ScheduledTaskController(_mockRepo.Object
+                , _mockLUOW.Object
+                , _mockMapper.Object
+                , _mockNotificationService.Object
+                , _mockLogger.Object)
             {
                 ControllerContext = new ControllerContext()
                 {

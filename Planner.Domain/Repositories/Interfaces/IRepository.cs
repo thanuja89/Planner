@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Planner.Domain.Repositories.Interfaces
@@ -10,6 +11,7 @@ namespace Planner.Domain.Repositories.Interfaces
     {
         IQueryable<T> GetAll();
         Task<T> FindAsync(Guid id);
+        Task<T> FindAsync(Expression<Func<T, bool>> predicate);
         Task<T> GetByIdAsync(Guid id);
         Task AddAsync(T entity);
         Task AddRangeAsync(IEnumerable<T> entities);
