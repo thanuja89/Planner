@@ -263,4 +263,4 @@ __pycache__/
 /Planner.Api/Logs/
 *appsettings*
 *.pubxml
-*client_secret*
+*google-services*
