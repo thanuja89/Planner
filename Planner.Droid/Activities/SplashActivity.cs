@@ -26,20 +26,27 @@ namespace Planner.Droid.Activities
             SetContentView(Resource.Layout.activity_splash);
         }
 
-        public override void OnWindowFocusChanged(bool hasFocus)
+        public override async void OnWindowFocusChanged(bool hasFocus)
         {
             base.OnWindowFocusChanged(hasFocus);
 
             if (hasFocus)
             {
-                StartAnimation(); 
+                var initTask = InitAsync();
+
+                StartAnimation();
+
+                await Task.WhenAll(initTask, Task.Delay(TimeSpan.FromSeconds(5)));
+
+                if (initTask.Result) // Task is already complete, so we won't block the thread
+                    StartActivity(typeof(TasksActivity));
+                else
+                    StartActivity(typeof(SignInActivity));
             }
         }
 
-        private async void StartAnimation()
-        {
-            var initTask = InitAsync();
-
+        private void StartAnimation()
+        {            
             imageView = FindViewById<ImageView>(Resource.Id.splash_ImageView);
 
             var set = new AnimationSet(true)
@@ -55,14 +62,7 @@ namespace Planner.Droid.Activities
             set.AddAnimation(
                 new ScaleAnimation(1f, 3f, 1f, 3f, Dimension.RelativeToSelf, 0.5f, Dimension.RelativeToSelf, 0.5f));
 
-            imageView.StartAnimation(set);
-
-            await Task.WhenAll(initTask, Task.Delay(TimeSpan.FromSeconds(5)));
-
-            if (initTask.Result) // Task is already complete, so we won't block the thread
-                StartActivity(typeof(TasksActivity));
-            else
-                StartActivity(typeof(SignInActivity));        
+            imageView.StartAnimation(set);                 
         }
 
         private Task<bool> InitAsync()

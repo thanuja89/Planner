@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Planner.Api.Controllers;
+using Planner.Api.Services;
 using Planner.Domain.DataModels;
 using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
@@ -21,6 +22,7 @@ namespace Planner.Api.Tests.ControllerTests
         private string _userId;
         private DateTime _lastSynced;
         private Mock<IScheduledTaskRepository> _mockRepo;
+        private Mock<INotificationService> _mockNotificationService;
         private Mock<IMapper> _mockMapper;
         private Mock<ILogger<SyncronizationController>> _mockLogger;
         private SyncronizationController _sut;
@@ -145,13 +147,17 @@ namespace Planner.Api.Tests.ControllerTests
             _lastSynced = DateTime.UtcNow.AddDays(-30);
 
             _mockRepo = new Mock<IScheduledTaskRepository>();
+            _mockNotificationService = new Mock<INotificationService>();
             _mockMapper = new Mock<IMapper>();
             _mockLogger = new Mock<ILogger<SyncronizationController>>();
 
             var claimsPrinc = new ClaimsPrincipal(new ClaimsIdentity(
                 new Claim[] { new Claim(ClaimTypes.NameIdentifier, _userId) }));
 
-            _sut = new SyncronizationController(_mockRepo.Object, _mockMapper.Object, _mockLogger.Object)
+            _sut = new SyncronizationController(_mockRepo.Object
+                , _mockNotificationService.Object
+                , _mockMapper.Object
+                , _mockLogger.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
