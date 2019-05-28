@@ -2,6 +2,8 @@
 using Android.Content;
 using Android.Util;
 using Firebase.Iid;
+using Planner.Mobile.Core.Helpers;
+using System;
 
 namespace Planner.Droid.Services
 {
@@ -10,10 +12,27 @@ namespace Planner.Droid.Services
     public class FirebaseIIDService : FirebaseInstanceIdService
     {
         const string TAG = "MyFirebaseIIDService";
-        public override void OnTokenRefresh()
+        private readonly AuthHelper _authHelper;
+
+        public FirebaseIIDService()
         {
-            var refreshedToken = FirebaseInstanceId.Instance.Token;
-            Log.Debug(TAG, "Refreshed token: " + refreshedToken);
+            _authHelper = new AuthHelper();
+        }
+
+        public async override void OnTokenRefresh()
+        {
+            try
+            {
+                var refreshedToken = FirebaseInstanceId.Instance.Token;
+
+                Log.WriteLine(LogPriority.Info, TAG, refreshedToken);
+
+                await _authHelper.RegisterDeviceAsync(refreshedToken);
+            }
+            catch (Exception ex)
+            {
+                Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
+            }
         }
     }
 }

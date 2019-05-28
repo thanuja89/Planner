@@ -1,12 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Planner.Domain.Entities;
 using Planner.Domain.Repositories.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +12,11 @@ namespace Planner.Api.Services
     public class FirebaseNotificationService : INotificationService
     {
         private readonly FirebaseNotificationServiceOptions _options;
-        private readonly IRepository<Device> _deviceRepo;
+        private readonly IDeviceRepository _deviceRepo;
         private readonly ILogger<FirebaseNotificationService> _logger;
 
         public FirebaseNotificationService(IOptions<FirebaseNotificationServiceOptions> optionsAccessor
-            , IRepository<Device> deviceRepo
+            , IDeviceRepository deviceRepo
             , ILogger<FirebaseNotificationService> logger)
         {
             _options = optionsAccessor.Value;
@@ -32,7 +28,7 @@ namespace Planner.Api.Services
         {
             try
             {
-                var ids = await GetDeviceIdsAsync(userId);
+                var ids = await _deviceRepo.GetDeviceIdsForUserAsync(userId);
 
                 var data = new
                 {
@@ -58,14 +54,6 @@ namespace Planner.Api.Services
             {
                 _logger.LogError($"Exception thrown in Notify Service: {ex}");
             }
-        }
-
-        public Task<string[]> GetDeviceIdsAsync(string userId)
-        {
-            return _deviceRepo.GetAll()
-                .Where(d => d.ApplicationUserId == userId)
-                .Select(d => d.RegistrationId)
-                .ToArrayAsync();
         } 
     }
 }

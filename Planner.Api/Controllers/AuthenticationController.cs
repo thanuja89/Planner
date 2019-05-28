@@ -28,7 +28,7 @@ namespace Planner.Api.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IRepository<Device> _deviceRepo;
+        private readonly IDeviceRepository _deviceRepo;
         private readonly IUnitOfWork _unitOfWork;
 
         public AuthenticationController(IConfiguration config
@@ -36,7 +36,7 @@ namespace Planner.Api.Controllers
             , UserManager<ApplicationUser> userManager
             , ILogger<AuthenticationController> logger
             , IEmailSender emailSender
-            , IRepository<Device> deviceRepo
+            , IDeviceRepository deviceRepo
             , IUnitOfWork unitOfWork)
         {
             _config = config;
@@ -300,7 +300,7 @@ namespace Planner.Api.Controllers
             }
         }
 
-        [HttpPost("{action}")]
+        [HttpPost("{action}/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> RegisterDevice(string id)
         {

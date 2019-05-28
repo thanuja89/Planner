@@ -25,7 +25,7 @@ namespace Planner.Api.Tests.ControllerTests
         private ApplicationUser _userWithNotConfirmedEmail;
         private Mock<ILogger<AuthenticationController>> _mockLogger;
         private Mock<IEmailSender> _mockEmailSender;
-        private Mock<IRepository<Device>> _mockDeviceRepo;
+        private Mock<IDeviceRepository> _mockDeviceRepo;
         private Mock<IUnitOfWork> _mockLUOW;
         private Mock<SignInManager<ApplicationUser>> _mockSignInManager;
         private Mock<UserManager<ApplicationUser>> _mockUserManager;
@@ -678,7 +678,7 @@ namespace Planner.Api.Tests.ControllerTests
             _mockConfiguration = new Mock<IConfiguration>();
             _mockLogger = new Mock<ILogger<AuthenticationController>>();
             _mockEmailSender = new Mock<IEmailSender>();
-            _mockDeviceRepo = new Mock<IRepository<Device>>();
+            _mockDeviceRepo = new Mock<IDeviceRepository>();
             _mockLUOW = new Mock<IUnitOfWork>();
 
             _mockUserManager = new Mock<UserManager<ApplicationUser>>(new Mock<IUserStore<ApplicationUser>>().Object,

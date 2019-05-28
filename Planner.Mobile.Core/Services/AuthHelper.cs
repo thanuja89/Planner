@@ -47,5 +47,10 @@ namespace Planner.Mobile.Core.Helpers
         {
             return _httpService.PostAsync("Auth/ResetPassword", requestDto);
         }
+
+        public Task<HttpResponseMessage> RegisterDeviceAsync(string id)
+        {
+            return _httpService.PostAsync($"Auth/RegisterDevice/{id}");
+        }
     }
 }

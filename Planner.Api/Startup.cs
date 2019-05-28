@@ -87,6 +87,7 @@ namespace Planner.Api
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
+            services.AddScoped<IDeviceRepository, DeviceRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 #if DEBUG
