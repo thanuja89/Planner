@@ -24,7 +24,7 @@ namespace Planner.Api.Services
             _logger = logger;
         }
 
-        public async Task NotifyAsync(string userId, string title = "", string body = "")
+        public async Task NotifyAsync(string userId, string deviceId)
         {
             try
             {
@@ -32,8 +32,7 @@ namespace Planner.Api.Services
 
                 var data = new
                 {
-                    registration_ids = ids, // Recipient device token
-                    notification = new { title, body }
+                    registration_ids = ids
                 };
 
                 var jsonBody = JsonConvert.SerializeObject(data);

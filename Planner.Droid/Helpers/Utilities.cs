@@ -29,6 +29,25 @@ namespace Planner.Droid.Helpers
             editor.Apply();
         }
 
+        public static void SaveToPreferences(string key, string value)
+        {
+            var pref = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+            var editor = pref.Edit();
+
+            editor.PutString(key, value);
+
+            editor.Apply();
+        }
+
+        public static string GetStringFromPreferences(string key)
+        {
+            var pref = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+
+            var value = pref.GetString(key, string.Empty);
+
+            return value;
+        }
+
         public static JobInfo.Builder CreateJobBuilderUsingJobId<T>(this Context context, int jobId) where T : JobService
         {
             var javaClass = Java.Lang.Class.FromType(typeof(T));

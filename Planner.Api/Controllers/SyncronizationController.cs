@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Planner.Api.Extensions;
+using Planner.Api.Services;
 using Planner.Domain.DataModels;
 using Planner.Domain.Repositories.Interfaces;
 using Planner.Dto;
@@ -19,14 +20,17 @@ namespace Planner.Api.Controllers
     public class SyncronizationController : ControllerBase
     {
         private readonly IScheduledTaskRepository _scheduledTaskRepo;
+        private readonly INotificationService _notificationService;
         private readonly IMapper _mapper;
         private readonly ILogger<SyncronizationController> _logger;
 
         public SyncronizationController(IScheduledTaskRepository scheduledTaskRepo
+            , INotificationService notificationService
             , IMapper mapper
             , ILogger<SyncronizationController> logger)
         {
             _scheduledTaskRepo = scheduledTaskRepo;
+            _notificationService = notificationService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -47,7 +51,7 @@ namespace Planner.Api.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{token}")]
         public async Task<IActionResult> Put(IEnumerable<PutScheduledTaskDTO> taskDtos)
         {
             try
@@ -55,9 +59,13 @@ namespace Planner.Api.Controllers
                 if (taskDtos == null || !taskDtos.Any())
                     return BadRequest();
 
+                string userId = User.GetUserId();
+
                 var tasks = _mapper.Map<IEnumerable<ScheduledTaskDataModel>>(taskDtos);
 
-                await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, User.GetUserId());
+                await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, userId);
+
+                _ = _notificationService.NotifyAsync(userId, Request.Headers["deviceId"]);
 
                 return NoContent();
             }

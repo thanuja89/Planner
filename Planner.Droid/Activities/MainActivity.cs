@@ -26,11 +26,16 @@ namespace Planner.Droid.Activities
 
             try
             {
-                var token = GetToken();
+                var prefs = Application.Context
+                    .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
+
+                var token = prefs.GetString(PreferenceItemKeys.TOKEN, null);
+                string deviceRegToken = Helpers.Utilities
+                    .GetStringFromPreferences(PreferenceItemKeys.FIREBASE_REG_TOKEN);
 
                 if (token != null)
                 {
-                    HttpHelper.Init(token);
+                    HttpHelper.Init(token, deviceRegToken);
 
                     _ = SyncService.Instance.SyncAsync();
 
@@ -54,15 +59,6 @@ namespace Planner.Droid.Activities
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             throw new NotImplementedException();
-        }
-
-        private string GetToken()
-        {
-            var prefs = Application.Context.GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
-
-            var token = prefs.GetString(PreferenceItemKeys.TOKEN, null);
-
-            return token;
         }
     }
 }

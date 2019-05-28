@@ -16,13 +16,13 @@ namespace Planner.Mobile.Core.Helpers
 
         public HttpHelper() => InitClient();
 
-        public HttpHelper(string token) => InitClient(token);
+        public HttpHelper(string token, string deviceRegToken) => InitClient(token, deviceRegToken);
 
         public static HttpHelper Instance => _helper ?? throw new InvalidOperationException("Helper not intialized.");
 
-        public static void Init(string token)
+        public static void Init(string token, string deviceRegToken)
         {
-            _helper = new HttpHelper(token);
+            _helper = new HttpHelper(token, deviceRegToken);
         }
 
         public static bool IsInitialized {
@@ -125,7 +125,7 @@ namespace Planner.Mobile.Core.Helpers
             return JsonConvert.DeserializeObject<T>(cont);
         }
 
-        private void InitClient(string token = null)
+        private void InitClient(string token = null, string deviceRegToken = null)
         {
             var handler = new HttpClientHandler()
             {
@@ -140,6 +140,12 @@ namespace Planner.Mobile.Core.Helpers
             _httpClient.DefaultRequestHeaders
                 .Accept
                 .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            if(deviceRegToken != null)
+            {
+                _httpClient.DefaultRequestHeaders
+                    .Add("deviceId", deviceRegToken);
+            }
 
             if (token != null)
             {

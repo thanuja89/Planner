@@ -2,8 +2,11 @@
 using Android.Content;
 using Android.Util;
 using Firebase.Iid;
+using Planner.Mobile.Core;
 using Planner.Mobile.Core.Helpers;
 using System;
+using System.Collections.Generic;
+using WindowsAzure.Messaging;
 
 namespace Planner.Droid.Services
 {
@@ -12,14 +15,8 @@ namespace Planner.Droid.Services
     public class FirebaseIIDService : FirebaseInstanceIdService
     {
         const string TAG = "MyFirebaseIIDService";
-        private readonly AuthHelper _authHelper;
 
-        public FirebaseIIDService()
-        {
-            _authHelper = new AuthHelper();
-        }
-
-        public async override void OnTokenRefresh()
+        public override void OnTokenRefresh()
         {
             try
             {
@@ -27,12 +24,18 @@ namespace Planner.Droid.Services
 
                 Log.WriteLine(LogPriority.Info, TAG, refreshedToken);
 
-                await _authHelper.RegisterDeviceAsync(refreshedToken);
+                SaveTokenToPreferences(refreshedToken);
             }
             catch (Exception ex)
             {
                 Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
             }
+        }
+
+        private void SaveTokenToPreferences(string token)
+        {
+            Log.Debug(TAG, $"Successful registration of ID {token}");
+            Helpers.Utilities.SaveToPreferences(PreferenceItemKeys.FIREBASE_REG_TOKEN, token);          
         }
     }
 }

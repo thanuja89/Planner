@@ -17,8 +17,10 @@ using Planner.Dto;
 using Planner.Mobile.Core;
 using Planner.Mobile.Core.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using WindowsAzure.Messaging;
 using CoreHelper = Planner.Mobile.Core;
 
 namespace Planner.Droid.Activities
@@ -176,7 +178,7 @@ namespace Planner.Droid.Activities
                     if (tokenCreationResultDto.Succeeded
                         && tokenCreationResultDto.Token?.Value != null)
                     {
-                        SaveUserInfo(tokenCreationResultDto.Token);
+                        await InitUserAndDeviceInfoAsync(tokenCreationResultDto.Token);
 
                         StartActivity(typeof(TasksActivity));
                         return;
@@ -202,7 +204,7 @@ namespace Planner.Droid.Activities
             }
         }
 
-        private void SaveUserInfo(TokenDto dto)
+        private async Task InitUserAndDeviceInfoAsync(TokenDto dto)
         {
             var pref = Application.Context
                 .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
@@ -215,7 +217,21 @@ namespace Planner.Droid.Activities
 
             editor.Apply();
 
-            HttpHelper.Init(dto.Value);
+            await InitDeviceInfo(dto.ApplicationUserId, dto.Value);
+        }
+
+        private Task InitDeviceInfo(string userId, string jwt)
+        {
+            var hub = new NotificationHub(Keys.AZURE_HUB_NAME,
+                                        Keys.AZURE_HUB_CONN_STRING, this);
+
+            string deviceRegToken = Helpers.Utilities.GetStringFromPreferences(PreferenceItemKeys.FIREBASE_REG_TOKEN);
+
+            HttpHelper.Init(jwt, deviceRegToken);
+
+            var tags = new List<string>() { userId };
+
+            return Task.Run(() => hub.Register(deviceRegToken, tags.ToArray()));
         }
 
         private void PrepareGoogleSignIn()
@@ -256,7 +272,7 @@ namespace Planner.Droid.Activities
                         Email = result.SignInAccount.Email
                     });
 
-                    SaveUserInfo(tokenDto);
+                    await InitUserAndDeviceInfoAsync(tokenDto);
 
                     StartActivity(typeof(TasksActivity));
 

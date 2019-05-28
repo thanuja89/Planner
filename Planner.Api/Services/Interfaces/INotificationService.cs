@@ -4,6 +4,6 @@ namespace Planner.Api.Services
 {
     public interface INotificationService
     {
-        Task NotifyAsync(string userId, string title = "", string body = "");
+        Task NotifyAsync(string userId, string deviceId);
     }
 }

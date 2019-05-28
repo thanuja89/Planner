@@ -3984,107 +3984,107 @@ namespace Planner.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f080031
-			public const int abc_action_bar_home_description = 2131230769;
-			
 			// aapt resource value: 0x7f080032
-			public const int abc_action_bar_up_description = 2131230770;
+			public const int abc_action_bar_home_description = 2131230770;
 			
 			// aapt resource value: 0x7f080033
-			public const int abc_action_menu_overflow_description = 2131230771;
+			public const int abc_action_bar_up_description = 2131230771;
 			
 			// aapt resource value: 0x7f080034
-			public const int abc_action_mode_done = 2131230772;
+			public const int abc_action_menu_overflow_description = 2131230772;
 			
 			// aapt resource value: 0x7f080035
-			public const int abc_activity_chooser_view_see_all = 2131230773;
+			public const int abc_action_mode_done = 2131230773;
 			
 			// aapt resource value: 0x7f080036
-			public const int abc_activitychooserview_choose_application = 2131230774;
+			public const int abc_activity_chooser_view_see_all = 2131230774;
 			
 			// aapt resource value: 0x7f080037
-			public const int abc_capital_off = 2131230775;
+			public const int abc_activitychooserview_choose_application = 2131230775;
 			
 			// aapt resource value: 0x7f080038
-			public const int abc_capital_on = 2131230776;
-			
-			// aapt resource value: 0x7f080043
-			public const int abc_font_family_body_1_material = 2131230787;
-			
-			// aapt resource value: 0x7f080044
-			public const int abc_font_family_body_2_material = 2131230788;
-			
-			// aapt resource value: 0x7f080045
-			public const int abc_font_family_button_material = 2131230789;
-			
-			// aapt resource value: 0x7f080046
-			public const int abc_font_family_caption_material = 2131230790;
-			
-			// aapt resource value: 0x7f080047
-			public const int abc_font_family_display_1_material = 2131230791;
-			
-			// aapt resource value: 0x7f080048
-			public const int abc_font_family_display_2_material = 2131230792;
-			
-			// aapt resource value: 0x7f080049
-			public const int abc_font_family_display_3_material = 2131230793;
-			
-			// aapt resource value: 0x7f08004a
-			public const int abc_font_family_display_4_material = 2131230794;
-			
-			// aapt resource value: 0x7f08004b
-			public const int abc_font_family_headline_material = 2131230795;
-			
-			// aapt resource value: 0x7f08004c
-			public const int abc_font_family_menu_material = 2131230796;
-			
-			// aapt resource value: 0x7f08004d
-			public const int abc_font_family_subhead_material = 2131230797;
-			
-			// aapt resource value: 0x7f08004e
-			public const int abc_font_family_title_material = 2131230798;
+			public const int abc_capital_off = 2131230776;
 			
 			// aapt resource value: 0x7f080039
-			public const int abc_search_hint = 2131230777;
+			public const int abc_capital_on = 2131230777;
+			
+			// aapt resource value: 0x7f080044
+			public const int abc_font_family_body_1_material = 2131230788;
+			
+			// aapt resource value: 0x7f080045
+			public const int abc_font_family_body_2_material = 2131230789;
+			
+			// aapt resource value: 0x7f080046
+			public const int abc_font_family_button_material = 2131230790;
+			
+			// aapt resource value: 0x7f080047
+			public const int abc_font_family_caption_material = 2131230791;
+			
+			// aapt resource value: 0x7f080048
+			public const int abc_font_family_display_1_material = 2131230792;
+			
+			// aapt resource value: 0x7f080049
+			public const int abc_font_family_display_2_material = 2131230793;
+			
+			// aapt resource value: 0x7f08004a
+			public const int abc_font_family_display_3_material = 2131230794;
+			
+			// aapt resource value: 0x7f08004b
+			public const int abc_font_family_display_4_material = 2131230795;
+			
+			// aapt resource value: 0x7f08004c
+			public const int abc_font_family_headline_material = 2131230796;
+			
+			// aapt resource value: 0x7f08004d
+			public const int abc_font_family_menu_material = 2131230797;
+			
+			// aapt resource value: 0x7f08004e
+			public const int abc_font_family_subhead_material = 2131230798;
+			
+			// aapt resource value: 0x7f08004f
+			public const int abc_font_family_title_material = 2131230799;
 			
 			// aapt resource value: 0x7f08003a
-			public const int abc_searchview_description_clear = 2131230778;
+			public const int abc_search_hint = 2131230778;
 			
 			// aapt resource value: 0x7f08003b
-			public const int abc_searchview_description_query = 2131230779;
+			public const int abc_searchview_description_clear = 2131230779;
 			
 			// aapt resource value: 0x7f08003c
-			public const int abc_searchview_description_search = 2131230780;
+			public const int abc_searchview_description_query = 2131230780;
 			
 			// aapt resource value: 0x7f08003d
-			public const int abc_searchview_description_submit = 2131230781;
+			public const int abc_searchview_description_search = 2131230781;
 			
 			// aapt resource value: 0x7f08003e
-			public const int abc_searchview_description_voice = 2131230782;
+			public const int abc_searchview_description_submit = 2131230782;
 			
 			// aapt resource value: 0x7f08003f
-			public const int abc_shareactionprovider_share_with = 2131230783;
+			public const int abc_searchview_description_voice = 2131230783;
 			
 			// aapt resource value: 0x7f080040
-			public const int abc_shareactionprovider_share_with_application = 2131230784;
+			public const int abc_shareactionprovider_share_with = 2131230784;
 			
 			// aapt resource value: 0x7f080041
-			public const int abc_toolbar_collapse_description = 2131230785;
+			public const int abc_shareactionprovider_share_with_application = 2131230785;
+			
+			// aapt resource value: 0x7f080042
+			public const int abc_toolbar_collapse_description = 2131230786;
 			
 			// aapt resource value: 0x7f080059
 			public const int action_settings = 2131230809;
 			
-			// aapt resource value: 0x7f080058
-			public const int app_name = 2131230808;
-			
-			// aapt resource value: 0x7f08004f
-			public const int appbar_scrolling_view_behavior = 2131230799;
+			// aapt resource value: 0x7f080031
+			public const int app_name = 2131230769;
 			
 			// aapt resource value: 0x7f080050
-			public const int bottom_sheet_behavior = 2131230800;
+			public const int appbar_scrolling_view_behavior = 2131230800;
 			
 			// aapt resource value: 0x7f080051
-			public const int character_counter_pattern = 2131230801;
+			public const int bottom_sheet_behavior = 2131230801;
+			
+			// aapt resource value: 0x7f080052
+			public const int character_counter_pattern = 2131230802;
 			
 			// aapt resource value: 0x7f08001a
 			public const int com_facebook_device_auth_instructions = 2131230746;
@@ -4239,26 +4239,26 @@ namespace Planner.Droid
 			// aapt resource value: 0x7f080019
 			public const int messenger_send_button_text = 2131230745;
 			
-			// aapt resource value: 0x7f080052
-			public const int password_toggle_content_description = 2131230802;
-			
 			// aapt resource value: 0x7f080053
-			public const int path_password_eye = 2131230803;
+			public const int password_toggle_content_description = 2131230803;
 			
 			// aapt resource value: 0x7f080054
-			public const int path_password_eye_mask_strike_through = 2131230804;
+			public const int path_password_eye = 2131230804;
 			
 			// aapt resource value: 0x7f080055
-			public const int path_password_eye_mask_visible = 2131230805;
+			public const int path_password_eye_mask_strike_through = 2131230805;
 			
 			// aapt resource value: 0x7f080056
-			public const int path_password_strike_through = 2131230806;
-			
-			// aapt resource value: 0x7f080042
-			public const int search_menu_title = 2131230786;
+			public const int path_password_eye_mask_visible = 2131230806;
 			
 			// aapt resource value: 0x7f080057
-			public const int status_bar_notification_info_overflow = 2131230807;
+			public const int path_password_strike_through = 2131230807;
+			
+			// aapt resource value: 0x7f080043
+			public const int search_menu_title = 2131230787;
+			
+			// aapt resource value: 0x7f080058
+			public const int status_bar_notification_info_overflow = 2131230808;
 			
 			static String()
 			{
