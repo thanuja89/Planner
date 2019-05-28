@@ -87,7 +87,6 @@ namespace Planner.Api
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IScheduledTaskRepository, ScheduledTaskRepository>();
-            services.AddScoped<IDeviceRepository, DeviceRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 #if DEBUG
@@ -97,9 +96,6 @@ namespace Planner.Api
             services.Configure<SendGridEmailSenderOptions>(Configuration.GetSection("SendGridMail"));
             services.AddScoped<IEmailSender, SendGridEmailSender>();
 #endif
-
-            //services.Configure<FirebaseNotificationServiceOptions>(Configuration.GetSection("FirebaseCM"));
-            //services.AddScoped<INotificationService, FirebaseNotificationService>();
 
             services.Configure<AzureHubNotificationServiceOptions>(Configuration.GetSection("AzureHub"));
             services.AddScoped<INotificationService, AzureHubNotificationService>();
