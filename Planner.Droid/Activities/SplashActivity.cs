@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 namespace Planner.Droid.Activities
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, NoHistory = true)]
-    //[Activity(Label = "SplashActivity")]
     public class SplashActivity : Activity
     {
         private ImageView imageView;
@@ -32,21 +31,29 @@ namespace Planner.Droid.Activities
 
             if (hasFocus)
             {
-                var initTask = InitAsync();
+                try
+                {
+                    var initTask = InitAsync();
 
-                StartAnimation();
+                    StartAnimation();
 
-                await Task.WhenAll(initTask, Task.Delay(TimeSpan.FromSeconds(5)));
+                    await Task.WhenAll(initTask, Task.Delay(TimeSpan.FromSeconds(5)));
 
-                if (initTask.Result) // Task is already complete, so we won't block the thread
-                    StartActivity(typeof(TasksActivity));
-                else
+                    if (initTask.Result) // Task is already complete, so we won't block the thread
+                        StartActivity(typeof(TasksActivity));
+                    else
+                        StartActivity(typeof(SignInActivity));
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
                     StartActivity(typeof(SignInActivity));
+                }
             }
         }
 
         private void StartAnimation()
-        {            
+        {
             imageView = FindViewById<ImageView>(Resource.Id.splash_ImageView);
 
             var set = new AnimationSet(true)
@@ -62,44 +69,34 @@ namespace Planner.Droid.Activities
             set.AddAnimation(
                 new ScaleAnimation(1f, 3f, 1f, 3f, Dimension.RelativeToSelf, 0.5f, Dimension.RelativeToSelf, 0.5f));
 
-            imageView.StartAnimation(set);                 
+            imageView.StartAnimation(set);
         }
 
         private Task<bool> InitAsync()
         {
             return Task.Run(async () =>
             {
-                try
+                AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironment_UnhandledExceptionRaiser;
+
+                var prefs = Application.Context
+                    .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
+
+                var token = prefs.GetString(PreferenceItemKeys.TOKEN, null);
+                string deviceRegToken = Helpers.Utilities
+                    .GetStringFromPreferences(PreferenceItemKeys.FIREBASE_REG_TOKEN);
+
+                if (token != null)
                 {
-                    AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
-                    AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-                    AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironment_UnhandledExceptionRaiser;
+                    HttpHelper.Init(token, deviceRegToken);
 
-                    var prefs = Application.Context
-                        .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
+                    await SyncService.Instance.SyncAsync();
 
-                    var token = prefs.GetString(PreferenceItemKeys.TOKEN, null);
-                    string deviceRegToken = Helpers.Utilities
-                        .GetStringFromPreferences(PreferenceItemKeys.FIREBASE_REG_TOKEN);
-
-                    if (token != null)
-                    {
-                        HttpHelper.Init(token, deviceRegToken);
-
-                        await SyncService.Instance.SyncAsync();
-
-                        return true;
-                    }
-                    else
-                        return false;
+                    return true;
                 }
-                catch (Exception ex)
-                {
-                    Log.WriteLine(LogPriority.Error, "Planner Error", ex.Message);
-                    StartActivity(typeof(SignInActivity));
-
+                else
                     return false;
-                }
             });
         }
 

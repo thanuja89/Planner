@@ -103,18 +103,37 @@ namespace Planner.Mobile.Core.Data
                     {
                         var itm = conn.Find<ScheduledTask>(t => t.Id == item.Id);
 
-                        conn.InsertOrReplace(new ScheduledTask()
+                        if(itm == null)
                         {
-                            Id = item.Id,
-                            Title = item.Title,
-                            Note = item.Note,
-                            Start = item.Start,
-                            End = item.End,
-                            Importance = (Importance)item.Importance,
-                            Repeat = (Frequency)item.Repeat,
-                            ApplicationUserId = item.ApplicationUserId,
-                            ClientSideId = itm?.ClientSideId ?? 0
-                        });
+                            conn.Insert(new ScheduledTask()
+                            {
+                                Id = item.Id,
+                                Title = item.Title,
+                                Note = item.Note,
+                                Start = item.Start,
+                                End = item.End,
+                                Importance = (Importance)item.Importance,
+                                Repeat = (Frequency)item.Repeat,
+                                ApplicationUserId = item.ApplicationUserId
+                            });
+                        }
+                        else
+                        {
+                            conn.Update(new ScheduledTask()
+                            {
+                                Id = item.Id,
+                                Title = item.Title,
+                                Note = item.Note,
+                                Start = item.Start,
+                                End = item.End,
+                                Importance = (Importance)item.Importance,
+                                Repeat = (Frequency)item.Repeat,
+                                ClientSideId = itm.ClientSideId,
+                                ApplicationUserId = item.ApplicationUserId,
+                                IsDeleted = itm.IsDeleted,
+                                ClientUpdatedOnTicks = itm.ClientUpdatedOnTicks
+                            });
+                        }
                     }
                 }
 
@@ -124,7 +143,7 @@ namespace Planner.Mobile.Core.Data
 
                     conn.Execute($@"DELETE 
                                FROM ScheduledTask
-                               WHERE Id IN ({ clause })"); 
+                               WHERE Id IN ({ clause })");
                 }
             });
         }
