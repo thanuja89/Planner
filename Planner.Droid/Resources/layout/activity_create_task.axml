@@ -75,29 +75,46 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:paddingVertical="5dp" />
-                    <TextView
-                        android:id="@+id/createTask_StartDateTextView"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Date"
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:minWidth="90dp"
-                        android:paddingVertical="5dp"
-                        android:paddingRight="25dp"
-                        android:layout_weight="0.5"
-                        android:textSize="12dp" />
-                    <TextView
-                        android:id="@+id/createTask_StartTimeTextView"
-                        android:text="Time"
+                        android:layout_height="25dp"
+                         android:layout_weight="0.45">
+                        <TextView
+                            android:id="@+id/createTask_StartDateTextView"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="_"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:minWidth="90dp"
+                            android:paddingVertical="5dp"
+                            android:textSize="12dp" />
+                        <ImageView
+                            android:id="@+id/createTask_StartDateImageView"
+                            android:src="@drawable/baseline_calendar_today_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:minWidth="120dp"
-                        android:paddingVertical="5dp"
-                        android:paddingHorizontal="5dp"
-                        android:gravity="center"
-                        android:layout_weight="0.3"
-                        android:textSize="12dp" />
+                        android:layout_height="25dp"
+                        android:layout_weight="0.45">
+                        <TextView
+                            android:id="@+id/createTask_StartTimeTextView"
+                            android:text="_"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:minWidth="120dp"
+                            android:paddingVertical="5dp"
+                            android:paddingHorizontal="5dp"
+                            android:gravity="center"            
+                            android:textSize="12dp" />
+                        <ImageView
+                            android:id="@+id/createTask_StartTimeImageView"
+                            android:src="@drawable/baseline_schedule_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
                 </TableRow>
                 <TableRow
                     android:id="@+id/createTask_EndDateRow">
@@ -107,28 +124,45 @@
                         android:layout_height="wrap_content"
                         android:paddingVertical="5dp"
                         android:layout_weight="0.2" />
-                    <TextView
-                        android:id="@+id/createTask_EndDateTextView"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Date"
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:minWidth="90dp"
-                        android:paddingVertical="5dp"
-                        android:paddingRight="25dp"
-                        android:layout_weight="0.5"
-                        android:textSize="12dp" />
-                    <TextView
-                        android:id="@+id/createTask_EndTimeTextView"
-                        android:text="Time"
+                        android:layout_height="25dp"
+                        android:layout_weight="0.45">
+                        <TextView
+                            android:id="@+id/createTask_EndDateTextView"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="_"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:minWidth="90dp"
+                            android:paddingVertical="5dp"
+                            android:textSize="12dp" />
+                        <ImageView
+                            android:id="@+id/createTask_EndDateImageView"
+                            android:src="@drawable/baseline_calendar_today_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/> 
+                        </LinearLayout>
+                    <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:paddingVertical="5dp"
-                        android:paddingHorizontal="5dp"
-                        android:gravity="center"
-                        android:layout_weight="0.3"
-                        android:textSize="12dp" />
+                        android:layout_height="25dp"
+                        android:layout_weight="0.45">
+                        <TextView
+                            android:id="@+id/createTask_EndTimeTextView"
+                            android:text="_"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="5dp"
+                            android:paddingHorizontal="5dp"
+                            android:gravity="center"
+                            android:textSize="12dp" />
+                        <ImageView
+                            android:id="@+id/createTask_EndTimeImageView"
+                            android:src="@drawable/baseline_schedule_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
                 </TableRow>
             </TableLayout>
             <LinearLayout

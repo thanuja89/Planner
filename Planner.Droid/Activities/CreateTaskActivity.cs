@@ -26,6 +26,12 @@ namespace Planner.Droid.Activities
         private TextView endDateTextView;
         private TextView startTimeTextView;
         private TextView endTimeTextView;
+
+        private ImageView startDateImageView;
+        private ImageView endDateImageView;
+        private ImageView startTimeImageView;
+        private ImageView endTimeImageView;
+
         private RadioGroup importanceRadioGroup;
         private LinearLayout repeatLayout;
         private TextView repeatSelectedTextView;
@@ -96,6 +102,12 @@ namespace Planner.Droid.Activities
             endDateTextView = FindViewById<TextView>(Resource.Id.createTask_EndDateTextView);
             startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
             endTimeTextView = FindViewById<TextView>(Resource.Id.createTask_EndTimeTextView);
+
+            startDateImageView = FindViewById<ImageView>(Resource.Id.createTask_StartDateImageView);
+            startTimeImageView = FindViewById<ImageView>(Resource.Id.createTask_StartTimeImageView);
+            endDateImageView = FindViewById<ImageView>(Resource.Id.createTask_EndDateImageView);
+            endTimeImageView = FindViewById<ImageView>(Resource.Id.createTask_EndTimeImageView);
+
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
             repeatLayout = FindViewById<LinearLayout>(Resource.Id.createTask_RepeatLayout);
             repeatSelectedTextView = FindViewById<TextView>(Resource.Id.createTask_RepeatSelectedTextView);
@@ -104,15 +116,16 @@ namespace Planner.Droid.Activities
 
         private void HandleEvents()
         {
-            startDateTextView.Click += StartDateTextView_Click;
-            endDateTextView.Click += EndDateTextView_Click;
-            startTimeTextView.Click += StartTimeTextView_Click;
-            endTimeTextView.Click += EndTimeTextView_Click;
+            startDateImageView.Click += StartDateImageView_Click;
+            startTimeImageView.Click += StartTimeImageView_Click;
+            endDateImageView.Click += EndDateImageView_Click;
+            endTimeImageView.Click += EndTimeImageView_Click;
+
             repeatLayout.Click += RepeatLayout_Click;
             saveButton.Click += SaveButton_Click;
         }
 
-        private void EndTimeTextView_Click(object sender, EventArgs e)
+        private void EndTimeImageView_Click(object sender, EventArgs e)
         {
             TimePickerFragment frag = TimePickerFragment.NewInstance(ev =>
             {
@@ -123,7 +136,7 @@ namespace Planner.Droid.Activities
             frag.Show(FragmentManager, TimePickerFragment.TAG);
         }
 
-        private void StartTimeTextView_Click(object sender, EventArgs e)
+        private void StartTimeImageView_Click(object sender, EventArgs e)
         {
             TimePickerFragment frag = TimePickerFragment.NewInstance(ev =>
             {
@@ -149,7 +162,7 @@ namespace Planner.Droid.Activities
             _dialog.Show();
         }
 
-        private void EndDateTextView_Click(object sender, EventArgs e)
+        private void EndDateImageView_Click(object sender, EventArgs e)
         {
             DatePickerFragment frag = DatePickerFragment.NewInstance(ev =>
             {
@@ -160,7 +173,7 @@ namespace Planner.Droid.Activities
             frag.Show(FragmentManager, DatePickerFragment.TAG);
         }
 
-        private void StartDateTextView_Click(object sender, EventArgs e)
+        private void StartDateImageView_Click(object sender, EventArgs e)
         {
             DatePickerFragment frag = DatePickerFragment.NewInstance(ev => 
             {

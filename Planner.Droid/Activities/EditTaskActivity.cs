@@ -25,6 +25,10 @@ namespace Planner.Droid.Activities
         private TextView endDateTextView;
         private TextView startTimeTextView;
         private TextView endTimeTextView;
+        private ImageView startDateImageView;
+        private ImageView startTimeImageView;
+        private ImageView endDateImageView;
+        private ImageView endTimeImageView;
         private RadioGroup importanceRadioGroup;
         private LinearLayout repeatLayout;
         private TextView repeatSelectedTextView;
@@ -120,6 +124,11 @@ namespace Planner.Droid.Activities
             startTimeTextView = FindViewById<TextView>(Resource.Id.createTask_StartTimeTextView);
             endTimeTextView = FindViewById<TextView>(Resource.Id.createTask_EndTimeTextView);
 
+            startDateImageView = FindViewById<ImageView>(Resource.Id.createTask_StartDateImageView);
+            startTimeImageView = FindViewById<ImageView>(Resource.Id.createTask_StartTimeImageView);
+            endDateImageView = FindViewById<ImageView>(Resource.Id.createTask_EndDateImageView);
+            endTimeImageView = FindViewById<ImageView>(Resource.Id.createTask_EndTimeImageView);
+
             importanceRadioGroup = FindViewById<RadioGroup>(Resource.Id.createTask_ImportanceRadioGroup);
             repeatLayout = FindViewById<LinearLayout>(Resource.Id.createTask_RepeatLayout);
             repeatSelectedTextView = FindViewById<TextView>(Resource.Id.createTask_RepeatSelectedTextView);
@@ -131,12 +140,6 @@ namespace Planner.Droid.Activities
             titleEditText.Text = _scheduledTask.Title;
             noteEditText.Text = _scheduledTask.Note;
 
-            startDateTextView.Text = _scheduledTask.Start == DateTime.MinValue ? "-" : _scheduledTask.Start.ToShortDateString();
-            startTimeTextView.Text = _scheduledTask.Start == DateTime.MinValue ? "-" : _scheduledTask.Start.ToShortTimeString();
-
-            endDateTextView.Text = _scheduledTask.End == DateTime.MinValue ? "-" : _scheduledTask.End.ToShortDateString();
-            endTimeTextView.Text = _scheduledTask.End == DateTime.MinValue ? "-" : _scheduledTask.End.ToShortTimeString();
-
             SelectedImportance = _scheduledTask.Importance;
 
             _selectedRepeatIndex = (int)_scheduledTask.Repeat;
@@ -147,14 +150,27 @@ namespace Planner.Droid.Activities
 
             _startTime = new Time(_scheduledTask.Start.Hour, _scheduledTask.Start.Minute);
             _endTime = new Time(_scheduledTask.End.Hour, _scheduledTask.End.Minute);
+
+            if(_scheduledTask.Start != DateTime.MinValue)
+            {
+                startDateTextView.Text = _startDate.ToString();
+                startTimeTextView.Text = _startTime.ToString();
+            }
+
+            if(_scheduledTask.End != DateTime.MinValue)
+            {
+                endDateTextView.Text = _endDate.ToString();
+                endTimeTextView.Text = _endTime.ToString();
+            }           
         }
 
         private void HandleEvents()
         {
-            startDateTextView.Click += StartDateTextView_Click;
-            endDateTextView.Click += EndDateTextView_Click;
-            startTimeTextView.Click += StartTimeTextView_Click;
-            endTimeTextView.Click += EndTimeTextView_Click;
+            startDateImageView.Click += StartDateImageView_Click;
+            startTimeImageView.Click += StartTimeImageView_Click;
+            endDateImageView.Click += EndDateImageView_Click;
+            endTimeImageView.Click += EndTimeImageView_Click;
+
             repeatLayout.Click += RepeatLayout_Click;
             saveButton.Click += SaveButton_Click;
         }
@@ -174,7 +190,7 @@ namespace Planner.Droid.Activities
             _dialog.Show();
         }
 
-        private void EndDateTextView_Click(object sender, EventArgs e)
+        private void EndDateImageView_Click(object sender, EventArgs e)
         {
             DatePickerFragment frag = DatePickerFragment.NewInstance(ev =>
             {
@@ -186,7 +202,7 @@ namespace Planner.Droid.Activities
             frag.Show(FragmentManager, DatePickerFragment.TAG);
         }
 
-        private void StartDateTextView_Click(object sender, EventArgs e)
+        private void StartDateImageView_Click(object sender, EventArgs e)
         {
             DatePickerFragment frag = DatePickerFragment.NewInstance(ev =>
             {
@@ -198,7 +214,7 @@ namespace Planner.Droid.Activities
             frag.Show(FragmentManager, DatePickerFragment.TAG);
         }
 
-        private void EndTimeTextView_Click(object sender, EventArgs e)
+        private void EndTimeImageView_Click(object sender, EventArgs e)
         {
             TimePickerFragment frag = TimePickerFragment.NewInstance(ev =>
             {
@@ -210,7 +226,7 @@ namespace Planner.Droid.Activities
             frag.Show(FragmentManager, TimePickerFragment.TAG);
         }
 
-        private void StartTimeTextView_Click(object sender, EventArgs e)
+        private void StartTimeImageView_Click(object sender, EventArgs e)
         {
             TimePickerFragment frag = TimePickerFragment.NewInstance(ev =>
             {

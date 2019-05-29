@@ -39,7 +39,7 @@ namespace Planner.Droid.Util
 
         public override string ToString()
         {
-            return new DateTime(Year, Month, Day).ToShortDateString();
+            return new DateTime(Year, Month, Day).ToString("d MMM");
         }
     }
 }
