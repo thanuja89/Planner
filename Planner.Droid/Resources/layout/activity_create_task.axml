@@ -47,20 +47,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="Low" />
+                    android:text="Low"
+                    android:textStyle="italic" />
                 <RadioButton
                     android:id="@+id/createTask_ImportanceRadio_Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:text="Medium"
-                    android:checked="true"/>
+                    android:checked="true"
+                    android:textStyle="italic" />
                 <RadioButton
                     android:id="@+id/createTask_ImportanceRadio_High"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:text="High" />
+                    android:text="High"
+                    android:textStyle="italic" />
             </RadioGroup>
 
             <TableLayout
@@ -182,7 +185,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingVertical="5dp"
-                    android:layout_marginLeft="50dp" />
+                    android:layout_marginLeft="50dp"
+                    android:textStyle="italic"
+                    android:textColor="@android:color/background_dark" />
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
