@@ -21,14 +21,26 @@ namespace Planner.Droid.Helpers
 
         public void SetAlarm(ScheduledTask task)
         {
+            if (task.Start > DateTime.Now)
+            {
+                SetAlarm(task.ClientSideId, task.Start);
+            }
+            else
+            {
+                SetNextRepeatingAlarm(task);
+            }            
+        }
+
+        private void SetAlarm(int clientSideId, DateTime start)
+        {
             var context = Application.Context;
-            var alarmManager = (AlarmManager) context.GetSystemService(Context.AlarmService);
+            var alarmManager = (AlarmManager)context.GetSystemService(Context.AlarmService);
 
-            var time = GetTimeDifferenceInMilliseconds(task.Start);
+            var time = GetTimeDifferenceInMilliseconds(start);
 
-            var pending = GetAlarmPendingIntent(context, task);
+            var pending = GetAlarmPendingIntent(context, clientSideId);
 
-            alarmManager.SetExact(AlarmType.Rtc, time, pending);                     
+            alarmManager.SetExact(AlarmType.Rtc, time, pending);
         }
 
         public void SetNextRepeatingAlarm(ScheduledTask task)
@@ -41,7 +53,7 @@ namespace Planner.Droid.Helpers
             if(nextDate != default)
             {
                 var time = GetTimeDifferenceInMilliseconds(nextDate);
-                var pending = GetAlarmPendingIntent(context, task);
+                var pending = GetAlarmPendingIntent(context, task.ClientSideId);
 
                 alarmManager.Set(AlarmType.Rtc, time, pending);
             }
@@ -49,18 +61,35 @@ namespace Planner.Droid.Helpers
 
         public void CancelAlarm(ScheduledTask task)
         {
-            var context = Application.Context;
-            var alarmManager = (AlarmManager) context.GetSystemService(Context.AlarmService);
+            CancelAlarm(task.ClientSideId);
+        }
 
-            var pending = GetAlarmPendingIntent(context, task);
+        public void CancelAlarm(int clientSideId)
+        {
+            var context = Application.Context;
+            var alarmManager = (AlarmManager)context.GetSystemService(Context.AlarmService);
+
+            var pending = GetAlarmPendingIntent(context, clientSideId);
 
             alarmManager.Cancel(pending);
         }
 
         public void UpdateAlarm(ScheduledTask task)
         {
-            CancelAlarm(task);
-            SetAlarm(task);
+            if(task.Start > DateTime.Now)
+            {
+                UpdateAlarm(task.ClientSideId, task.Start);
+            }
+            else
+            {
+                SetNextRepeatingAlarm(task);
+            }
+        }
+
+        private void UpdateAlarm(int clientSideId, DateTime start)
+        {
+            CancelAlarm(clientSideId);
+            SetAlarm(clientSideId, start);
         }
 
         private DateTime GetNextAlarmDate(DateTime date, Frequency frequency)
@@ -102,13 +131,13 @@ namespace Planner.Droid.Helpers
             return calendar.TimeInMillis;
         }
 
-        private PendingIntent GetAlarmPendingIntent(Context context, ScheduledTask task)
+        private PendingIntent GetAlarmPendingIntent(Context context, int clientSideId)
         {
             var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
 
-            alarmIntent.PutExtra(AlarmReceiver.Constants.CLIENT_SIDE_ID_PARAM_NAME, task.ClientSideId);
+            alarmIntent.PutExtra(AlarmReceiver.Constants.CLIENT_SIDE_ID_PARAM_NAME, clientSideId);
 
-            var pending = PendingIntent.GetBroadcast(context, task.ClientSideId, alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var pending = PendingIntent.GetBroadcast(context, clientSideId, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
             return pending;
         }

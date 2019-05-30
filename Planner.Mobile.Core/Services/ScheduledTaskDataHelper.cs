@@ -1,5 +1,4 @@
-﻿using Planner.Dto;
-using Planner.Mobile.Core.Data;
+﻿using Planner.Mobile.Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -92,12 +91,6 @@ namespace Planner.Mobile.Core.Helpers
         {
             return PlannerDatabase.Instance
                 .InsertAllAsync(tasks);
-        }
-
-        public Task InsertOrUpdateAllAsync(IEnumerable<GetScheduledTaskDTO> tasks)
-        {
-            return PlannerDatabase.Instance
-                .InsertOrUpdateAllTasksAsync(tasks);
         }
 
         public Task UpdateAsync(ScheduledTask task)

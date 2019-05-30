@@ -89,65 +89,6 @@ namespace Planner.Mobile.Core.Data
             //_connection.Table<ScheduledTask>().DeleteAsync().Wait();
         }
 
-        public Task InsertOrUpdateAllTasksAsync(IEnumerable<GetScheduledTaskDTO> items)
-        {
-            return RunInTransactionAsync<ScheduledTask>(conn =>
-            {
-                var deleteClause = new StringBuilder();
-
-                foreach (var item in items)
-                {
-                    if (item.IsDeleted)
-                        deleteClause.Append($"'{item.Id}',");
-                    else
-                    {
-                        var itm = conn.Find<ScheduledTask>(t => t.Id == item.Id);
-
-                        if(itm == null)
-                        {
-                            conn.Insert(new ScheduledTask()
-                            {
-                                Id = item.Id,
-                                Title = item.Title,
-                                Note = item.Note,
-                                Start = item.Start,
-                                End = item.End,
-                                Importance = (Importance)item.Importance,
-                                Repeat = (Frequency)item.Repeat,
-                                ApplicationUserId = item.ApplicationUserId
-                            });
-                        }
-                        else
-                        {
-                            conn.Update(new ScheduledTask()
-                            {
-                                Id = item.Id,
-                                Title = item.Title,
-                                Note = item.Note,
-                                Start = item.Start,
-                                End = item.End,
-                                Importance = (Importance)item.Importance,
-                                Repeat = (Frequency)item.Repeat,
-                                ClientSideId = itm.ClientSideId,
-                                ApplicationUserId = item.ApplicationUserId,
-                                IsDeleted = itm.IsDeleted,
-                                ClientUpdatedOnTicks = itm.ClientUpdatedOnTicks
-                            });
-                        }
-                    }
-                }
-
-                if (deleteClause.Length > 0)
-                {
-                    var clause = deleteClause.ToString().Substring(0, deleteClause.Length - 1);
-
-                    conn.Execute($@"DELETE 
-                               FROM ScheduledTask
-                               WHERE Id IN ({ clause })");
-                }
-            });
-        }
-
         private void Seed()
         {
             InsertAllAsync(new ScheduledTask[]
