@@ -122,7 +122,7 @@ namespace Planner.Api.Controllers
 
                     await _unitOfWork.CompleteAsync();
 
-                    _ = _notificationService.NotifyAsync(User.GetUserId(), Request.Headers["deviceId"]);
+                    _ = _notificationService.NotifyAsync(User.GetUserId(), Request.Headers[Constants.DEVICE_ID_HEADER_NAME]);
 
                     return Ok(_mapper.Map<GetScheduledTaskDTO>(task));
                 }
@@ -149,7 +149,7 @@ namespace Planner.Api.Controllers
 
                 await _unitOfWork.CompleteAsync();
 
-                _ = _notificationService.NotifyAsync(User.GetUserId(), Request.Headers["deviceId"]);
+                _ = _notificationService.NotifyAsync(User.GetUserId(), Request.Headers[Constants.DEVICE_ID_HEADER_NAME]);
 
                 return NoContent();
             }
@@ -166,7 +166,7 @@ namespace Planner.Api.Controllers
             await _scheduledTaskRepo.AddAsync(entity);
             await _unitOfWork.CompleteAsync();
 
-            _ = _notificationService.NotifyAsync(User.GetUserId(), Request.Headers["deviceId"]);
+            _ = _notificationService.NotifyAsync(User.GetUserId(), Request.Headers[Constants.DEVICE_ID_HEADER_NAME]);
         }
     }
 }

@@ -179,7 +179,7 @@ namespace Planner.Droid.Activities
                     if (tokenCreationResultDto.Succeeded
                         && tokenCreationResultDto.Token?.Value != null)
                     {
-                        await InitUserAndDeviceInfoAsync(tokenCreationResultDto.Token);
+                        await Helpers.Utilities.InitUserAndDeviceInfoAsync(tokenCreationResultDto.Token);
 
                         await SyncService.Instance.SyncAsync();
 
@@ -208,36 +208,6 @@ namespace Planner.Droid.Activities
                 _progressBarHelper.Hide();
                 _dialogHelper.ShowError(this, ex);
             }
-        }
-
-        private async Task InitUserAndDeviceInfoAsync(TokenDto dto)
-        {
-            var pref = Application.Context
-                .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
-
-            var editor = pref.Edit();
-
-            editor.PutString(PreferenceItemKeys.TOKEN, dto.Value);
-            editor.PutString(PreferenceItemKeys.USER_ID, dto.ApplicationUserId);
-            editor.PutString(PreferenceItemKeys.USERNAME, dto.Username);
-
-            editor.Apply();
-
-            await InitDeviceInfo(dto.ApplicationUserId, dto.Value);
-        }
-
-        private Task InitDeviceInfo(string userId, string jwt)
-        {
-            var hub = new NotificationHub(Keys.AZURE_HUB_NAME,
-                                        Keys.AZURE_HUB_CONN_STRING, this);
-
-            string deviceRegToken = Helpers.Utilities.GetStringFromPreferences(PreferenceItemKeys.FIREBASE_REG_TOKEN);
-
-            HttpHelper.Init(jwt, deviceRegToken);
-
-            var tags = new List<string>() { userId };
-
-            return Task.Run(() => hub.Register(deviceRegToken, tags.ToArray()));
         }
 
         private void PrepareGoogleSignIn()
@@ -278,7 +248,7 @@ namespace Planner.Droid.Activities
                         Email = result.SignInAccount.Email
                     });
 
-                    await InitUserAndDeviceInfoAsync(tokenDto);
+                    await Helpers.Utilities.InitUserAndDeviceInfoAsync(tokenDto);
 
                     await SyncService.Instance.SyncAsync();
 

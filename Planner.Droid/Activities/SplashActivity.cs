@@ -84,12 +84,14 @@ namespace Planner.Droid.Activities
                     .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
 
                 var token = prefs.GetString(PreferenceItemKeys.TOKEN, null);
+                var userId = prefs.GetString(PreferenceItemKeys.USER_ID, null);
+
                 string deviceRegToken = Helpers.Utilities
                     .GetStringFromPreferences(PreferenceItemKeys.FIREBASE_REG_TOKEN);
 
                 if (token != null)
                 {
-                    HttpHelper.Init(token, deviceRegToken);
+                    await Helpers.Utilities.InitClientAndDeviceInfoAsync(userId, token);
 
                     await SyncService.Instance.SyncAsync();
 

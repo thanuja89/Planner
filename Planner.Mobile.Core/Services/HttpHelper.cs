@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Planner.Dto;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -144,7 +145,7 @@ namespace Planner.Mobile.Core.Helpers
             if(deviceRegToken != null)
             {
                 _httpClient.DefaultRequestHeaders
-                    .Add("deviceId", deviceRegToken);
+                    .Add(Constants.DEVICE_ID_HEADER_NAME, deviceRegToken);
             }
 
             if (token != null)

@@ -3,8 +3,13 @@ using Android.App.Job;
 using Android.Content;
 using Android.Preferences;
 using Planner.Droid.Util;
+using Planner.Dto;
 using Planner.Mobile.Core;
+using Planner.Mobile.Core.Helpers;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WindowsAzure.Messaging;
 
 namespace Planner.Droid.Helpers
 {
@@ -76,6 +81,36 @@ namespace Planner.Droid.Helpers
         public static DateTime ToDateTime(Date date, Time time)
         {
             return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, 0);
+        }
+
+        public static async Task InitUserAndDeviceInfoAsync(TokenDto dto)
+        {
+            var pref = Application.Context
+                .GetSharedPreferences(PreferenceKeys.USER_INFO, FileCreationMode.Private);
+
+            var editor = pref.Edit();
+
+            editor.PutString(PreferenceItemKeys.TOKEN, dto.Value);
+            editor.PutString(PreferenceItemKeys.USER_ID, dto.ApplicationUserId);
+            editor.PutString(PreferenceItemKeys.USERNAME, dto.Username);
+
+            editor.Apply();
+
+            await InitClientAndDeviceInfoAsync(dto.ApplicationUserId, dto.Value);
+        }
+
+        public static Task InitClientAndDeviceInfoAsync(string userId, string jwt)
+        {
+            var hub = new NotificationHub(Keys.AZURE_HUB_NAME,
+                                        Keys.AZURE_HUB_CONN_STRING, Application.Context);
+
+            string deviceRegToken = GetStringFromPreferences(PreferenceItemKeys.FIREBASE_REG_TOKEN);
+
+            HttpHelper.Init(jwt, deviceRegToken);
+
+            var tags = new List<string>() { userId };
+
+            return Task.Run(() => hub.Register(deviceRegToken, tags.ToArray()));
         }
     }
 }

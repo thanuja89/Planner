@@ -65,7 +65,7 @@ namespace Planner.Api.Controllers
 
                 await _scheduledTaskRepo.AddOrUpdateScheduledTasksAsync(tasks, userId);
 
-                _ = _notificationService.NotifyAsync(userId, Request.Headers["deviceId"]);
+                _ = _notificationService.NotifyAsync(userId, Request.Headers[Constants.DEVICE_ID_HEADER_NAME]);
 
                 return NoContent();
             }
