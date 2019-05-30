@@ -266,6 +266,8 @@ namespace Planner.Droid.Activities
                 StartActivity(typeof(TasksActivity));
 
                 _progressBarHelper.Hide();
+
+                FinishAffinity();
             }
             catch (Exception ex)
             {

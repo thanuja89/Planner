@@ -117,7 +117,11 @@ namespace Planner.Droid.Fragments
                     var activity = Activity;
 
                     _dialogHelper.ShowSuccessDialog(Activity, "Signing Up was successful. Please Sign In"
-                                    , (o, ea) => activity.StartActivity(typeof(SignInActivity)));
+                                    , (o, ea) => 
+                                    {
+                                        activity.StartActivity(typeof(SignInActivity));
+                                        activity.Finish();
+                                    });
                 }
                 else if (res.StatusCode == HttpStatusCode.BadRequest)
                     _dialogHelper.ShowError(Activity, "The code entered is incorrect.");

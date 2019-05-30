@@ -75,7 +75,11 @@ namespace Planner.Droid.Activities
                 if (res.StatusCode == HttpStatusCode.OK)
                 {
                     _dialogHelper.ShowSuccessDialog(this, "Resetting Password was successful. Please Sign In"
-                                    , (o, ea) => StartActivity(typeof(SignInActivity)));
+                                    , (o, ea) =>
+                                    {
+                                        StartActivity(typeof(SignInActivity));
+                                        Finish();
+                                    });
                 }
                 else if (res.StatusCode == HttpStatusCode.BadRequest)
                     _dialogHelper.ShowError(this, "The code entered is incorrect.");
@@ -140,7 +144,7 @@ namespace Planner.Droid.Activities
             {
                 confirmPasswordEditText.Error = "Password and Confirm Password must match.";
                 return false;
-            }            
+            }
 
             return true;
         }

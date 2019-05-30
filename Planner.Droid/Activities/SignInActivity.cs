@@ -184,6 +184,9 @@ namespace Planner.Droid.Activities
                         await SyncService.Instance.SyncAsync();
 
                         StartActivity(typeof(TasksActivity));
+
+                        FinishAffinity();
+
                         return;
                     }
                     else if (tokenCreationResultDto.ErrorType == TokenCreationErrorType.EmailNotConfirmed)
@@ -282,6 +285,8 @@ namespace Planner.Droid.Activities
                     StartActivity(typeof(TasksActivity));
 
                     _progressBarHelper.Hide();
+
+                    FinishAffinity();
                 }
                 else
                 {

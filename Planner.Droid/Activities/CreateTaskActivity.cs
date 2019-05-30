@@ -1,5 +1,4 @@
 ﻿using Android.App;
-using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Util;
@@ -7,7 +6,6 @@ using Android.Widget;
 using Planner.Droid.Extensions;
 using Planner.Droid.Fragments;
 using Planner.Droid.Helpers;
-using Planner.Droid.Receivers;
 using Planner.Droid.Services;
 using Planner.Droid.Util;
 using Planner.Mobile.Core.Data;
@@ -220,6 +218,8 @@ namespace Planner.Droid.Activities
                 StartActivity(typeof(TasksActivity));
 
                 _progressBarHelper.Hide();
+
+                FinishAffinity();
             }
             catch (Exception ex)
             {

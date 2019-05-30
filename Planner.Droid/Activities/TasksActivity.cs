@@ -188,6 +188,8 @@ namespace Planner.Droid.Activities
             RemoveUserInfo();
 
             StartActivity(typeof(SignInActivity));
+
+            Finish();
         }
 
         private void CreateButton_Click(object sender, EventArgs e)
