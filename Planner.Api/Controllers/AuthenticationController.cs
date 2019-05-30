@@ -4,11 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Planner.Api.Extensions;
 using Planner.Api.Services;
 using Planner.Domain.Entities;
-using Planner.Domain.Repositories.Interfaces;
-using Planner.Domain.UnitOfWork;
 using Planner.Dto;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,21 +25,18 @@ namespace Planner.Api.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<AuthenticationController> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IUnitOfWork _unitOfWork;
 
         public AuthenticationController(IConfiguration config
             , SignInManager<ApplicationUser> signInManager
             , UserManager<ApplicationUser> userManager
             , ILogger<AuthenticationController> logger
-            , IEmailSender emailSender
-            , IUnitOfWork unitOfWork)
+            , IEmailSender emailSender)
         {
             _config = config;
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
             _emailSender = emailSender;
-            _unitOfWork = unitOfWork;
         }
 
         [AllowAnonymous]

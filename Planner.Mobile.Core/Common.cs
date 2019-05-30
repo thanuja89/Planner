@@ -3,9 +3,9 @@
     public class CommonUrls
     {
 #if DEBUG
-        public const string BASE_URI = "http://272f1002.ngrok.io/api/";
+        public const string BASE_URI = "http://4c47034c.ngrok.io/api/";
 #else
-        public const string BASE_URI = "https://myplannerapi.azurewebsites.net";
+        public const string BASE_URI = "https://myplannerapi.azurewebsites.net/api/";
 #endif
     }
 

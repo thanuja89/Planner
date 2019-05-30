@@ -51,7 +51,7 @@ namespace Planner.Api.Controllers
             }
         }
 
-        [HttpPut("{token}")]
+        [HttpPut]
         public async Task<IActionResult> Put(IEnumerable<PutScheduledTaskDTO> taskDtos)
         {
             try
