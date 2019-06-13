@@ -19,15 +19,57 @@ namespace Planner.Api.Tests.ControllerTests
 {
     public class AuthenticationControllerTests
     {
-        private ApplicationUser _user;
-        private ApplicationUser _userWithNotConfirmedEmail;
-        private Mock<ILogger<AuthenticationController>> _mockLogger;
-        private Mock<IEmailSender> _mockEmailSender;
-        private Mock<SignInManager<ApplicationUser>> _mockSignInManager;
-        private Mock<UserManager<ApplicationUser>> _mockUserManager;
-        private Mock<IConfiguration> _mockConfiguration;
+        private readonly ApplicationUser _user;
+        private readonly ApplicationUser _userWithNotConfirmedEmail;
+        private readonly Mock<ILogger<AuthenticationController>> _mockLogger;
+        private readonly Mock<IEmailSender> _mockEmailSender;
+        private readonly Mock<SignInManager<ApplicationUser>> _mockSignInManager;
+        private readonly Mock<UserManager<ApplicationUser>> _mockUserManager;
+        private readonly Mock<IConfiguration> _mockConfiguration;
 
-        private AuthenticationController _sut;
+        private readonly AuthenticationController _sut;
+
+        public AuthenticationControllerTests()
+        {
+            _user = new ApplicationUser()
+            {
+                Id = "AAAAAAAAAA",
+                UserName = "BBBBBBBBBBB",
+                Email = "ddad@dawd.com",
+                EmailConfirmed = true
+            };
+
+            _userWithNotConfirmedEmail = new ApplicationUser()
+            {
+                Id = "AAAAAAAAAA",
+                UserName = "BBBBBBBBBBB",
+                Email = "ddad@dawd.com",
+                EmailConfirmed = false
+            };
+
+            _mockLogger = new Mock<ILogger<AuthenticationController>>();
+            _mockConfiguration = new Mock<IConfiguration>();
+            _mockLogger = new Mock<ILogger<AuthenticationController>>();
+            _mockEmailSender = new Mock<IEmailSender>();
+
+            _mockUserManager = new Mock<UserManager<ApplicationUser>>(new Mock<IUserStore<ApplicationUser>>().Object
+               , null, null, null, null, null, null, null, null);
+
+            _mockSignInManager = new Mock<SignInManager<ApplicationUser>>(_mockUserManager.Object,
+                 new Mock<IHttpContextAccessor>().Object,
+                 new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>().Object,
+                 new Mock<IOptions<IdentityOptions>>().Object,
+                 new Mock<ILogger<SignInManager<ApplicationUser>>>().Object,
+                 new Mock<IAuthenticationSchemeProvider>().Object);
+
+            _mockConfiguration.Setup(c => c[It.IsAny<string>()]).Returns("somedummytextxxxxxxxxx");
+
+            _sut = new AuthenticationController(_mockConfiguration.Object
+                , _mockSignInManager.Object
+                , _mockUserManager.Object
+                , _mockLogger.Object
+                , _mockEmailSender.Object);
+        }
 
         #region CreateToken Method Tests
 
@@ -35,8 +77,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task CreateToken_WhenCalledWithValidArgs_ReturnsOkWithToken()
         {
             // Arrange
-            SetUp();
-
             var login = new TokenRequestDto() { Username = "AAAAAA", Password = "AAAAAAA" };
 
             _mockSignInManager
@@ -61,8 +101,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task CreateToken_WhenCalledWithInvalidCreds_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             var login = new TokenRequestDto();
 
             _mockSignInManager
@@ -80,8 +118,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task CreateToken_WhenEmailNotConfirmed_ReturnsBadRequestWithUserId()
         {
             // Arrange
-            SetUp();
-
             var login = new TokenRequestDto();
 
             _mockSignInManager
@@ -107,8 +143,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task CreateAccount_WhenCalledWithValidArgs_CallsEmailSenderAndReturnsOkWithSuccess()
         {
             // Arrange
-            SetUp();
-
             var acc = new CreateAccountDto();
             string code = "0";
 
@@ -131,8 +165,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task CreateAccount_WhenUsernameExistsForAnotherEmail_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             var acc = new CreateAccountDto()
             {
                 Email = "aaa@aa.com",
@@ -158,8 +190,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task CreateAccount_WhenUsernameExistsForSameEmail_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             var acc = new CreateAccountDto()
             {
                 Email = _user.Email,
@@ -185,8 +215,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task CreateAccount_WhenEmailExistsForDifferentUsername_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             var acc = new CreateAccountDto()
             {
                 Email = _user.Email,
@@ -213,8 +241,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task CreateAccount_WhenExceptionThrown_ReturnsStatusCode500()
         {
             // Arrange
-            SetUp();
-
             var acc = new CreateAccountDto();
 
             _mockUserManager
@@ -242,8 +268,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ExternalSignIn_WhenEmailNotExists_CallsCreateAndReturnsOkWithToken()
         {
             // Arrange
-            SetUp();
-
             var login = new ExternalSignInDto() { Email = "aaa@aaa.com" };
 
             _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(null as ApplicationUser);
@@ -279,8 +303,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ExternalSignIn_WhenEmailExists_ReturnsOkWithToken()
         {
             // Arrange
-            SetUp();
-
             var login = new ExternalSignInDto() { Email = "aaa@aaa.com" };
 
             _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(_user);
@@ -312,8 +334,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ExternalSignIn_WhenEmailExistsAndUserNotActive_CallsCreateDeleteAndReturnsOkWithToken()
         {
             // Arrange
-            SetUp();
-
             var login = new ExternalSignInDto() { Email = "aaa@aaa.com" };
 
             _mockUserManager.Setup(m => m.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(_userWithNotConfirmedEmail);
@@ -349,8 +369,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ConfirmEmail_WhenCalledWithValidArgs_ReturnsOk()
         {
             // Arrange
-            SetUp();
-
             var req = new ConfirmationRequestDto()
             {
                 UserId = "aaaaaaa",
@@ -376,8 +394,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ConfirmEmail_WhenCalledWithInvalidUserId_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             var req = new ConfirmationRequestDto();
 
             _mockUserManager
@@ -396,8 +412,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ConfirmEmail_WhenCalledWithInvalidCode_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             var req = new ConfirmationRequestDto()
             {
                 UserId = "aaaaaaa",
@@ -428,8 +442,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ResendConfirmationEmail_WhenCalledWithValidArgs_GeneratesTokenAndCallsEmailSenderWithToken()
         {
             // Arrange
-            SetUp();
-
             string userId = "AAAAAA";
             string code = "0";
 
@@ -455,8 +467,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ResendConfirmationEmail_WhenCalledWithValidArgs_ReturnsOk()
         {
             // Arrange
-            SetUp();
-
             string userId = "AAAAAA";
             string code = "0";
 
@@ -479,8 +489,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ResendConfirmationEmail_WhenCalledWithInvalidArgs_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             string userId = "AAAAAA";
 
             _mockUserManager
@@ -502,8 +510,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task SendPasswordResetEmail_WhenCalledWithValidArgs_GeneratesTokenAndCallsEmailSenderWithToken()
         {
             // Arrange
-            SetUp();
-
             string email = "aaaa@aaa.com";
             string code = "0";
 
@@ -536,8 +542,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task SendPasswordResetEmail_WhenInvalidEmail_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             string email = "aaaa@aaa.com";
             string code = "0";
 
@@ -570,8 +574,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ResetPassword_WhenCalledWithValidArgs_ReturnsOk()
         {
             // Arrange
-            SetUp();
-
             string email = "aaaa@aaa.com";
 
             var req = new ResetPasswordRequestDto()
@@ -599,8 +601,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ResetPassword_WhenCalledWithInValidEmail_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             string email = "aaaa@aaa.com";
 
             var req = new ResetPasswordRequestDto()
@@ -624,8 +624,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task ResetPassword_WhenCalledWithInValidCode_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
-
             string email = "aaaa@aaa.com";
 
             var req = new ResetPasswordRequestDto()
@@ -649,50 +647,6 @@ namespace Planner.Api.Tests.ControllerTests
             Assert.IsAssignableFrom<BadRequestResult>(result);
         }
 
-        #endregion
-
-        #region Private Methods
-        private void SetUp()
-        {
-            _user = new ApplicationUser()
-            {
-                Id = "AAAAAAAAAA",
-                UserName = "BBBBBBBBBBB",
-                Email = "ddad@dawd.com",
-                EmailConfirmed = true
-            };
-
-            _userWithNotConfirmedEmail = new ApplicationUser()
-            {
-                Id = "AAAAAAAAAA",
-                UserName = "BBBBBBBBBBB",
-                Email = "ddad@dawd.com",
-                EmailConfirmed = false
-            };
-
-            _mockLogger = new Mock<ILogger<AuthenticationController>>();
-            _mockConfiguration = new Mock<IConfiguration>();
-            _mockLogger = new Mock<ILogger<AuthenticationController>>();
-            _mockEmailSender = new Mock<IEmailSender>();
-
-            _mockUserManager = new Mock<UserManager<ApplicationUser>>(new Mock<IUserStore<ApplicationUser>>().Object
-               , null, null, null, null, null, null, null, null);
-
-            _mockSignInManager = new Mock<SignInManager<ApplicationUser>>(_mockUserManager.Object,
-                 new Mock<IHttpContextAccessor>().Object,
-                 new Mock<IUserClaimsPrincipalFactory<ApplicationUser>>().Object,
-                 new Mock<IOptions<IdentityOptions>>().Object,
-                 new Mock<ILogger<SignInManager<ApplicationUser>>>().Object,
-                 new Mock<IAuthenticationSchemeProvider>().Object);           
-
-            _mockConfiguration.Setup(c => c[It.IsAny<string>()]).Returns("somedummytextxxxxxxxxx");
-
-            _sut = new AuthenticationController(_mockConfiguration.Object
-                , _mockSignInManager.Object
-                , _mockUserManager.Object
-                , _mockLogger.Object
-                , _mockEmailSender.Object);
-        }
         #endregion
     }
 }

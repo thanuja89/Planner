@@ -149,8 +149,8 @@ namespace Planner.Droid.Services
                 End = task.End,
                 Importance = (Mobile.Core.Data.Importance)task.Importance,
                 Repeat = (Mobile.Core.Data.Frequency)task.Repeat,
-                ApplicationUserId = task.ApplicationUserId
-
+                ApplicationUserId = task.ApplicationUserId,
+                ClientUpdatedOnTicks = task.ClientUpdatedOnTicks
             };
         }
 
@@ -168,7 +168,7 @@ namespace Planner.Droid.Services
                 ClientSideId = dbTask.ClientSideId,
                 ApplicationUserId = dbTask.ApplicationUserId,
                 IsDeleted = dbTask.IsDeleted,
-                ClientUpdatedOnTicks = dbTask.ClientUpdatedOnTicks
+                ClientUpdatedOnTicks = task.ClientUpdatedOnTicks
             };
         }
 

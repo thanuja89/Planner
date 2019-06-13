@@ -9,7 +9,7 @@ namespace Planner.Dto
         public string Note { get; set; }
         public Importance Importance { get; set; }
         public Frequency Repeat { get; set; }
-
+        public long ClientUpdatedOnTicks { get; set; }
         [Required]
         public DateTime Start { get; set; }
 
@@ -32,7 +32,6 @@ namespace Planner.Dto
     public class PutScheduledTaskDTO : ScheduledTaskDTO
     {
         public Guid Id { get; set; }
-        public long ClientUpdatedOnTicks { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

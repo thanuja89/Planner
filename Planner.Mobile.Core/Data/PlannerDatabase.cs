@@ -42,7 +42,7 @@ namespace Planner.Mobile.Core.Data
             return _connection.Table<T>();
         }
 
-        public Task<List<T>> QueryAll<T>(string query, params object[] objs) where T : new()
+        public Task<List<T>> QueryAllAsync<T>(string query, params object[] objs) where T : new()
         {
             return _connection.QueryAsync<T>(query, objs);
         }
@@ -76,6 +76,11 @@ namespace Planner.Mobile.Core.Data
         public Task ExecuteCommandAsync(string command, params object[] objs)
         {
             return _connection.ExecuteAsync(command, objs);
+        }
+
+        public Task<T> ExecuteScalarAsync<T>(string query, params object[] objs) where T : struct
+        {
+            return _connection.ExecuteScalarAsync<T>(query, objs);
         }
 
         public Task DeleteAsync<T>(Guid id) where T : new()

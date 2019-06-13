@@ -19,21 +19,53 @@ namespace Planner.Api.Tests.ControllerTests
 {
     public class ScheduledTaskControllerTests
     {
-        private string _userId;
-        private Mock<IScheduledTaskRepository> _mockRepo;
-        private Mock<IMapper> _mockMapper;
-        private Mock<ILogger<ScheduledTaskController>> _mockLogger;
-        private Mock<INotificationService> _mockNotificationService;
-        private Mock<IUnitOfWork> _mockLUOW;
-        private Mock<IUrlHelper> _urlHelper;
-        private ScheduledTaskController _sut;
+        private readonly string _userId;
+        private readonly Mock<IScheduledTaskRepository> _mockRepo;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<ILogger<ScheduledTaskController>> _mockLogger;
+        private readonly Mock<INotificationService> _mockNotificationService;
+        private readonly Mock<IUnitOfWork> _mockLUOW;
+        private readonly Mock<IUrlHelper> _urlHelper;
+        private readonly ScheduledTaskController _sut;
+
+        public ScheduledTaskControllerTests()
+        {
+            _userId = "abcadasda";
+
+            _mockRepo = new Mock<IScheduledTaskRepository>();
+            _mockMapper = new Mock<IMapper>();
+            _mockLogger = new Mock<ILogger<ScheduledTaskController>>();
+            _mockNotificationService = new Mock<INotificationService>();
+            _mockLUOW = new Mock<IUnitOfWork>();
+
+            var claimsPrinc = new ClaimsPrincipal(new ClaimsIdentity(
+                new Claim[] { new Claim(ClaimTypes.NameIdentifier, _userId) }));
+
+            _urlHelper = new Mock<IUrlHelper>();
+            _urlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns("http://localhost/api/ScheduledTask/1");
+
+            _sut = new ScheduledTaskController(_mockRepo.Object
+                , _mockLUOW.Object
+                , _mockMapper.Object
+                , _mockNotificationService.Object
+                , _mockLogger.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext
+                    {
+                        User = claimsPrinc
+                    }
+                },
+                Url = _urlHelper.Object
+            };
+        }
 
         #region GET Method Tests
         [Fact]
         public async Task Get_ValidPrinciple_CallsRepoWithCorrectArgs()
         {
             // Arrange
-            SetUp();
 
             // Act
             var result = await _sut.Get();
@@ -46,7 +78,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Get_ValidPrinciple_ReturnsOkWithTaskDTOs()
         {
             // Arrange
-            SetUp();
 
             // Act
             var result = await _sut.Get();
@@ -60,7 +91,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Get_ValidId_CallsRepoWithCorrectArgs()
         {
             // Arrange
-            SetUp();
             Guid id = Guid.NewGuid();
 
             // Act
@@ -74,7 +104,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Get_ValidId_ReturnsOk()
         {
             // Arrange
-            SetUp();
             _mockRepo.Setup(r => r.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(new ScheduledTask());
             Guid id = Guid.NewGuid();
 
@@ -89,7 +118,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Get_InvalidId_ReturnsNotFound()
         {
             // Arrange
-            SetUp();
             _mockRepo.Setup(r => r.FindAsync(It.IsAny<Guid>())).ReturnsAsync((ScheduledTask) null);
             Guid id = default;
 
@@ -107,8 +135,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Post_ValidObject_CallsMapperAndRepoWithCorrectArgsAndReturnsOk()
         {
             // Arrange
-            SetUp();
-
             var taskDto = new PostScheduledTaskDTO()
             {
                 Start = DateTime.UtcNow,
@@ -141,8 +167,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Put_ValidObject_CallsMapperAndRepoWithCorrectArgsAndReturnsOk()
         {
             // Arrange
-            SetUp();
-
             Guid id = Guid.NewGuid();
 
             var taskDto = new PutScheduledTaskDTO()
@@ -177,13 +201,10 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Delete_ValidObject_CallsRepoWithCorrectArgsAndReturnsNoContent()
         {
             // Arrange
-            SetUp();
-
             Guid id = Guid.NewGuid();
 
             var taskDto = new PutScheduledTaskDTO()
             {
-
                 Start = DateTime.UtcNow,
                 End = DateTime.UtcNow
             };
@@ -206,41 +227,6 @@ namespace Planner.Api.Tests.ControllerTests
             _mockLUOW.Verify(u => u.CompleteAsync());
 
             Assert.IsAssignableFrom<NoContentResult>(result);
-        }
-        #endregion
-
-        #region Private Methods
-        private void SetUp()
-        {
-            _userId = "abcadasda";
-
-            _mockRepo = new Mock<IScheduledTaskRepository>();
-            _mockMapper = new Mock<IMapper>();
-            _mockLogger = new Mock<ILogger<ScheduledTaskController>>();
-            _mockNotificationService = new Mock<INotificationService>();
-            _mockLUOW = new Mock<IUnitOfWork>();
-
-            var claimsPrinc = new ClaimsPrincipal(new ClaimsIdentity(
-                new Claim[] { new Claim(ClaimTypes.NameIdentifier, _userId) }));
-
-            _urlHelper = new Mock<IUrlHelper>();
-            _urlHelper.Setup(x => x.Link(It.IsAny<string>(), It.IsAny<object>())).Returns("http://localhost/api/ScheduledTask/1");
-
-            _sut = new ScheduledTaskController(_mockRepo.Object
-                , _mockLUOW.Object
-                , _mockMapper.Object
-                , _mockNotificationService.Object
-                , _mockLogger.Object)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext
-                    {
-                        User = claimsPrinc
-                    }
-                },
-                Url = _urlHelper.Object
-            };
         }
         #endregion
     }

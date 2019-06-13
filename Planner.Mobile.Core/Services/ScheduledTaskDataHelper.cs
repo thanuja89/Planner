@@ -39,7 +39,7 @@ namespace Planner.Mobile.Core.Helpers
         public Task<List<ScheduledTask>> SearchAsync(string userId, string keyword, int take = 10)
         {
             return PlannerDatabase.Instance
-                .QueryAll<ScheduledTask>(@"
+                .QueryAllAsync<ScheduledTask>(@"
                     SELECT * FROM ScheduledTask 
                     WHERE ApplicationUserId = ?3 AND (Title LIKE ?1
                         OR Note LIKE ?1)
@@ -48,10 +48,36 @@ namespace Planner.Mobile.Core.Helpers
                     , $"%{ keyword }%", take, userId);
         }
 
+        public Task<List<ScheduledTask>> SearchAndOrderAsync(string userId
+            , string keyword
+            , string sortBy = "Start"
+            , string ascOrDesc = "DESC"
+            , int skip = 0
+            , int take = 10)
+        {
+            return PlannerDatabase.Instance
+                .QueryAllAsync<ScheduledTask>($@"
+                    SELECT * FROM ScheduledTask 
+                    WHERE ApplicationUserId = ?4 AND (Title LIKE ?1
+                        OR Note LIKE ?1)
+                    ORDER BY {sortBy} {ascOrDesc}
+                    LIMIT ?3 OFFSET ?2"
+                    , $"%{ keyword }%", skip, take, userId);
+        }
+
+        public Task<int> CountSearchResultsAsync(string userId
+            , string keyword)
+        {
+            return PlannerDatabase.Instance
+                .ExecuteScalarAsync<int>($@"SELECT COUNT(*) FROM ScheduledTask 
+                    WHERE ApplicationUserId = ? 2 AND(Title LIKE ? 1
+                        OR Note LIKE ? 1)", $"%{ keyword }%", userId);
+        }
+
         public Task<List<ScheduledTask>> GetAllForRangeAsync(string userId, DateTime startDate, DateTime endDate)
         {
             return PlannerDatabase.Instance
-                .QueryAll<ScheduledTask>(@"
+                .QueryAllAsync<ScheduledTask>(@"
                     SELECT * FROM ScheduledTask 
                     WHERE ApplicationUserId = ?3 AND (Start BETWEEN ?1 AND ?2) 
                         OR (End BETWEEN ?1 AND ?2) 

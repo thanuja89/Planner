@@ -19,21 +19,47 @@ namespace Planner.Api.Tests.ControllerTests
 {
     public class SyncronizationControllerTests
     {
-        private string _userId;
-        private DateTime _lastSynced;
-        private Mock<IScheduledTaskRepository> _mockRepo;
-        private Mock<INotificationService> _mockNotificationService;
-        private Mock<IMapper> _mockMapper;
-        private Mock<ILogger<SyncronizationController>> _mockLogger;
-        private SyncronizationController _sut;
+        private readonly string _userId;
+        private readonly DateTime _lastSynced;
+        private readonly Mock<IScheduledTaskRepository> _mockRepo;
+        private readonly Mock<INotificationService> _mockNotificationService;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<ILogger<SyncronizationController>> _mockLogger;
+        private readonly SyncronizationController _sut;
+
+        public SyncronizationControllerTests()
+        {
+            _userId = "abcadasda";
+            _lastSynced = DateTime.UtcNow.AddDays(-30);
+
+            _mockRepo = new Mock<IScheduledTaskRepository>();
+            _mockNotificationService = new Mock<INotificationService>();
+            _mockMapper = new Mock<IMapper>();
+            _mockLogger = new Mock<ILogger<SyncronizationController>>();
+
+            var claimsPrinc = new ClaimsPrincipal(new ClaimsIdentity(
+                new Claim[] { new Claim(ClaimTypes.NameIdentifier, _userId) }));
+
+            _sut = new SyncronizationController(_mockRepo.Object
+                , _mockNotificationService.Object
+                , _mockMapper.Object
+                , _mockLogger.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext
+                    {
+                        User = claimsPrinc
+                    }
+                },
+            };
+        }
 
         #region Get Method Tests
         [Fact]
         public async Task Get_WhenCalled_CallsRepoAndMapperWithCorrectArgs()
         {
             // Arrange
-            SetUp();
-
             var tasks = new ScheduledTask[] {
                 new ScheduledTask()
                 {
@@ -57,7 +83,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Get_WhenCalled_ReturnsOkWithTaskDTOs()
         {
             // Arrange
-            SetUp();
 
             // Act
             var result = await _sut.Get(_lastSynced);
@@ -73,8 +98,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Put_WhenCalled_CallsRepoAndMapperWithCorrectArgs()
         {
             // Arrange
-            SetUp();
-
             var tasks = new ScheduledTaskDataModel[] {
                 new ScheduledTaskDataModel()
                 {
@@ -108,8 +131,6 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Put_WhenCalledWithValidArgs_ReturnsNoContent()
         {
             // Arrange
-            SetUp();
-
             var taskDTOs = new PutScheduledTaskDTO[] {
                 new PutScheduledTaskDTO()
                 {
@@ -130,43 +151,12 @@ namespace Planner.Api.Tests.ControllerTests
         public async Task Put_WhenCalledWithInValidArgs_ReturnsBadRequest()
         {
             // Arrange
-            SetUp();
 
             // Act
             var result = await _sut.Put(null);
 
             // Assert
             Assert.IsAssignableFrom<BadRequestResult>(result);
-        }
-        #endregion
-
-        #region Private Methods
-        private void SetUp()
-        {
-            _userId = "abcadasda";
-            _lastSynced = DateTime.UtcNow.AddDays(-30);
-
-            _mockRepo = new Mock<IScheduledTaskRepository>();
-            _mockNotificationService = new Mock<INotificationService>();
-            _mockMapper = new Mock<IMapper>();
-            _mockLogger = new Mock<ILogger<SyncronizationController>>();
-
-            var claimsPrinc = new ClaimsPrincipal(new ClaimsIdentity(
-                new Claim[] { new Claim(ClaimTypes.NameIdentifier, _userId) }));
-
-            _sut = new SyncronizationController(_mockRepo.Object
-                , _mockNotificationService.Object
-                , _mockMapper.Object
-                , _mockLogger.Object)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext
-                    {
-                        User = claimsPrinc
-                    }
-                },
-            };
         }
         #endregion
     }

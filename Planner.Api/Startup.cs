@@ -126,7 +126,7 @@ namespace Planner.Api
             loggerFactory.AddSerilog();
 
             app.UseCors("CorsPolicy");
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
         }

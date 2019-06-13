@@ -61,7 +61,8 @@ namespace Planner.Api.Controllers
                         {
                             Value = tokenString,
                             ApplicationUserId = user.Id,
-                            Username = user.UserName
+                            Username = user.UserName,
+                            Email = user.Email
                         }));
                     }
 
@@ -366,7 +367,8 @@ namespace Planner.Api.Controllers
             {
                 Value = token,
                 ApplicationUserId = user.Id,
-                Username = user.UserName
+                Username = user.UserName,
+                Email = user.Email
             });
         }
 
